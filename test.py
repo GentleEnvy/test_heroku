@@ -1,9 +1,16 @@
 from selenium import webdriver
 import bs4
 
+
+CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
+
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('headless')
 
+chrome_options.binary_location = 'heroku: /app/.apt/usr/bin/google-chrome'
+chrome_options.add_argument('--disable-gpu')
+chrome_options.add_argument('--no-sandbox')
+driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
 driver = webdriver.Chrome('D:/chromedriver.exe', options=chrome_options)
 
 

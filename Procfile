@@ -1,1 +1,1 @@
-worker: python test_selenium.py
+worker: python test.py
