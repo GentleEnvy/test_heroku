@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/TestSelenium.iml" filepath="$PROJECT_DIR$/.idea/TestSelenium.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/test_heroku.iml" filepath="$PROJECT_DIR$/.idea/test_heroku.iml" />
     </modules>
   </component>
 </project>
