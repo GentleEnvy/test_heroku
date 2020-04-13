@@ -1,2 +1,4 @@
-print('hello github')
+from ignore import value
 
+
+print(value)
