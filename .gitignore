@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .idea/.gitignore
 .idea/inspectionProfiles/
 .idea/misc.xml
@@ -6,3 +7,6 @@
 .idea/vcs.xml
 
 ignore.py
+=======
+.idea/
+>>>>>>> commit to master
