@@ -1,12 +1,4 @@
-<<<<<<< HEAD
-.idea/.gitignore
-.idea/inspectionProfiles/
-.idea/misc.xml
-.idea/modules.xml
-.idea/test_heroku.iml
-.idea/vcs.xml
-
-ignore.py
-=======
 .idea/
->>>>>>> commit to master
+test_files/
+__pycache__/
+vanv/
