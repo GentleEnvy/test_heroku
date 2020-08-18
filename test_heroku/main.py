@@ -1,6 +1,6 @@
-import os
+from datetime import datetime
 
-token = os.environ['TOKEN']
+print(datetime.now().strftime("%d.%m.%Y - %H:%M:%S"))
 
-print(type(token))
-print(token)
+while True:
+    pass
