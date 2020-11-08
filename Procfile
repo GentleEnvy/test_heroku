@@ -1,1 +1,1 @@
-worker: python test_heroku/main.py
+web:  gunicorn main:app
