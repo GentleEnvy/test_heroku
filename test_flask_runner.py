@@ -8,4 +8,4 @@ def index():
     return 'Hello, World !'
 
 
-app.run(debug=False)
+app.run()
