@@ -8,4 +8,5 @@ def index():
     return 'Hello, World !'
 
 
-app.run(debug=False)
+if __name__ == '__main__':
+    app.run(threaded=True, port=5000)
