@@ -5,7 +5,7 @@ app = flask.Flask(__name__)
 
 @app.route('/')
 def index():
-    """ main """
+    """ main func """
     return 'Hello, dev brunch !'
 
 
