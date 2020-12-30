@@ -5,8 +5,8 @@ app = flask.Flask(__name__)
 
 @app.route('/')
 def index():
-    """ Main function """
-    return 'Hello, World !'
+    """ main """
+    return 'Hello, dev brunch !'
 
 
 if __name__ == '__main__':
