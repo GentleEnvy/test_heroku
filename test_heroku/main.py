@@ -5,7 +5,7 @@ app = flask.Flask(__name__)
 
 @app.route('/')
 def index():
-    """ It is a Main function ! """
+    """ main func """
     return 'Hello, World !'
 
 
