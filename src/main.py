@@ -1,11 +1,13 @@
 import flask
 
+print(f'__name__ = {__name__}')
 app = flask.Flask(__name__)
+print(f'create app: {app.name}')
 
 
 @app.route('/')
 def index():
-    return 'Hello, World !'
+    return __name__
 
 
 if __name__ == '__main__':
