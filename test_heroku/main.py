@@ -1,13 +1,16 @@
-import flask
+from flask import Flask
+from app import app
 
-app = flask.Flask(__name__)
+import os
+
+app = app.create_app()
 
 
 @app.route('/')
 def index():
     """ main func """
-    return 'Hello, World !'
+    return os.getcwd()
 
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=5000)
+    app.run(threaded=True, port=5000, debug=True)
