@@ -2,6 +2,10 @@ import flask
 
 
 class MyApp(flask.Flask):
+    def __getattribute__(self, item):
+        result = super().__getattribute__(item)
+        print(f'getting attr: {item} -> {result}')
+        return result
 
     def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
         print(f'run: {self.name = }')
@@ -16,7 +20,7 @@ print(f'create app: {app.name}')
 
 @app.route('/')
 def index():
-    return __name__
+    return app
 
 
 if __name__ == '__main__':
