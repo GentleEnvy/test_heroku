@@ -17,6 +17,6 @@ def read_run_configuration() -> dict:
 
 
 def create_app():
-    app = Flask('__main__')
+    app = Flask('src.main')
     app.config.from_json(f'{_directory}/init_configuration.json')
     return app
