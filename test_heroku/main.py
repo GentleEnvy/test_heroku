@@ -1,5 +1,5 @@
 from flask import Flask
-from app import app
+from test_heroku.app import app
 
 import os
 
