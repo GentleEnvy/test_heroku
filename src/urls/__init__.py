@@ -8,5 +8,6 @@ __all__ = ['init_urls']
 
 
 def init_urls(app: Flask):
+    print(BaseUrl.classes)
     for url_class in BaseUrl.classes:
         url_class(app)
