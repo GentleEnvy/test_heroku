@@ -1,6 +1,5 @@
-from ._app import create_app, read_run_configuration
+from ._app import create_app
 
-__all__ = ['app', 'run_configuration']
+__all__ = ['app']
 
-# app = create_app()
-run_configuration = read_run_configuration()
+app = create_app()
