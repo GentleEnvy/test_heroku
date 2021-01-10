@@ -19,7 +19,7 @@ class Index(BaseUrl):
         response = {
             'form': request.form,
             'args': request.args,
-            'data': request.data
+            'data': request.data.decode('utf-8')
         }
         print(response)
         return response
