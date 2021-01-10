@@ -16,4 +16,10 @@ class Index(BaseUrl):
 
     def reply(self, request: Request) -> dict:
         # TODO: to implements the logic
-        return request.form or request.args
+        response = {
+            'form': request.form,
+            'args': request.args,
+            'data': request.data
+        }
+        print(response)
+        return response

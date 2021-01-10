@@ -27,8 +27,6 @@ class BaseUrl(ABC, metaclass=_MetaBaseUrl):
     def __init__(self, app: Flask):
         self.__app = app
 
-        print(f'rule={self.url}, methods={self.methods}')
-
         @app.route(rule=self.url, methods=self.methods)
         def index() -> Response:
             return app.make_response(self.reply(flask_request))
