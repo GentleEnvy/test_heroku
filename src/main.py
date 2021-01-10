@@ -6,9 +6,10 @@ class MyApp(flask.Flask):
 
     def __getattribute__(self, item):
         result = super().__getattribute__(item)
-        if item not in self.cache:
-            print(f'getting attr: {item} -> {result}')
-            self.cache.add(item)
+        if item != 'cache':
+            if item not in self.cache:
+                print(f'getting attr: {item} -> {result}')
+                self.cache.add(item)
         return result
 
     def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
