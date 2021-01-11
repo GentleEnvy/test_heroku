@@ -33,8 +33,7 @@ class BaseUrl(ABC, metaclass=_MetaBaseUrl):
         def index() -> Response:
             reply = self.reply(flask_request)
             resp = app.make_response(reply)
-            resp.status_code = 200
-            print(resp.__dict__)
+            resp.status_code = 404
             return resp
 
     @property
