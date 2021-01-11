@@ -1,9 +1,11 @@
 from typing import Union, AnyStr, final
 from abc import ABC, ABCMeta, abstractmethod
+from http import HTTPStatus
 
 from flask import (
     Flask, Response, Request,
-    request as flask_request
+    request as flask_request,
+    abort
 )
 
 __all__ = ['BaseUrl']
@@ -29,7 +31,11 @@ class BaseUrl(ABC, metaclass=_MetaBaseUrl):
 
         @app.route(rule=self.url, methods=self.methods)
         def index() -> Response:
-            return app.make_response(self.reply(flask_request))
+            reply = self.reply(flask_request)
+            resp = app.make_response(reply)
+            resp.status_code = 200
+            print(resp.__dict__)
+            return resp
 
     @property
     @final
