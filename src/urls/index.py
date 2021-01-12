@@ -1,6 +1,6 @@
-from flask import Request
+from typing import Any
 
-from .base_url import BaseUrl
+from src.urls.base_url import BaseUrl
 
 
 class Index(BaseUrl):
@@ -10,16 +10,8 @@ class Index(BaseUrl):
 
     @property
     def methods(self) -> list[str]:
-        if self.app.debug:
-            return ['GET', 'POST']
-        return ['POST']
+        return ['GET', 'POST']
 
-    def reply(self, request: Request) -> dict:
-        # TODO: to implements the logic
-        response = {
-            'form': request.form,
-            'args': request.args,
-            'data': request.data.decode('utf-8')
-        }
-        print(response)
-        return response
+    def reply(self, request: dict[str, Any]) -> dict[str, Any]:
+        print(request)
+        return request

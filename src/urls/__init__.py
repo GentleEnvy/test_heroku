@@ -1,8 +1,8 @@
 from flask import Flask
 
-from .base_url import BaseUrl
+from src.urls.base_url import BaseUrl
 
-from .index import Index
+from src.urls.index import Index
 
 __all__ = ['init_urls']
 
