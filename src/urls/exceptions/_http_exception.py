@@ -16,13 +16,15 @@ class HTTPException(Exception):
             message: str = ''
     ):
         """
-        :raises ValueError: if http_status in OK
+        :raises ValueError: if `http_status` is OK(200)
         """
         self._http_status: HTTPStatus
         if type(http_status) == int:
             self._http_status = _HTTP_CODE_STATUS[http_status]
         else:
             self._http_status = http_status
+        if self._http_status == HTTPStatus.OK:
+            raise ValueError('`http_status` must not be OK')
         self._message: str = message
 
     @property
@@ -34,5 +36,5 @@ class HTTPException(Exception):
         return self._message
 
     def __str__(self) -> str:
-        return f'{self._http_status.value}({self._http_status.phrase}): ' \
+        return f'{self._http_status.phrase}({self._http_status.value}): ' \
                f'{self._message if self._message else self._http_status.description}'

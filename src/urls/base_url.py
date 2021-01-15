@@ -42,8 +42,8 @@ class BaseUrl(ABC, metaclass=_MetaBaseUrl):
                 response = self._make_response(response_json)
             except HTTPException as http_exception:
                 response = self._make_error_response(http_exception)
-            except Exception:
-                response = self._make_error_response()
+            # except Exception:
+            #     response = self._make_error_response()
             return response
 
         try:
@@ -59,11 +59,11 @@ class BaseUrl(ABC, metaclass=_MetaBaseUrl):
 
     @staticmethod
     def _parse_request(request: Request) -> dict[str, Any]:
+        print(request.__dict__)
         try:
-            print(request.environ)
             if request.data:
                 return json.loads(request.data.decode('utf-8'))
-            return request.form or request.args
+            return request.form | request.args
         except UnicodeDecodeError:
             raise HTTPException(HTTPStatus.BAD_REQUEST, 'The encoding must be UTF-8')
         except json.JSONDecodeError:

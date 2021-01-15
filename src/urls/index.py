@@ -1,9 +1,9 @@
 from typing import Any
 
-from src.urls.base_url import BaseUrl
+from src.urls.crypt_url import CryptUrl
 
 
-class Index(BaseUrl):
+class Index(CryptUrl):
     @property
     def url(self) -> str:
         return '/'
