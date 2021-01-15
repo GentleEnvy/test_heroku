@@ -1,6 +1,7 @@
 from typing import Any, final
 from abc import ABC, ABCMeta, abstractmethod
 from http import HTTPStatus
+from pprint import pprint
 import json
 
 from flask import (
@@ -59,7 +60,7 @@ class BaseUrl(ABC, metaclass=_MetaBaseUrl):
 
     @staticmethod
     def _parse_request(request: Request) -> dict[str, Any]:
-        print(request.__dict__)
+        pprint(request.__dict__)
         try:
             if request.data:
                 return json.loads(request.data.decode('utf-8'))

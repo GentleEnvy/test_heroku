@@ -13,5 +13,4 @@ class Index(CryptUrl):
         return ['GET', 'POST']
 
     def reply(self, request: dict[str, Any]) -> dict[str, Any]:
-        print(request)
         return request
