@@ -60,7 +60,6 @@ class BaseUrl(ABC, metaclass=_MetaBaseUrl):
 
     @staticmethod
     def _parse_request(request: Request) -> dict[str, Any]:
-        pprint(request.__dict__)
         try:
             if request.data:
                 return json.loads(request.data.decode('utf-8'))
