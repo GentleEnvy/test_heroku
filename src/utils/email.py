@@ -9,8 +9,8 @@ class Email:
     def __init__(self, login: str, password: str):
         self._login: Final[str] = login
         self._smtp: Final[SMTP] = None  # TODO: SMTP('smtp.gmail.com', 587)
-        self._smtp.starttls()
-        self._smtp.login(login, password)
+        # self._smtp.starttls()
+        # self._smtp.login(login, password)
 
     def send(self, message: str, to: str, subject: str = None) -> None:
         """
