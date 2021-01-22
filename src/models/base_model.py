@@ -2,19 +2,22 @@ from __future__ import annotations
 from typing import Final
 from abc import ABC
 
-from src.database import Database
-from src.utils import MetaPrivateConstructor
+from src.utils.database import Database
+from src.utils import database as util_database
+from src.utils import MetaPrivateInit
+
+__all__ = ['BaseModel']
 
 
-class _MetaBaseModel(MetaPrivateConstructor, type(ABC)):
+class _MetaBaseModel(MetaPrivateInit, type(ABC)):
     pass
 
 
 class BaseModel(ABC, metaclass=_MetaBaseModel):
-    database: Database = Database()
+    database: Database = util_database
 
     @classmethod
-    def _create(cls, id_: int, *args, **kwargs):
+    def _create_model(cls, id_: int, *args, **kwargs):
         return cls._create(id_, *args, **kwargs)
 
     def __init__(self, id_: int):

@@ -1,11 +1,11 @@
 from flask import Flask
 
 from src import IS_HOST
-from src.utils import path_to_src
+from src.utils import get_path_to_src
 
 __all__ = ['create_app']
 
-_directory = f'{path_to_src()}/app/{"_production" if IS_HOST else "_development"}'
+_directory = f'{get_path_to_src()}/app/{"production" if IS_HOST else "development"}'
 
 
 def create_app():

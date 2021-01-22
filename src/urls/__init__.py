@@ -1,12 +1,12 @@
 from flask import Flask
 
-from src.urls.base_url import BaseUrl
-
-from src.urls.index import Index
+from src.urls.log_io import Registration, Authorization
+from src.urls.user_url import UserUrl
 
 __all__ = ['init_urls']
 
 
 def init_urls(app: Flask):
-    for url_class in BaseUrl.classes:
-        url_class(app)
+    Registration(app)
+    Authorization(app)
+    UserUrl(app)

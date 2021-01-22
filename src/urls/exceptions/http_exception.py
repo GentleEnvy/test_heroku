@@ -36,5 +36,5 @@ class HTTPException(Exception):
         return self._message
 
     def __str__(self) -> str:
-        return f'{self._http_status.phrase}({self._http_status.value}): ' \
+        return f'{self._http_status.phrase} ({self._http_status.value}): ' \
                f'{self._message if self._message else self._http_status.description}'

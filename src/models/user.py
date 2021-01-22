@@ -1,42 +1,80 @@
 from __future__ import annotations
-from typing import Final
+from typing import Final, Optional
 
 from src.models.base_model import BaseModel
 
 
 class User(BaseModel):
-    @classmethod
-    def get(cls, id_: int) -> User:
-        login, password = cls.database.execute(
-            f'SELECT login, password'
-            f'  FROM "user"'
-            f'  WHERE id = {id_}'
-        )
-        return cls.__create(id_, login, password)
+    """
+    CREATE TABLE "user" (
+        id Serial
+            PRIMARY KEY,
+        email Varchar(100)
+            UNIQUE NOT NULL,
+        password Varchar(100) NOT NULL
+    )
+    """
 
     @classmethod
-    def register(cls, login: str, password: str) -> User:
-        id_ = cls.database.execute(
-            f'INSERT INTO "user" ('
-            f'  login, password'
-            f') VALUES ('
-            f'  \'{login}\', \'{password}\''
-            f') RETURNING id'
-        )[0]
-        return cls.__create(id_, login, password)
+    def get(cls, email: str) -> Optional[User]:
+        try:
+            id_, password = cls.database.execute(
+                f'''
+                SELECT
+                    id,
+                    password
+                    FROM
+                        "user"
+                    WHERE
+                        email = '{email}';
+                '''
+            )[0]
+        except IndexError:
+            return None
+        return cls.__create(id_, email, password)
+
+    @classmethod
+    def register(cls, email: str, password: str) -> User:
+        res = cls.database.execute(
+            f'''
+            INSERT
+                INTO "user" (
+                    email,
+                    password
+                )
+                VALUES (
+                    '{email}',
+                    '{password}'
+                )
+            RETURNING id;
+            '''
+        )
+
+        id_ = res[0][0]
+        return cls.__create(id_, email, password)
 
     @classmethod
     def delete(cls, user: User):
         cls.database.execute(
-            f'DELETE FROM "user"'
-            f'  WHERE id = {user.id}'
+            f'''
+            DELETE
+                FROM
+                    "user"
+                WHERE
+                    id = {user.id};
+            '''
         )
 
     @classmethod
-    def __create(cls, id_: int, login: str, password: str) -> User:
-        return super()._create(id_, login, password)
+    def __create(
+            cls,
+            id_: int,
+            email: str,
+            password: str
+    ) -> User:
+        return super()._create_model(id_, email, password)
 
-    def __init__(self, id_: int, login: str, password: str):
+    def __init__(self, id_: int, email: str, password: str):
         super().__init__(id_)
-        self.login: Final[str] = login
+        self.email: Final[str] = email
         self.password: Final[str] = password
