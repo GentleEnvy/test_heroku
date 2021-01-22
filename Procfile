@@ -1,1 +1,1 @@
-web: gunicorn -b 0.0.0.0:1234 src.main:app
+web: gunicorn src.main:app
