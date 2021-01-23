@@ -13,7 +13,7 @@ __all__ = [
     'MetaPrivateInit', 'get_path_to_src', 'generate_random_token', 'email', 'database'
 ]
 
-_email_login = 'a.team.workemail@gmail.com'
+_email_login = 'komarov.sergei163@gmail.com'
 
 email: Final[Email] = Email(_email_login, EMAIL_PASSWORD)
 database: Final[Database] = Database(DATABASE_URL)
