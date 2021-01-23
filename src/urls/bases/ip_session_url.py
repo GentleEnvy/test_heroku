@@ -9,6 +9,10 @@ from src.urls.exceptions import HTTPException
 
 
 class IpSessionUrl(SessionUrl, ABC):
+    """
+    The URL that supports sessions by IP. To get an IP, a proxy is required
+    """
+
     class Session:
         def __init__(self, ip: str):
             self.ip: Final[str] = ip
@@ -16,6 +20,10 @@ class IpSessionUrl(SessionUrl, ABC):
     _sessions:  dict[str, Session]
 
     def _get_session_key(self, request: Request, request_json: dict[str, Any]) -> Session:
+        """
+        :return: IP from HTTP_X_FORWARDED_FOR
+        :raises HTTPException: if no HTTP_X_FORWARDED_FOR in request
+        """
         try:
             if self.app.debug:
                 ip = ''

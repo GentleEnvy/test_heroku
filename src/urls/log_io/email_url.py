@@ -13,6 +13,23 @@ __all__ = ['EmailUrl']
 
 
 class EmailUrl(SessionTokenUrl):
+    """
+    POST:
+        Request:
+            {
+                `token`: <str>,
+                `code`: <int>
+            }
+        //hr\\
+        Response:
+            {
+                `token`: <str>
+            }
+            or
+            {
+                `error`: 1 - if codes don't match
+            }
+    """
     class Session(SessionTokenUrl.Session):
         def __init__(self, token: str, email: str, password: str, code: int):
             self.token: Final[str] = token
@@ -66,7 +83,10 @@ class EmailUrl(SessionTokenUrl):
         return '/email'
 
     def _post(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
-        code = self.get_parameter(request_json, 'code')
+        try:
+            code = int(self.get_parameter(request_json, 'code'))
+        except ValueError:
+            raise HTTPException(HTTPStatus.BAD_REQUEST, '`code` must be <int>')
         if code == session.code:
             # TODO: handle same email in database
             user = User.register(session.email, session.password)

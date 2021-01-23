@@ -9,24 +9,25 @@ __all__ = ['Authorization']
 @final
 class Authorization(IpSessionUrl):
     """
-    Request:
-        {
-            `email`: <str>,
-            `password`: <str>
-        }
-    //hr\\
-    Response:
-        {
-            `token`: <str>
-        }
-        or
-        {
-            `error`: (
-                1 - if no user with this email address
-                or
-                2 - if the password is incorrect
-            )
-        }
+    GET:
+        Request:
+            {
+                `email`: <str>,
+                `password`: <str>
+            }
+        //hr\\
+        Response:
+            {
+                `token`: <str>
+            }
+            or
+            {
+                `error`: (
+                    1 - if no user with this email address
+                    or
+                    2 - if the password is incorrect
+                )
+            }
     """
     Session = IpSessionUrl.Session
 

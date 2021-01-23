@@ -1,16 +1,25 @@
 from typing import Final
 from smtplib import SMTP
 from email.message import EmailMessage
+import ssl
 
 __all__ = ['Email']
 
 
 class Email:
+    """
+    Util class for sending emails, TODO: more email functional
+    """
     def __init__(self, login: str, password: str):
+        """
+        :param login: login of the account from which the emails will be sent
+        :param password: password of the account from which the emails will be sent
+        """
         self._login: Final[str] = login
-        self._smtp: Final[SMTP] = None  # TODO: SMTP('smtp.gmail.com', 587)
-        # self._smtp.starttls()
-        # self._smtp.login(login, password)
+        self._smtp: Final[SMTP] = SMTP('smtp.gmail.com', 587)
+        self._smtp.ehlo()
+        self._smtp.starttls(context=ssl.create_default_context())
+        self._smtp.login(login, password)
 
     def send(self, message: str, to: str, subject: str = None) -> None:
         """

@@ -87,7 +87,8 @@ class BaseUrl(ABC):
     def _parse_request(self, request: Request) -> dict[str, Any]:
         """
         :param request: current http request
-        :return: json parsed from request.data or request.form | request.args
+        :return: JSON parsed from request.data or request.form | request.args
+        :raises HTTPException: if decoding to utf-8 or deserializing to JSON failed
         """
         try:
             if request.data:
@@ -96,11 +97,11 @@ class BaseUrl(ABC):
         except UnicodeDecodeError:
             raise HTTPException(HTTPStatus.BAD_REQUEST, 'The encoding must be UTF-8')
         except json.JSONDecodeError:
-            raise HTTPException(HTTPStatus.BAD_REQUEST, 'Bad json')
+            raise HTTPException(HTTPStatus.BAD_REQUEST, 'Bad JSON')
 
     def _make_response(self, response_json: dict[str, Any]) -> Response:
         """
-        :param response_json: server response in json format
+        :param response_json: server response in JSON format
         :return: server's final response
         """
         return self.app.make_response(json.dumps(response_json))
@@ -127,34 +128,34 @@ class BaseUrl(ABC):
     @abstractmethod
     def url(self) -> str:
         """
-        :return: rule starting with /
+        :return: rule starting with "/"
         """
         raise NotImplementedError
 
     def get(self, request_json: dict[str, Any]) -> dict[str, Any]:
         """
-        :param request_json: current http request in json format
+        :param request_json: current http request in JSON format
         :return: GET method response
         """
         raise HTTPException(HTTPStatus.METHOD_NOT_ALLOWED)
 
     def post(self, request_json: dict[str, Any]) -> dict[str, Any]:
         """
-        :param request_json: current http request in json format
+        :param request_json: current http request in JSON format
         :return: POST method response
         """
         raise HTTPException(HTTPStatus.METHOD_NOT_ALLOWED)
 
     def put(self, request_json: dict[str, Any]) -> dict[str, Any]:
         """
-        :param request_json: current http request in json format
+        :param request_json: current http request in JSON format
         :return: PUT method response
         """
         raise HTTPException(HTTPStatus.METHOD_NOT_ALLOWED)
 
     def delete(self, request_json: dict[str, Any]) -> dict[str, Any]:
         """
-        :param request_json: current http request in json format
+        :param request_json: current http request in JSON format
         :return: DELETE method response
         """
         raise HTTPException(HTTPStatus.METHOD_NOT_ALLOWED)

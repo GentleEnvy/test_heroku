@@ -42,25 +42,25 @@ def _send_code(email: str, code: int) -> None:
 
 @final
 class Registration(IpSessionUrl):
-    """
-    Request:
-        {
-            email: str,
-            password: str
-        }
-    <hr>
-    Response:
-        {
-            token: str
-        }
-        or
-        {
-            error: (
-                1 - if a user with this email already exists
-                or
-                2 - if could not send email
-            )
-        }
+    """POST:
+        Request:
+            {
+                email: str,
+                password: str
+            }
+        <hr>
+        Response:
+            {
+                token: str
+            }
+            or
+            {
+                error: (
+                    1 - if a user with this email already exists
+                    or
+                    2 - if could not send email
+                )
+            }
     """
     Session = IpSessionUrl.Session
 

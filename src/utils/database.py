@@ -5,6 +5,9 @@ __all__ = ['Database']
 
 
 class Database:
+    """
+    Util class for sending SQL queries to the database, TODO: more database functional
+    """
     def __init__(self, database_url: str):
         self._connection: connection = connect(database_url)
         self._cursor: cursor = self._connection.cursor()

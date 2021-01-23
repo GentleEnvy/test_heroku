@@ -9,6 +9,9 @@ _directory = f'{get_path_to_src()}/app/{"production" if IS_HOST else "developmen
 
 
 def create_app():
+    """
+    :return: flask app with config from configuration.json
+    """
     app = Flask('src.main')
     app.config.from_json(f'{_directory}/configuration.json')
     return app

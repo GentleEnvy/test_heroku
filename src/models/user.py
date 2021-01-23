@@ -1,10 +1,10 @@
 from __future__ import annotations
 from typing import Final, Optional
 
-from src.models.base_model import BaseModel
+from src.models.bases import Indexed
 
 
-class User(BaseModel):
+class User(Indexed):
     """
     CREATE TABLE "user" (
         id Serial
@@ -14,7 +14,6 @@ class User(BaseModel):
         password Varchar(100) NOT NULL
     )
     """
-
     @classmethod
     def get(cls, email: str) -> Optional[User]:
         try:
@@ -72,7 +71,7 @@ class User(BaseModel):
             email: str,
             password: str
     ) -> User:
-        return super()._create_model(id_, email, password)
+        return cls._create(id_, email, password)
 
     def __init__(self, id_: int, email: str, password: str):
         super().__init__(id_)
