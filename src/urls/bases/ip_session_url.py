@@ -36,7 +36,7 @@ class IpSessionUrl(SessionUrl, ABC):
         except KeyError:
             raise HTTPException(HTTPStatus.UNAUTHORIZED, 'No IP')  # TODO: logging
 
-        if ip in IpSessionUrl._sessions:
-            return ip
+        if ip not in IpSessionUrl._sessions:
+            IpSessionUrl.__add_session(ip)
 
-        IpSessionUrl.__add_session(ip)
+        return ip
