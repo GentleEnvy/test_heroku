@@ -31,3 +31,6 @@ class BaseModel(ABC, metaclass=_MetaBaseModel):
         if isinstance(other, self.__class__):
             return self.primary_key == other.primary_key
         return False
+
+    def __str__(self) -> str:
+        return str(self.__dict__)
