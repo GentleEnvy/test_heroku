@@ -19,6 +19,10 @@ class IpSessionUrl(SessionUrl, ABC):
 
     _sessions:  dict[str, Session]
 
+    @classmethod
+    def __add_session(cls, ip: str) -> None:
+        cls._sessions[ip] = cls.Session(ip)
+
     def _get_session_key(self, request: Request, request_json: dict[str, Any]) -> str:
         """
         :return: IP from HTTP_X_FORWARDED_FOR
@@ -32,4 +36,7 @@ class IpSessionUrl(SessionUrl, ABC):
         except KeyError:
             raise HTTPException(HTTPStatus.UNAUTHORIZED, 'No IP')  # TODO: logging
 
-        return ip
+        if ip in IpSessionUrl._sessions:
+            return ip
+
+        IpSessionUrl.__add_session(ip)

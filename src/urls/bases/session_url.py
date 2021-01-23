@@ -35,10 +35,7 @@ class SessionUrl(BaseUrl, ABC):
         try:
             session = self._sessions[session_key]
         except KeyError:
-            if self.app.debug:
-                session = None
-            else:
-                raise HTTPException(HTTPStatus.UNAUTHORIZED, 'No session')
+            raise HTTPException(HTTPStatus.UNAUTHORIZED, 'No session')
         request_json['__session__'] = session
         return request_json
 
