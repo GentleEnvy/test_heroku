@@ -17,7 +17,7 @@ class SessionUrl(BaseUrl, ABC):
         ...
 
     SessionKeyType = Any
-    _sessions: Final[dict[SessionKeyType, Session]] = {}
+    _sessions: dict[SessionKeyType, Session]
 
     @abstractmethod
     def _get_session_key(

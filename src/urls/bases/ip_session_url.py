@@ -17,7 +17,7 @@ class IpSessionUrl(SessionUrl, ABC):
         def __init__(self, ip: str):
             self.ip: Final[str] = ip
 
-    _sessions:  dict[str, Session]
+    _sessions:  Final[dict[str, Session]] = {}
 
     @classmethod
     def __add_session(cls, ip: str) -> None:

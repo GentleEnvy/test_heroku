@@ -40,9 +40,12 @@ class SessionTokenUrl(SessionUrl, ABC):
         """
         token = str(self.get_parameter(request_json, 'token'))
 
+        print(f'{self.__class__._sessions = }')
+        print(f'{token = }')
+
         del request_json['token']
         try:
-            _ = self._sessions[token]
+            _ = self.__class__._sessions[token]
             return token
         except KeyError:
             raise HTTPException(HTTPStatus.UNAUTHORIZED, '`token` is not valid')

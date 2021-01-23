@@ -34,3 +34,6 @@ class BaseModel(ABC, metaclass=_MetaBaseModel):
 
     def __str__(self) -> str:
         return str(self.__dict__)
+
+    def __repr__(self):
+        return str(self)

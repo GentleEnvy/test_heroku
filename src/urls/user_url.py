@@ -44,7 +44,10 @@ class UserUrl(UserSessionUrl):
     ) -> dict[str, Any]:
         return user_session.user.__dict__  # TODO: serialize models to JSON
 
-    def _delete(self, request_json: dict[str, Any], user: User) -> dict[str, Any]:
+    def _delete(
+            self, request_json: dict[str, Any], user_session: UserUrl.Session
+    ) -> dict[str, Any]:
+        user = user_session.user
         User.delete(user)
         UserUrl._delete_session(user)
         return {}

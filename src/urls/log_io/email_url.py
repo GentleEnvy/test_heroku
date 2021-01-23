@@ -40,7 +40,7 @@ class EmailUrl(SessionTokenUrl):
     LENGTH_TOKEN: Final[int] = 30
 
     SessionKeyType = SessionTokenUrl.SessionKeyType
-    _sessions: dict[SessionKeyType, Session]
+    _sessions: Final[dict[SessionKeyType, Session]] = {}
 
     __cache_email_session: Final[dict[str, Session]] = {}
     __cache_code_session: Final[dict[int, Session]] = {}

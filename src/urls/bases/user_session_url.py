@@ -20,7 +20,7 @@ class UserSessionUrl(SessionTokenUrl, ABC):
     LENGTH_TOKEN: Final[int] = 100
 
     SessionKeyType = SessionTokenUrl.SessionKeyType
-    _sessions: dict[SessionKeyType, Session]
+    _sessions: Final[dict[SessionKeyType, Session]] = {}
 
     __cache_user_session: Final[dict[User, Session]] = {}
 
