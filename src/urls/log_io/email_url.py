@@ -13,17 +13,16 @@ __all__ = ['EmailUrl']
 
 
 class EmailUrl(SessionTokenUrl):
-    """
+    r"""
     POST:
         Request:
             {
                 `token`: <str>,
                 `code`: <int>
             }
-        //hr\\
         Response:
             {
-                `token`: <str>
+                `token`: <str> - the token received during registration
             }
             or
             {

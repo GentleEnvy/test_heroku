@@ -38,10 +38,6 @@ class UserSessionUrl(SessionTokenUrl, ABC):
         cls._sessions[token] = session
         cls.__cache_user_session[user] = session
 
-        print(f'{cls._sessions = }')
-        print(f'{cls.__cache_user_session = }')
-        print(f'{session = }')
-
         return token
 
     @classmethod

@@ -8,21 +8,20 @@ __all__ = ['Authorization']
 
 @final
 class Authorization(IpSessionUrl):
-    """
+    r"""
     GET:
         Request:
             {
                 `email`: <str>,
                 `password`: <str>
             }
-        //hr\\
         Response:
             {
-                `token`: <str>
+                `token`: <str> - session token for user identification, used for any requests from this user
             }
             or
             {
-                `error`: (
+                `error`: <int>(
                     1 - if no user with this email address
                     or
                     2 - if the password is incorrect

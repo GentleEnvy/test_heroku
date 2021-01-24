@@ -9,18 +9,16 @@ __all__ = ['UserUrl']
 
 @final
 class UserUrl(UserSessionUrl):
-    """
+    r"""
     Before using it, you need to log in to /authorization and gets token.
-
+    //hr\\
     GET:
         Request:
             {
-                `token`: <str>
+                `token`: <str> - the token received during authorization
             }
-        //hr\\
         Response:
             {
-                TODO: serialize user
                 `id`: <int>,
                 `email`: <str>,
                 `password`: <str>
@@ -29,9 +27,8 @@ class UserUrl(UserSessionUrl):
     DELETE:
         Request:
             {
-                `token`: <str>
+                `token`: <str> - the token received during authorization
             }
-        //hr\\
         Response:
             {}
     """

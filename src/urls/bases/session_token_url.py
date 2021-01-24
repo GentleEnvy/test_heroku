@@ -40,10 +40,6 @@ class SessionTokenUrl(SessionUrl, ABC):
         """
         token = str(self.get_parameter(request_json, 'token'))
 
-        print(self.__class__)
-        print(f'{self.__class__._sessions = }')
-        print(f'{token = }')
-
         del request_json['token']
         try:
             _ = self.__class__._sessions[token]

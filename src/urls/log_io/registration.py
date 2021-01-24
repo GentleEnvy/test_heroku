@@ -42,20 +42,20 @@ def _send_code(email: str, code: int) -> None:
 
 @final
 class Registration(IpSessionUrl):
-    """POST:
+    r"""
+    POST:
         Request:
             {
-                email: str,
-                password: str
+                `email`: <str>,
+                `password`: <str>
             }
-        <hr>
         Response:
             {
-                token: str
+                `token`: <str> - used to identify the registrant for check the email code
             }
             or
             {
-                error: (
+                `error`: <int>(
                     1 - if a user with this email already exists
                     or
                     2 - if could not send email

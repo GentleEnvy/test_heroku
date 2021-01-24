@@ -14,6 +14,7 @@ class User(Indexed):
         password Varchar(100) NOT NULL
     )
     """
+
     @classmethod
     def get(cls, email: str) -> Optional[User]:
         try:
@@ -65,12 +66,7 @@ class User(Indexed):
         )
 
     @classmethod
-    def __create(
-            cls,
-            id_: int,
-            email: str,
-            password: str
-    ) -> User:
+    def __create(cls, id_: int, email: str, password: str) -> User:
         return cls._create(id_, email, password)
 
     def __init__(self, id_: int, email: str, password: str):
