@@ -1,19 +1,19 @@
 from src.app import app
 from src.urls import init_urls
 
+from src.models import User
+import time
+
+user = User.get('envy15@mail.ru')
+t = time.time()
+print(user.avatar_url)
+print(time.time() - t)
+
 init_urls(app)
 
 if __name__ == '__main__':
     # on local
-    # app.run(threaded=True)
-
-    from src.models import User
-    import time
-
-    user = User.get('envy15@mail.ru')
-    t = time.time()
-    print(user.avatar_url)
-    print(time.time() - t)
+    app.run(threaded=True)
 
     # import socket
     #
