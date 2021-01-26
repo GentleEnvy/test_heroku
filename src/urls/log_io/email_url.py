@@ -1,13 +1,11 @@
 from __future__ import annotations
-from typing import Any, Final
+
 from http import HTTPStatus
+from typing import Any, Final
 
-from flask import Request
-
-from src.utils import generate_random_token
 from src.models import User
-from src.urls.exceptions import HTTPException
 from src.urls.bases import SessionTokenUrl, UserSessionUrl
+from src.urls.exceptions import HTTPException
 
 __all__ = ['EmailUrl']
 

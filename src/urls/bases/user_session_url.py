@@ -1,14 +1,8 @@
-from typing import Any, Final, final
-from abc import ABC, abstractmethod
-from http import HTTPStatus
+from abc import ABC
+from typing import Final
 
-from flask import Flask
-from flask import Request
-
-from src.utils import generate_random_token
-from src.urls.bases.session_token_url import SessionTokenUrl
-from src.urls.exceptions import HTTPException, NoParameterException
 from src.models import User
+from src.urls.bases.session_token_url import SessionTokenUrl
 
 
 class UserSessionUrl(SessionTokenUrl, ABC):

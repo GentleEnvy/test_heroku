@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Final, Any
+from typing import Any
 
 from src.utils import MetaPrivateInit, database as util_database
-from src.utils.database import Database
+from src.utils.interfaces import Database
 
 __all__ = ['BaseModel']
 
@@ -23,6 +23,9 @@ class BaseModel(ABC, metaclass=_MetaBaseModel):
     @abstractmethod
     def primary_key(self) -> Any:
         raise NotImplementedError
+
+    def serialize(self) -> dict[str, Any]:
+        return self.__dict__
 
     def __hash__(self):
         return self.primary_key

@@ -3,10 +3,12 @@ from smtplib import SMTP
 from email.message import EmailMessage
 import ssl
 
-__all__ = ['Email']
+from src.utils.interfaces import Email
+
+__all__ = ['SmtpEmail']
 
 
-class Email:
+class SmtpEmail(Email):
     """
     Util class for sending emails, TODO: more email functional
     """

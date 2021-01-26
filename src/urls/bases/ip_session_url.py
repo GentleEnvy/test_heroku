@@ -12,7 +12,6 @@ class IpSessionUrl(SessionUrl, ABC):
     """
     The URL that supports sessions by IP. To get an IP, a proxy is required
     """
-
     class Session:
         def __init__(self, ip: str):
             self.ip: Final[str] = ip

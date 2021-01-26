@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import Any, final
 
 from src.models import User
@@ -32,19 +33,17 @@ class UserUrl(UserSessionUrl):
         Response:
             {}
     """
+    Session = UserSessionUrl.Session
+
     @property
     def url(self) -> str:
         return '/user'
 
-    def _get(
-            self, request_json: dict[str, Any], user_session: UserUrl.Session
-    ) -> dict[str, Any]:
-        return user_session.user.__dict__  # TODO: serialize models to JSON
+    def _get(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+        return session.user.serialize()
 
-    def _delete(
-            self, request_json: dict[str, Any], user_session: UserUrl.Session
-    ) -> dict[str, Any]:
-        user = user_session.user
+    def _delete(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+        user = session.user
         User.delete(user)
         UserUrl._delete_session(user)
         return {}

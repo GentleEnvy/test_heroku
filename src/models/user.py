@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import Final, Optional
 
 from src.models.bases import Indexed
@@ -11,10 +12,11 @@ class User(Indexed):
             PRIMARY KEY,
         email Varchar(100)
             UNIQUE NOT NULL,
-        password Varchar(100) NOT NULL
-    )
+        password Varchar(100) NOT NULL,
+        avatar_url Varchar(2000)
+            CHECK (avatar_url ~ 'https?://.+')
+    );
     """
-
     @classmethod
     def get(cls, email: str) -> Optional[User]:
         try:
@@ -73,3 +75,12 @@ class User(Indexed):
         super().__init__(id_)
         self.email: Final[str] = email
         self.password: Final[str] = password
+
+    @property
+    def avatar_url(self) -> str:
+        return self.database.execute(
+            f'''
+            SELECT avatar_url
+                FROM "user" WHERE id = {self.id};
+            '''
+        )[0][0]

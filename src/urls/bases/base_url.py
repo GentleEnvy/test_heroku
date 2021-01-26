@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from http import HTTPStatus
 from typing import Any, Union, final
 
-from flask import (Flask, Request, Response, request as flask_request)
+from flask import Flask, Request, Response, request as flask_request
 
 from src.urls.exceptions import HTTPException, NoParameterException
 

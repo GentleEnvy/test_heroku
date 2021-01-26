@@ -1,8 +1,8 @@
 from flask import Flask
 
-from src.urls.log_io import Registration, Authorization, EmailUrl
-from src.urls.user_url import UserUrl
 from src.urls.index import Index
+from src.urls.log_io import Authorization, EmailUrl, Registration
+from src.urls.user_urls.user_url import UserUrl
 
 __all__ = ['init_urls']
 

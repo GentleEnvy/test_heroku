@@ -1,12 +1,13 @@
 from __future__ import annotations
-from typing import Any, Final, final
+
 from abc import ABC, abstractmethod
 from http import HTTPStatus
+from typing import Any, final
 
 from flask import Request
 
-from src.urls.exceptions import HTTPException
 from src.urls.bases.base_url import BaseUrl
+from src.urls.exceptions import HTTPException
 
 
 class SessionUrl(BaseUrl, ABC):
