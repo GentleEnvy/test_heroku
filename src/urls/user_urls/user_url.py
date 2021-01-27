@@ -4,6 +4,7 @@ from typing import Any, final
 
 from src.models import User
 from src.urls.bases import UserSessionUrl
+from src.utils import image_base
 
 __all__ = ['UserUrl']
 
@@ -16,7 +17,7 @@ class UserUrl(UserSessionUrl):
     GET:
         Request:
             {
-                `token`: <str> - the token received during authorization
+                `user_token`: <str> - the token received during authorization
             }
         Response:
             {
@@ -28,7 +29,7 @@ class UserUrl(UserSessionUrl):
     DELETE:
         Request:
             {
-                `token`: <str> - the token received during authorization
+                `user_token`: <str> - the token received during authorization
             }
         Response:
             {}
@@ -44,6 +45,8 @@ class UserUrl(UserSessionUrl):
 
     def _delete(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
         user = session.user
+        if avatar_url := user.avatar_url:
+            image_base.delete(avatar_url)
         User.delete(user)
         UserUrl._delete_session(user)
         return {}

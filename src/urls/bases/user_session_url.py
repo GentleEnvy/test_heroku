@@ -12,6 +12,7 @@ class UserSessionUrl(SessionTokenUrl, ABC):
             self.user: Final[User] = user
 
     LENGTH_TOKEN: Final[int] = 100
+    TOKEN_NAME = 'user_token'
 
     SessionKeyType = SessionTokenUrl.SessionKeyType
     _sessions: Final[dict[SessionKeyType, Session]] = {}

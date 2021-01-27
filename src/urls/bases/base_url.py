@@ -161,7 +161,7 @@ class BaseUrl(ABC):
         raise HTTPException(HTTPStatus.METHOD_NOT_ALLOWED)
 
     @staticmethod
-    def get_parameter(
+    def get_value(
             request_json: dict[str, Any],
             name_parameter: str
     ) -> Union[int, str, bool, dict, list]:

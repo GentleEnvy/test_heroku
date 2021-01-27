@@ -17,7 +17,7 @@ class Authorization(IpSessionUrl):
             }
         Response:
             {
-                `token`: <str> - session token for user identification, used for any requests from this user
+                `user_token`: <str> - session token for user identification, used for any requests from this user
             }
             or
             {
@@ -35,8 +35,8 @@ class Authorization(IpSessionUrl):
         return '/authorization'
 
     def _get(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
-        email = str(self.get_parameter(request_json, 'email'))
-        password = str(self.get_parameter(request_json, 'password'))
+        email = str(self.get_value(request_json, 'email'))
+        password = str(self.get_value(request_json, 'password'))
 
         user = User.get(email)
         if user is None:
@@ -44,7 +44,7 @@ class Authorization(IpSessionUrl):
         if user.password != password:
             return {'error': 2}
 
-        token = UserSessionUrl.add_user(user)
+        user_token = UserSessionUrl.add_user(user)
         return {
-            'token': token
+            'user_token': user_token
         }

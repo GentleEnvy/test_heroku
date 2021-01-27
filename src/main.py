@@ -1,17 +1,6 @@
 from src.app import app
 from src.urls import init_urls
 
-from src.models import User
-import time
-
-t = time.time()
-user = User.get('envy15@mail.ru')
-print(user)
-print(time.time() - t)
-t = time.time()
-print(user.avatar_url)
-print(time.time() - t)
-
 init_urls(app)
 
 if __name__ == '__main__':

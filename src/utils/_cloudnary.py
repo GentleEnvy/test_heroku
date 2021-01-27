@@ -13,6 +13,7 @@ from cloudinary.utils import cloudinary_url
 from src.utils.interfaces import ImageBase
 from src.utils.util_functions import get_path_to_src
 
+# noinspection SpellCheckingInspection
 __all__ = ['Cloudnary']
 
 
@@ -47,7 +48,10 @@ class Cloudnary(ImageBase):
             self.folder: Final[str] = folder
             self.image_id: Final[str] = image_id
 
-        def __str__(self) -> str:
+        @property
+        def id(self) -> str:
+            if self.folder is None:
+                return self.image_id
             return f'{self.folder}/{self.image_id}'
 
     def __init__(self, cloud_name: str, api_key: int, api_secret: str):
@@ -62,24 +66,24 @@ class Cloudnary(ImageBase):
         )
         cloudinary.api.subfolders('/')  # check authorization
 
-    def save(self, data: bytes, folder: str = None) -> str:
+    def save(self, image_data: bytes, folder: str = None) -> str:
         filename = f'{get_path_to_src()}/utils/{int(time.time() * 10 ** 7)}.jpg'
         try:
             with open(filename, 'wb') as image:
-                image.write(data)
+                image.write(image_data)
             image_id = upload(
                 filename,
                 folder=folder
             )['public_id']
-        except Exception:
-            raise Exception  # TODO: log error
+        except cloudinary.exceptions.Error:
+            raise ValueError
         finally:
             os.remove(filename)
-        return cloudinary_url(image_id)
+        return cloudinary_url(image_id)[0]
 
     def delete(self, url: str) -> None:
         try:
             image: Cloudnary.Image = self.Image(url)
-            delete_resources(str(image))
+            delete_resources(image.id)
         except ValueError:  # TODO: log error
             pass

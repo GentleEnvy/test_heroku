@@ -15,12 +15,12 @@ class EmailUrl(SessionTokenUrl):
     POST:
         Request:
             {
-                `token`: <str>,
+                `email_token`: <str>,
                 `code`: <int>
             }
         Response:
             {
-                `token`: <str> - the token received during registration
+                `user_token`: <str> - the token received during registration
             }
             or
             {
@@ -81,16 +81,16 @@ class EmailUrl(SessionTokenUrl):
 
     def _post(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
         try:
-            code = int(self.get_parameter(request_json, 'code'))
+            code = int(self.get_value(request_json, 'code'))
         except ValueError:
             raise HTTPException(HTTPStatus.BAD_REQUEST, '`code` must be <int>')
         if code == session.code:
             # TODO: handle same email in database
             user = User.register(session.email, session.password)
             EmailUrl._delete_session(session.email)
-            token = UserSessionUrl.add_user(user)
+            user_token = UserSessionUrl.add_user(user)
             return {
-                'token': token
+                'user_token': user_token
             }
         return {
             'error': 1

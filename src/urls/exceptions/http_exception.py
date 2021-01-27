@@ -16,7 +16,7 @@ class HTTPException(Exception):
             message: str = ''
     ):
         """
-        :raises ValueError: if `http_status` is OK(200)
+        :raises ValueError: if `http_status` is OK (200)
         """
         self._http_status: HTTPStatus
         if type(http_status) == int:

@@ -10,6 +10,7 @@ class ImageBase(ABC):
         :param image_data: bytes picture to save
         :param folder: folder for placing images
         :return: image url
+        :raises ValueError: if invalid `image_data`
         """
         raise NotImplementedError
 

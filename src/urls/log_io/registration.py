@@ -50,7 +50,7 @@ class Registration(IpSessionUrl):
             }
         Response:
             {
-                `token`: <str> - used to identify the registrant for check the email code
+                `email_token`: <str> - used to identify the registrant for check the email code
             }
             or
             {
@@ -79,8 +79,8 @@ class Registration(IpSessionUrl):
         return '/registration'
 
     def _post(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
-        email = str(self.get_parameter(request_json, 'email'))
-        password = str(self.get_parameter(request_json, 'password'))
+        email = str(self.get_value(request_json, 'email'))
+        password = str(self.get_value(request_json, 'password'))
 
         if not _check_email_valid(email):
             raise HTTPException(HTTPStatus.BAD_REQUEST, '`email` is not valid')
@@ -96,7 +96,7 @@ class Registration(IpSessionUrl):
         except Exception:  # TODO: to clarify
             return {'error': 2}
 
-        token = EmailUrl.add_email(email, password, code)
+        email_token = EmailUrl.add_email(email, password, code)
         return {
-            'token': token
+            'email_token': email_token
         }

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Final, Optional
+from typing import Optional, Any
 
 from src.models.bases import Indexed
 
@@ -20,11 +20,12 @@ class User(Indexed):
     @classmethod
     def get(cls, email: str) -> Optional[User]:
         try:
-            id_, password = cls.database.execute(
+            id_, password, avatar_url = cls.database.execute(
                 f'''
                 SELECT
                     id,
-                    password
+                    password,
+                    avatar_url
                     FROM
                         "user"
                     WHERE
@@ -33,7 +34,7 @@ class User(Indexed):
             )[0]
         except IndexError:
             return None
-        return cls.__create(id_, email, password)
+        return cls.__create(id_, email, password, avatar_url)
 
     @classmethod
     def register(cls, email: str, password: str) -> User:
@@ -68,19 +69,87 @@ class User(Indexed):
         )
 
     @classmethod
-    def __create(cls, id_: int, email: str, password: str) -> User:
-        return cls._create(id_, email, password)
+    def __create(
+            cls,
+            id_: int, email: str, password: str,
+            avatar_url: str = None
+    ) -> User:
+        return cls._create(id_, email, password, avatar_url)
 
-    def __init__(self, id_: int, email: str, password: str):
+    def __init__(self, id_: int, email: str, password: str, avatar_url: str):
         super().__init__(id_)
-        self.email: Final[str] = email
-        self.password: Final[str] = password
+        self._email: str = email
+        self._password: str = password
+        self._avatar_url: str = avatar_url
+
+    @property
+    def email(self) -> str:
+        return self._email
+
+    @email.setter
+    def email(self, email: str) -> None:
+        self.database.execute(
+            f'''
+            UPDATE "user"
+            SET
+                email = '{email}'
+                WHERE
+                    id = {self.id};
+            '''
+        )
+        self._email = email
+
+    @property
+    def password(self) -> str:
+        return self._password
+
+    @password.setter
+    def password(self, password: str) -> None:
+        self.database.execute(
+            f'''
+            UPDATE "user"
+            SET
+                password = '{password}'
+                WHERE
+                    id = {self.id};
+            '''
+        )
+        self._password = password
 
     @property
     def avatar_url(self) -> str:
-        return self.database.execute(
+        return self._avatar_url
+
+    @avatar_url.setter
+    def avatar_url(self, avatar_url: str) -> None:
+        self.database.execute(
             f'''
-            SELECT avatar_url
-                FROM "user" WHERE id = {self.id};
+            UPDATE "user"
+            SET
+                avatar_url = '{avatar_url}'
+                WHERE
+                    id = {self.id};
             '''
-        )[0][0]
+        )
+        self._avatar_url = avatar_url
+
+    @avatar_url.deleter
+    def avatar_url(self) -> None:
+        self.database.execute(
+            f'''
+            UPDATE "user"
+            SET
+                avatar_url = NULL
+                WHERE
+                    id = {self.id};
+            '''
+        )
+        self._avatar_url = None
+
+    def serialize(self) -> dict[str, Any]:
+        return {
+            'id': self.id,
+            'email': self.email,
+            'password': self.password,
+            'avatar_url': self.avatar_url
+        }

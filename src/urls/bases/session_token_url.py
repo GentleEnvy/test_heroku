@@ -19,6 +19,7 @@ class SessionTokenUrl(SessionUrl, ABC):
         Each request must contain entry `token` -> token of the current session
     """
     LENGTH_TOKEN: int = 10
+    TOKEN_NAME: str = 'token'
 
     SessionKeyType = str
     _sessions: dict[SessionKeyType, SessionTokenUrl.Session]
@@ -34,15 +35,18 @@ class SessionTokenUrl(SessionUrl, ABC):
             self, request: Request, request_json: dict[str, Any]
     ) -> SessionKeyType:
         """
-        Delete entry `token` from request_json
+        Delete entry TOKEN_NAME from request_json
 
         :return: token of the current session from request_json
         """
-        token = str(self.get_parameter(request_json, 'token'))
+        token = str(self.get_value(request_json, self.TOKEN_NAME))
 
-        del request_json['token']
+        del request_json[self.TOKEN_NAME]
         try:
             _ = self.__class__._sessions[token]
             return token
         except KeyError:
-            raise HTTPException(HTTPStatus.UNAUTHORIZED, '`token` is not valid')
+            raise HTTPException(
+                HTTPStatus.UNAUTHORIZED,
+                f'`{self.TOKEN_NAME}` is not valid'
+            )
