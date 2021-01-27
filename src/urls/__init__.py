@@ -1,6 +1,7 @@
 from flask import Flask
 
 from src.urls.index import Index
+from src.urls.echo import Echo
 from src.urls.log_io import Authorization, EmailUrl, Registration
 from src.urls.user_urls import UserUrl, AvatarUrl
 
@@ -14,3 +15,4 @@ def init_urls(app: Flask):
     AvatarUrl(app)
     EmailUrl(app)
     Index(app)
+    Echo(app)
