@@ -48,7 +48,7 @@ class AvatarUrl(UserSessionUrl):
                 '`avatar_data` encoding must be base64 (/+)'
             )
         try:
-            avatar_url = image_base.save(avatar_data)
+            avatar_url = image_base.save(avatar_data, folder='avatars')
         except ValueError:
             raise HTTPException(
                 HTTPStatus.BAD_REQUEST,
