@@ -1,4 +1,4 @@
-from typing import Any, final
+from typing import Any, Final, final
 
 from src.models import User
 from src.urls.bases import IpSessionUrl, UserSessionUrl
@@ -28,13 +28,9 @@ class Authorization(IpSessionUrl):
                 )
             }
     """
-    Session = IpSessionUrl.Session
+    url: Final[str] = '/authorization'
 
-    @property
-    def url(self) -> str:
-        return '/authorization'
-
-    def _get(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+    def _get(self, request_json, session) -> dict[str, Any]:
         email = str(self.get_value(request_json, 'email'))
         password = str(self.get_value(request_json, 'password'))
 

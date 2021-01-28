@@ -66,7 +66,7 @@ class Cloudnary(ImageBase):
         )
         cloudinary.api.subfolders('/')  # check authorization
 
-    def save(self, image_data: bytes, folder: str = None) -> str:
+    def save(self, image_data, folder=None) -> str:
         filename = f'{get_path_to_src()}/utils/{int(time.time() * 10 ** 7)}.jpg'
         try:
             with open(filename, 'wb') as image:
@@ -81,7 +81,7 @@ class Cloudnary(ImageBase):
             os.remove(filename)
         return cloudinary_url(image_id)[0]
 
-    def delete(self, url: str) -> None:
+    def delete(self, url) -> None:
         try:
             image: Cloudnary.Image = self.Image(url)
             delete_resources(image.id)

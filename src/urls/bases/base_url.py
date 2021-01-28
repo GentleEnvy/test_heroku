@@ -1,7 +1,7 @@
 import json
 from abc import ABC, abstractmethod
 from http import HTTPStatus
-from typing import Any, Union, final
+from typing import Any, Union, Final
 
 from flask import Flask, Request, Response, request as flask_request
 
@@ -16,7 +16,7 @@ class BaseUrl(ABC):
         Automatically adds a url to the app and documentation at the address
             <self.url>/documentation taken from __doc__ current class
         """
-        self.__app = app
+        self.app: Final[Flask] = app
 
         def index() -> Response:
             response: Request
@@ -118,11 +118,6 @@ class BaseUrl(ABC):
         response: Response = self.app.make_response(str(http_exception))
         response.status_code = http_exception.http_status.value
         return response
-
-    @property
-    @final
-    def app(self) -> Flask:
-        return self.__app
 
     @property
     @abstractmethod

@@ -21,19 +21,16 @@ class SessionTokenUrl(SessionUrl, ABC):
     LENGTH_TOKEN: int = 10
     TOKEN_NAME: str = 'token'
 
-    SessionKeyType = str
-    _sessions: dict[SessionKeyType, SessionTokenUrl.Session]
+    _sessions: dict[str, SessionTokenUrl.Session]
 
     @classmethod
-    def generate_token(cls) -> SessionKeyType:
+    def generate_token(cls) -> str:
         """
         :return: random string token with a length == LENGTH_TOKEN
         """
         return generate_random_token(cls.LENGTH_TOKEN)
 
-    def _get_session_key(
-            self, request: Request, request_json: dict[str, Any]
-    ) -> SessionKeyType:
+    def _get_session_key(self, request, request_json) -> str:
         """
         Delete entry TOKEN_NAME from request_json
 

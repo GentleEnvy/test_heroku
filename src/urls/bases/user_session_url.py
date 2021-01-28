@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 from abc import ABC
-from typing import Final
+from typing import Any, Final
 
 from src.models import User
+from src.urls.bases import SessionUrl
 from src.urls.bases.session_token_url import SessionTokenUrl
 
 
@@ -12,15 +15,13 @@ class UserSessionUrl(SessionTokenUrl, ABC):
             self.user: Final[User] = user
 
     LENGTH_TOKEN: Final[int] = 100
-    TOKEN_NAME = 'user_token'
+    TOKEN_NAME: Final[str] = 'user_token'
 
-    SessionKeyType = SessionTokenUrl.SessionKeyType
-    _sessions: Final[dict[SessionKeyType, Session]] = {}
-
-    __cache_user_session: Final[dict[User, Session]] = {}
+    _sessions: Final[dict[str, UserSessionUrl.Session]] = {}
+    __cache_user_session: Final[dict[User, UserSessionUrl.Session]] = {}
 
     @classmethod
-    def add_user(cls, user: User) -> SessionKeyType:
+    def add_user(cls, user: User) -> str:
         try:
             token = cls.__cache_user_session[user].token
         except KeyError:
@@ -43,3 +44,15 @@ class UserSessionUrl(SessionTokenUrl, ABC):
             del cls.__cache_user_session[user]
         except KeyError:
             pass
+
+    def _get(self, request_json, session: UserSessionUrl.Session) -> dict[str, Any]:
+        return super()._get(request_json, session)
+
+    def _post(self, request_json, session: UserSessionUrl.Session) -> dict[str, Any]:
+        return super()._post(request_json, session)
+
+    def _put(self, request_json, session: UserSessionUrl.Session) -> dict[str, Any]:
+        return super()._put(request_json, session)
+
+    def _delete(self, request_json, session: UserSessionUrl.Session) -> dict[str, Any]:
+        return super()._delete(request_json, session)

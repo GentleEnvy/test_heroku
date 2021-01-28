@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Final, final
 import base64
 import binascii
 from http import HTTPStatus
@@ -10,6 +10,7 @@ from src.utils import image_base
 __all__ = ['AvatarUrl']
 
 
+@final
 class AvatarUrl(UserSessionUrl):
     r"""
     PUT:
@@ -31,13 +32,9 @@ class AvatarUrl(UserSessionUrl):
         Response:
             {}
     """
-    Session = UserSessionUrl.Session
+    url: Final[str] = '/user/avatar'
 
-    @property
-    def url(self) -> str:
-        return '/user/avatar'
-
-    def _put(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+    def _put(self, request_json, session) -> dict[str, Any]:
         try:
             avatar_data: bytes = base64.b64decode(
                 self.get_value(request_json, 'avatar_data')
@@ -67,7 +64,7 @@ class AvatarUrl(UserSessionUrl):
             'avatar_url': avatar_url
         }
 
-    def _delete(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+    def _delete(self, request_json, session) -> dict[str, Any]:
         user = session.user
         if avatar_url := user.avatar_url:
             image_base.delete(avatar_url)

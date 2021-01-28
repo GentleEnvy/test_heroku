@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from http import HTTPStatus
-from typing import Any, Final
+from typing import Any, Final, final
 
 from src.models import User
 from src.urls.bases import SessionTokenUrl, UserSessionUrl
@@ -10,6 +10,7 @@ from src.urls.exceptions import HTTPException
 __all__ = ['EmailUrl']
 
 
+@final
 class EmailUrl(SessionTokenUrl):
     r"""
     POST:
@@ -36,11 +37,9 @@ class EmailUrl(SessionTokenUrl):
 
     LENGTH_TOKEN: Final[int] = 30
 
-    SessionKeyType = SessionTokenUrl.SessionKeyType
-    _sessions: Final[dict[SessionKeyType, Session]] = {}
-
-    __cache_email_session: Final[dict[str, Session]] = {}
-    __cache_code_session: Final[dict[int, Session]] = {}
+    _sessions: Final[dict[str, EmailUrl.Session]] = {}
+    __cache_email_session: Final[dict[str, EmailUrl.Session]] = {}
+    __cache_code_session: Final[dict[int, EmailUrl.Session]] = {}
 
     @classmethod
     def add_email(cls, email: str, password: str, code: int) -> str:
@@ -75,11 +74,9 @@ class EmailUrl(SessionTokenUrl):
         except KeyError:
             pass
 
-    @property
-    def url(self) -> str:
-        return '/email'
+    url: Final[str] = '/email'
 
-    def _post(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+    def _post(self, request_json, session: EmailUrl.Session) -> dict[str, Any]:
         try:
             code = int(self.get_value(request_json, 'code'))
         except ValueError:

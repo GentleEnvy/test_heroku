@@ -17,16 +17,13 @@ class SessionUrl(BaseUrl, ABC):
     class Session(ABC):
         ...
 
-    SessionKeyType = Any
-    _sessions: dict[SessionKeyType, Session]
+    _sessions: dict[Any, SessionUrl.Session]
 
     @abstractmethod
-    def _get_session_key(
-            self, request: Request, request_json: dict[str, Any]
-    ) -> SessionKeyType:
+    def _get_session_key(self, request: Request, request_json: dict[str, Any]) -> Any:
         raise NotImplementedError
 
-    def _parse_request(self, request: Request) -> dict[str, Any]:
+    def _parse_request(self, request) -> dict[str, Any]:
         """
         :param request: current http request
         :return: parsed JSON with key `__session__` -> current session
@@ -41,7 +38,7 @@ class SessionUrl(BaseUrl, ABC):
         return request_json
 
     @staticmethod
-    def __extract_session(request_json: dict[str, Any]) -> Session:
+    def __extract_session(request_json: dict[str, Any]) -> SessionUrl.Session:
         """
         Delete entry `__session__`
 
@@ -52,10 +49,12 @@ class SessionUrl(BaseUrl, ABC):
         return session
 
     @final
-    def get(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def get(self, request_json) -> dict[str, Any]:
         return self._get(request_json, self.__extract_session(request_json))
 
-    def _get(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+    def _get(
+            self, request_json: dict[str, Any], session: SessionUrl.Session
+    ) -> dict[str, Any]:
         """
         :param request_json: current http request in JSON format
         :param session: current session
@@ -64,10 +63,12 @@ class SessionUrl(BaseUrl, ABC):
         return super().get(request_json)
 
     @final
-    def post(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def post(self, request_json) -> dict[str, Any]:
         return self._post(request_json, self.__extract_session(request_json))
 
-    def _post(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+    def _post(
+            self, request_json: dict[str, Any], session: SessionUrl.Session
+    ) -> dict[str, Any]:
         """
         :param request_json: current http request in JSON format
         :param session: current session
@@ -76,10 +77,12 @@ class SessionUrl(BaseUrl, ABC):
         return super().post(request_json)
 
     @final
-    def put(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def put(self, request_json) -> dict[str, Any]:
         return self._put(request_json, self.__extract_session(request_json))
 
-    def _put(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+    def _put(
+            self, request_json: dict[str, Any], session: SessionUrl.Session
+    ) -> dict[str, Any]:
         """
         :param request_json: current http request in JSON format
         :param session: current session
@@ -88,10 +91,12 @@ class SessionUrl(BaseUrl, ABC):
         return super().put(request_json)
 
     @final
-    def delete(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def delete(self, request_json) -> dict[str, Any]:
         return self._delete(request_json, self.__extract_session(request_json))
 
-    def _delete(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+    def _delete(
+            self, request_json: dict[str, Any], session: SessionUrl.Session
+    ) -> dict[str, Any]:
         """
         :param request_json: current http request in JSON format
         :param session: current session

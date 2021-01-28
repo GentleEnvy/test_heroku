@@ -22,15 +22,11 @@ class User(Indexed):
         try:
             id_, password, avatar_url = cls.database.execute(
                 f'''
-                SELECT
-                    id,
-                    password,
-                    avatar_url
-                    FROM
-                        "user"
-                    WHERE
-                        email = '{email}';
-                '''
+                SELECT id, password, avatar_url
+                    FROM "user"
+                    WHERE email = %s;
+                ''',
+                [email]
             )[0]
         except IndexError:
             return None
@@ -40,17 +36,15 @@ class User(Indexed):
     def register(cls, email: str, password: str) -> User:
         res = cls.database.execute(
             f'''
-            INSERT
-                INTO "user" (
-                    email,
-                    password
-                )
-                VALUES (
-                    '{email}',
-                    '{password}'
-                )
+            INSERT INTO "user" (
+                email, password
+            )
+            VALUES (
+                %s, %s
+            )
             RETURNING id;
-            '''
+            ''',
+            [email, password]
         )
 
         id_ = res[0][0]
@@ -60,12 +54,10 @@ class User(Indexed):
     def delete(cls, user: User):
         cls.database.execute(
             f'''
-            DELETE
-                FROM
-                    "user"
-                WHERE
-                    id = {user.id};
-            '''
+            DELETE FROM "user"
+                WHERE id = %s;
+            ''',
+            [user.id]
         )
 
     @classmethod
@@ -91,11 +83,10 @@ class User(Indexed):
         self.database.execute(
             f'''
             UPDATE "user"
-            SET
-                email = '{email}'
-                WHERE
-                    id = {self.id};
-            '''
+            SET email = %s
+                WHERE id = %s;
+            ''',
+            [email, self.id]
         )
         self._email = email
 
@@ -108,11 +99,10 @@ class User(Indexed):
         self.database.execute(
             f'''
             UPDATE "user"
-            SET
-                password = '{password}'
-                WHERE
-                    id = {self.id};
-            '''
+            SET password = %s
+                WHERE id = %s;
+            ''',
+            [password, self.id]
         )
         self._password = password
 
@@ -125,11 +115,10 @@ class User(Indexed):
         self.database.execute(
             f'''
             UPDATE "user"
-            SET
-                avatar_url = '{avatar_url}'
-                WHERE
-                    id = {self.id};
-            '''
+            SET avatar_url = %s
+                WHERE id = %s;
+            ''',
+            [avatar_url, self.id]
         )
         self._avatar_url = avatar_url
 
@@ -138,11 +127,10 @@ class User(Indexed):
         self.database.execute(
             f'''
             UPDATE "user"
-            SET
-                avatar_url = NULL
-                WHERE
-                    id = {self.id};
-            '''
+            SET avatar_url = NULL
+                WHERE id = %s;
+            ''',
+            [self.id]
         )
         self._avatar_url = None
 

@@ -12,6 +12,7 @@ class SmtpEmail(Email):
     """
     Util class for sending emails, TODO: more email functional
     """
+
     def __init__(self, login: str, password: str):
         """
         :param login: login of the account from which the emails will be sent
@@ -23,7 +24,7 @@ class SmtpEmail(Email):
         self._smtp.starttls(context=ssl.create_default_context())
         self._smtp.login(login, password)
 
-    def send(self, message: str, to: str, subject: str = None) -> None:
+    def send(self, message, to, subject=None) -> None:
         """
         :param message: the text of the e-mail
         :param to: to whom the e-mail is sent

@@ -61,7 +61,7 @@ class Registration(IpSessionUrl):
                 )
             }
     """
-    Session = IpSessionUrl.Session
+    url: Final[str] = '/registration'
 
     def __init__(self, app: Flask):
         super().__init__(app)
@@ -74,11 +74,7 @@ class Registration(IpSessionUrl):
         self.__last_code += 1
         return self.__last_code
 
-    @property
-    def url(self) -> str:
-        return '/registration'
-
-    def _post(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+    def _post(self, request_json, session) -> dict[str, Any]:
         email = str(self.get_value(request_json, 'email'))
         password = str(self.get_value(request_json, 'password'))
 

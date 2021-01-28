@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Final
 
 from flask import Response
 
@@ -12,11 +12,9 @@ def _link_url(url: str) -> str:
 
 
 class Index(BaseUrl):
-    @property
-    def url(self) -> str:
-        return '/'
+    url: Final[str] = '/'
 
-    def _make_response(self, response_json: dict[str, Any]) -> Response:
+    def _make_response(self, response_json) -> Response:
         return self.app.make_response(
             f'''
             <p>To view the documentation: go to the `url` + '/documentation'</p>
@@ -30,5 +28,5 @@ class Index(BaseUrl):
             '''
         )
 
-    def get(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def get(self, request_json) -> dict[str, Any]:
         return {}

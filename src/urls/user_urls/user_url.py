@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, final
+from typing import Any, Final, final
 
 from src.models import User
 from src.urls.bases import UserSessionUrl
@@ -23,7 +23,8 @@ class UserUrl(UserSessionUrl):
             {
                 `id`: <int>,
                 `email`: <str>,
-                `password`: <str>
+                `password`: <str>,
+                `avatar_url`: <str>
             }
     //hr\\
     DELETE:
@@ -34,16 +35,12 @@ class UserUrl(UserSessionUrl):
         Response:
             {}
     """
-    Session = UserSessionUrl.Session
+    url: Final[str] = '/user'
 
-    @property
-    def url(self) -> str:
-        return '/user'
-
-    def _get(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+    def _get(self, request_json, session) -> dict[str, Any]:
         return session.user.serialize()
 
-    def _delete(self, request_json: dict[str, Any], session: Session) -> dict[str, Any]:
+    def _delete(self, request_json, session) -> dict[str, Any]:
         user = session.user
         if avatar_url := user.avatar_url:
             image_base.delete(avatar_url)

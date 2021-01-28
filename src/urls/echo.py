@@ -8,14 +8,14 @@ class Echo(BaseUrl):
     def url(self) -> str:
         return '/echo'
 
-    def get(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def get(self, request_json) -> dict[str, Any]:
         return request_json
 
-    def post(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def post(self, request_json) -> dict[str, Any]:
         return request_json
 
-    def put(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def put(self, request_json) -> dict[str, Any]:
         return request_json
 
-    def delete(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def delete(self, request_json) -> dict[str, Any]:
         return request_json
