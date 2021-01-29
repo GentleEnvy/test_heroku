@@ -1,6 +1,5 @@
-src/*.log
-src/*.jpg
-src/*.png
+src/utils/logs/*.log
+
 .idea/
 test_files/
 __pycache__/

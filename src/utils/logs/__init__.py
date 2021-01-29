@@ -6,7 +6,6 @@ from logging.config import dictConfig
 from src import ON_HOSTING
 from src.utils import get_path_to_src
 from src.utils.logs.filters import WrapFilter
-from src.utils.logs.print_logs import print_logs
 
 __all__ = ['init_loggers']
 
@@ -44,5 +43,3 @@ def init_loggers() -> None:
     for logger_name, init_logger in _LOGGERS.items():
         logger = logging.getLogger(logger_name)
         init_logger(logger)
-
-    print_logs()
