@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Iterable, Union, Optional
+from typing import Optional, Union
 
 __all__ = ['Database']
 

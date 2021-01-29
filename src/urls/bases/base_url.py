@@ -19,6 +19,9 @@ class BaseUrl(ABC):
         self.app: Final[Flask] = app
 
         def index() -> Response:
+            import logging
+            print(logging.Logger.manager.loggerDict)
+
             response: Request
             # noinspection PyBroadException
             try:
@@ -123,7 +126,7 @@ class BaseUrl(ABC):
     @abstractmethod
     def url(self) -> str:
         """
-        :return: rule starting with "/"
+        :return: rule starting with '/'
         """
         raise NotImplementedError
 
