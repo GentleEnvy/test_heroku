@@ -10,7 +10,7 @@ def get_path_to_src():
     :return: absolute path to the main directory (/src)
     """
     path = os.getcwd()
-    if path.endswith('/src'):
+    if path.endswith('/src') or path.endswith('\\src'):
         return path
     return path + '/src'
 
