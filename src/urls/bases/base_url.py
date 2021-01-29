@@ -18,8 +18,19 @@ class BaseUrl(ABC):
         """
         self.app: Final[Flask] = app
 
+        self.temp = True
+
         def index() -> Response:
             import logging
+            if self.temp:
+                for logger in logging.Logger.manager.loggerDict.values():
+                    if isinstance(logger, logging.Logger):
+                        for handler in logger.handlers:
+                            handler.setFormatter(logging.Formatter(
+                                "%(name)s: %(message)s"
+                            ))
+                self.temp = False
+
             print(logging.Logger.manager.loggerDict)
 
             response: Request
