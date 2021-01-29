@@ -18,6 +18,8 @@ __all__ = [
     'CLOUDNARY_NAME', 'CLOUDNARY_KEY', 'CLOUDNARY_SECRET'
 ]
 
+print(__name__)
+
 IS_HOST: Final[bool] = bool(int(os.environ['IS_HOST']))
 DATABASE_URL: Final[str] = os.environ['DATABASE_URL']
 EMAIL_LOGIN: Final[str] = os.environ['EMAIL_LOGIN']
