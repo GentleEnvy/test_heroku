@@ -2,8 +2,6 @@ import os
 import string
 import random
 
-from src import IS_HOST
-
 __all__ = ['get_path_to_src', 'generate_random_token']
 
 
@@ -11,9 +9,10 @@ def get_path_to_src():
     """
     :return: absolute path to the main directory (/src)
     """
-    if IS_HOST:
-        return os.getcwd() + '/src'
-    return os.getcwd()
+    path = os.getcwd()
+    if path.endswith('\\src'):
+        return path
+    return path + '\\src'
 
 
 _LETTERS = string.ascii_lowercase + string.ascii_uppercase + string.digits

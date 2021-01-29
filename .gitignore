@@ -1,3 +1,6 @@
+src/*.log
+src/*.jpg
+src/*.png
 .idea/
 test_files/
 __pycache__/

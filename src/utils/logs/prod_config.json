@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "disable_existing_loggers": true,
+  "filters": {
+    "wrap_filter": {
+      "()": "src.utils.logs.filters.WrapFilter"
+    },
+    "colorless_filter": {
+      "()": "src.utils.logs.filters.ColorlessFilter"
+    }
+  },
+  "formatters": {
+    "werkzeug_formatter": {
+      "class": "logging.Formatter",
+      "datefmt": "[%d.%m-%H:%M:%S]",
+      "format": "web info: %(message)s"
+    },
+    "root_formatter": {
+      "class": "logging.Formatter",
+      "datefmt": "[%d.%m-%H:%M:%S]",
+      "format": "%(levelname)-5s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%(lineno)d)>:\n\t%(message)s"
+    }
+  },
+  "handlers": {
+    "werkzeug_file_handler": {
+      "level": "DEBUG",
+      "class": "logging.handlers.WatchedFileHandler",
+      "formatter": "werkzeug_formatter",
+      "filename": "logs.log",
+      "mode": "a",
+      "encoding": "utf-8",
+      "filters": ["wrap_filter", "colorless_filter"]
+    },
+    "root_console_handler": {
+      "level": "DEBUG",
+      "class": "logging.StreamHandler",
+      "formatter": "root_formatter",
+      "stream": "ext://sys.stdout"
+    },
+    "root_file_handler": {
+      "level": "DEBUG",
+      "class": "logging.handlers.WatchedFileHandler",
+      "formatter": "root_formatter",
+      "filename": "logs.log",
+      "mode": "a",
+      "encoding": "utf-8",
+      "filters": ["wrap_filter"]
+    }
+  },
+  "loggers": {
+    "werkzeug": {
+      "handlers": ["werkzeug_file_handler"],
+      "level": "INFO",
+      "propagate": false
+    },
+    "root": {
+      "handlers": ["root_console_handler", "root_file_handler"],
+      "level": "INFO"
+    }
+  }
+}

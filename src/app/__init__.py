@@ -1,4 +1,4 @@
-from src.app.app import create_app
+from src.app._app import create_app
 
 __all__ = ['app']
 

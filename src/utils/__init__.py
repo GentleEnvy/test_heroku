@@ -9,14 +9,15 @@ from src import (
 )
 from src.utils.interfaces import Database, Email, ImageBase
 from src.utils.util_functions import get_path_to_src, generate_random_token
+from src.utils.logs import init_loggers
 from src.utils.meta_private_init import MetaPrivateInit
 from src.utils._smtp_email import SmtpEmail
 from src.utils._postgresql import PostgreSql
 from src.utils._cloudnary import Cloudnary
 
 __all__ = [
-    'MetaPrivateInit', 'get_path_to_src', 'generate_random_token', 'email', 'database',
-    'image_base'
+    'MetaPrivateInit', 'get_path_to_src', 'generate_random_token', 'init_loggers',
+    'email', 'database', 'image_base'
 ]
 
 email: Final[Email] = SmtpEmail(EMAIL_LOGIN, EMAIL_PASSWORD)
