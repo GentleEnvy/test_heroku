@@ -12,15 +12,15 @@ __all__ = ['init_loggers']
 
 
 def _init_werkzeug(werkzeug: Logger):
-    werkzeug.addFilter(WrapFilter())
+    pass
 
 
 def _init_gunicorn_access(gunicorn_access: Logger):
-    gunicorn_access.addFilter(WrapFilter())
+    pass
 
 
 def _init_root(root: Logger):
-    root.addFilter(WrapFilter())
+    pass
 
 
 _LOGGERS = {

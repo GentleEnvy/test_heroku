@@ -10,7 +10,7 @@
     }
   },
   "formatters": {
-    "werkzeug_formatter": {
+    "gunicorn_access_formatter": {
       "class": "logging.Formatter",
       "datefmt": "[%d.%m-%H:%M:%S]",
       "format": "web info: %(message)s"
@@ -48,8 +48,8 @@
     }
   },
   "loggers": {
-    "werkzeug": {
-      "handlers": ["werkzeug_file_handler"],
+    "gunicorn_access": {
+      "handlers": ["gunicorn_access_file_handler"],
       "level": "INFO",
       "propagate": false
     },
