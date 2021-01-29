@@ -22,7 +22,7 @@
     }
   },
   "handlers": {
-    "werkzeug_file_handler": {
+    "gunicorn_access_file_handler": {
       "level": "DEBUG",
       "class": "logging.handlers.WatchedFileHandler",
       "formatter": "gunicorn_access_formatter",
