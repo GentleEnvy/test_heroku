@@ -41,7 +41,7 @@
       "level": "DEBUG",
       "class": "logging.handlers.WatchedFileHandler",
       "formatter": "root_formatter",
-      "filename": "logs.log",
+      "filename": "src/utils/logs/logs.log",
       "mode": "a",
       "encoding": "utf-8",
       "filters": ["wrap_filter"]
