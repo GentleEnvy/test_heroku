@@ -25,7 +25,7 @@
     "werkzeug_file_handler": {
       "level": "DEBUG",
       "class": "logging.handlers.WatchedFileHandler",
-      "formatter": "werkzeug_formatter",
+      "formatter": "gunicorn_access_formatter",
       "filename": "logs.log",
       "mode": "a",
       "encoding": "utf-8",
