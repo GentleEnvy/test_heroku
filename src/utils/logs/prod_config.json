@@ -48,7 +48,7 @@
     }
   },
   "loggers": {
-    "gunicorn_access": {
+    "gunicorn.access": {
       "handlers": ["gunicorn_access_file_handler"],
       "level": "INFO",
       "propagate": false
