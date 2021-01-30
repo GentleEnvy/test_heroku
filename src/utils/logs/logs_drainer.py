@@ -1,10 +1,11 @@
 from datetime import datetime
-from typing import Final, TextIO
+from typing import Final
 from threading import Thread
 from time import sleep
 from logging import info
 
-from src.utils import file_base, file_line_count
+from src.utils.util_functions import file_line_count
+import src.utils as utils
 
 
 class LogsDrainer:
@@ -46,7 +47,7 @@ class LogsDrainer:
                 if logs_line_count >= self._max_line_count:
                     with open(self._path_to_logs, 'rb') as logs_file_rb:
                         info(f'{self._path_to_logs} uploading...')
-                        file_base.upload(
+                        utils.file_base.upload(
                             logs_file_rb,
                             self._path_to_upload
                         )
