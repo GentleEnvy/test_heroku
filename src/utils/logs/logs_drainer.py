@@ -59,4 +59,4 @@ class LogsDrainer:
     @property
     def _path_to_upload(self) -> str:
         return f'{self._directory_to_upload}/' \
-               f'{datetime.now().strftime("%d.%m.%Y-%H:%M:%S")}.log'
+               f'{datetime.now().strftime("%d-%m-%Y_%H-%M-%S")}.log'
