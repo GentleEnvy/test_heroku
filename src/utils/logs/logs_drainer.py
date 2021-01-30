@@ -3,6 +3,7 @@ from typing import Final
 from threading import Thread
 from time import sleep
 from logging import info
+import atexit
 
 from src.utils.util_functions import file_line_count
 import src.utils as utils
@@ -45,18 +46,22 @@ class LogsDrainer:
 
                 info(f'{logs_line_count = }')
                 if logs_line_count >= self._max_line_count:
-                    with open(self._path_to_logs, 'rb') as logs_file_rb:
-                        info(f'{self._path_to_logs} uploading...')
-                        utils.file_base.upload(
-                            logs_file_rb,
-                            self._path_to_upload
-                        )
-                        info(f'{self._path_to_logs} uploaded')
+                    self._upload_logs()
                     open(self._path_to_logs, 'w').close()  # clear logs file
 
         Thread(target=_listen, daemon=True).start()
+        atexit.register(self._upload_logs)
 
     @property
     def _path_to_upload(self) -> str:
         return f'{self._directory_to_upload}/' \
                f'{datetime.now().strftime("%d-%m-%Y_%H-%M-%S")}.log'
+
+    def _upload_logs(self):
+        with open(self._path_to_logs, 'rb') as logs_file_rb:
+            info(f'{self._path_to_logs} uploading...')
+            utils.file_base.upload(
+                logs_file_rb,
+                self._path_to_upload
+            )
+            info(f'{self._path_to_logs} uploaded')
