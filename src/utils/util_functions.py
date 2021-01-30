@@ -31,7 +31,7 @@ def file_line_count(file: TextIO) -> int:
     :param file: file is opened in 'r' mode
     :return: number of lines in file
     """
-    with file:
-        for last_line, _ in enumerate(file):
-            pass
-    return last_line
+    line_count = 0
+    for last_line, _ in enumerate(file):
+        line_count = last_line
+    return line_count
