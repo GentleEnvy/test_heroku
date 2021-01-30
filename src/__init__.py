@@ -15,7 +15,7 @@ from typing import Final
 # noinspection SpellCheckingInspection
 __all__ = [
     'ON_HOSTING', 'DATABASE_URL', 'EMAIL_LOGIN', 'EMAIL_PASSWORD',
-    'CLOUDNARY_NAME', 'CLOUDNARY_KEY', 'CLOUDNARY_SECRET'
+    'CLOUDNARY_NAME', 'CLOUDNARY_KEY', 'CLOUDNARY_SECRET', 'YANDEX_DISK_TOKEN'
 ]
 
 ON_HOSTING: Final[bool] = bool(int(os.environ['ON_HOSTING']))
@@ -28,3 +28,4 @@ CLOUDNARY_NAME: Final[str] = os.environ['CLOUDNARY_NAME']
 CLOUDNARY_KEY: Final[int] = int(os.environ['CLOUDNARY_KEY'])
 # noinspection SpellCheckingInspection
 CLOUDNARY_SECRET: Final[str] = os.environ['CLOUDNARY_SECRET']
+YANDEX_DISK_TOKEN: Final[str] = os.environ['YANDEX_DISK_TOKEN']

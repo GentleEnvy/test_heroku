@@ -6,6 +6,7 @@ from logging.config import dictConfig
 from src import ON_HOSTING
 from src.utils import get_path_to_src
 from src.utils.logs.filters import WrapFilter
+from src.utils.logs.logs_drainer import LogsDrainer
 
 __all__ = ['init_loggers']
 
@@ -43,3 +44,8 @@ def init_loggers() -> None:
     for logger_name, init_logger in _LOGGERS.items():
         logger = logging.getLogger(logger_name)
         init_logger(logger)
+
+    if ON_HOSTING:
+        LogsDrainer(
+            path_to_logs=f'{get_path_to_src()}/utils/logs/logs.log'
+        ).listen()

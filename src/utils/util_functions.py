@@ -1,8 +1,9 @@
 import os
-import string
 import random
+import string
+from typing import TextIO
 
-__all__ = ['get_path_to_src', 'generate_random_token']
+__all__ = ['get_path_to_src', 'generate_random_token', 'file_line_count']
 
 
 def get_path_to_src():
@@ -23,3 +24,14 @@ def generate_random_token(length: int) -> str:
     :return: string consisting of a random set [a-zA-Z0-9]
     """
     return ''.join(random.choice(_LETTERS) for _ in range(length))
+
+
+def file_line_count(file: TextIO) -> int:
+    """
+    :param file: file is opened in 'r' mode
+    :return: number of lines in file
+    """
+    with file:
+        for last_line, _ in enumerate(file):
+            pass
+    return last_line

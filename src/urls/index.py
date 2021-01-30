@@ -1,4 +1,5 @@
 from typing import Any, Final
+from logging import warning
 
 from flask import Response
 
@@ -29,4 +30,9 @@ class Index(BaseUrl):
         )
 
     def get(self, request_json) -> dict[str, Any]:
+        # FIXME: delete
+
+        for i in range(100):
+            warning(f'test log {i}')
+
         return {}
