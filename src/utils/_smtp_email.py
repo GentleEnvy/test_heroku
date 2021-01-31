@@ -1,3 +1,4 @@
+from logging import exception
 from typing import Final
 from smtplib import SMTP
 from email.message import EmailMessage
@@ -25,12 +26,15 @@ class SmtpEmail(Email):
         self._smtp.login(login, password)
 
     def send(self, message, to, subject=None) -> None:
-        email_message = EmailMessage()
+        try:
+            email_message = EmailMessage()
 
-        email_message.set_content(message)
-        email_message['From'] = self._login
-        email_message['To'] = to
-        if subject:
-            email_message['Subject'] = subject
+            email_message.set_content(message)
+            email_message['From'] = self._login
+            email_message['To'] = to
+            if subject:
+                email_message['Subject'] = subject
 
-        self._smtp.send_message(email_message)
+            self._smtp.send_message(email_message)
+        except:  # FIXME: check raises
+            exception(f'{message = },\n{to = },\n{subject = }')

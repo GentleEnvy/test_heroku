@@ -4,7 +4,7 @@
   "formatters": {
     "werkzeug_formatter": {
       "class": "logging.Formatter",
-      "datefmt": "[%d.%m-%H:%M:%S]",
+      "datefmt": "[[[%d.%m-%H:%M:%S]]]",
       "format": "web info: %(message)s"
     },
     "root_formatter": {

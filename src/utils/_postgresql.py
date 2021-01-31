@@ -1,4 +1,4 @@
-from logging import exception, error
+from logging import exception
 from typing import Final
 
 from psycopg2 import connect
@@ -17,8 +17,8 @@ class PostgreSql(Database):
     def execute(self, query, values=None) -> tuple[tuple, ...]:
         try:
             self._cursor.execute(query=query, vars=values)
-        except Exception:  # TODO: check raises
-            exception('Database exception')
+        except Exception:  # FIXME: check raises
+            exception(f'{query = },\n{values = }')
         self._connection.commit()
         if self._cursor.pgresult_ptr is None:
             return ()

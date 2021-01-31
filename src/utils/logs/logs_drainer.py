@@ -44,7 +44,6 @@ class LogsDrainer:
                 with open(self._path_to_logs, 'r') as logs_file_r:
                     logs_line_count = file_line_count(logs_file_r)
 
-                info(f'{logs_line_count = }')
                 if logs_line_count >= self._max_line_count:
                     self._upload_logs()
                     open(self._path_to_logs, 'w').close()  # clear logs file
@@ -59,9 +58,9 @@ class LogsDrainer:
 
     def _upload_logs(self):
         with open(self._path_to_logs, 'rb') as logs_file_rb:
-            info(f'{self._path_to_logs} uploading...')
+            info('Uploading logs...')
             utils.file_base.upload(
                 logs_file_rb,
                 self._path_to_upload
             )
-            info(f'{self._path_to_logs} uploaded')
+            info('Successful uploaded the logs')

@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import re
 import time
+from logging import warning, exception
 from typing import Final
 
 import cloudinary
@@ -17,27 +18,31 @@ from src.utils.functions import get_path_to_src
 __all__ = ['Cloudnary']
 
 
-def _parse_url(image_url: str):
+def _parse_url(image_url: str) -> tuple[str, str]:
     index = re.search('image/upload/(v\\d+/)?', image_url)
     if index is None:
         raise ValueError
 
-    image_path = image_url[index.end():]
-    if (index := re.search('/.+$', image_path)) is None:
-        folder = None
-        full_image_id = image_path
-    else:
-        index = index.start()
-        folder = image_path[:index]
-        full_image_id = image_path[index + 1:]
-
     try:
-        index = full_image_id.index('.')
-        image_id = full_image_id[:index]
-    except ValueError:
-        image_id = full_image_id
+        image_path = image_url[index.end():]
+        if (index := re.search('/.+$', image_path)) is None:
+            folder = None
+            full_image_id = image_path
+        else:
+            index = index.start()
+            folder = image_path[:index]
+            full_image_id = image_path[index + 1:]
 
-    return folder, image_id
+        try:
+            index = full_image_id.index('.')
+            image_id = full_image_id[:index]
+        except ValueError:
+            image_id = full_image_id
+
+        return folder, image_id
+    except Exception as e:  # FIXME: check raises
+        exception(f'image_url = {image_url}')
+        raise e
 
 
 # noinspection SpellCheckingInspection
@@ -77,6 +82,8 @@ class Cloudnary(ImageBase):
             )['public_id']
         except cloudinary.exceptions.Error:
             raise ValueError
+        except:  # FIXME: check raises
+            raise exception(f'{folder = }')
         finally:
             os.remove(filename)
         return cloudinary_url(image_id)[0]
@@ -85,5 +92,5 @@ class Cloudnary(ImageBase):
         try:
             image: Cloudnary.Image = self.Image(url)
             delete_resources(image.id)
-        except ValueError:  # TODO: log error
-            pass
+        except ValueError:
+            warning(f'Couldn\'t parse url: {url}')

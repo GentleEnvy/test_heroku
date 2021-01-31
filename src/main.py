@@ -5,16 +5,11 @@ from src.urls import init_urls
 from src.utils import init_loggers
 
 
-init_urls(app)
 init_loggers()
+init_urls(app)
 
-info('program started')
-
+info('Server started !')
 
 if __name__ == '__main__':
     # on local
-    # app.run(threaded=True)
-
-    from src.utils import database
-
-    print(database.execute('SELECT * FROM "unknow"'))
+    app.run(threaded=True)

@@ -1,6 +1,7 @@
 import json
 from abc import ABC, abstractmethod
 from http import HTTPStatus
+from logging import error, exception, info, warning
 from typing import Any, Union, Final
 
 from flask import Flask, Request, Response, request as flask_request
@@ -18,14 +19,14 @@ class BaseUrl(ABC):
         """
         self.app: Final[Flask] = app
 
-        self.temp = True
-
         def index() -> Response:
             response: Request
             # noinspection PyBroadException
             try:
                 request = flask_request
+                info(f'{self.__class__.__name__}: request = {request.__dict__}')
                 request_json = self._parse_request(request)
+                info(f'{self.__class__.__name__}: {request_json = }')
 
                 method = request.method.upper()
                 if method == 'GET':
@@ -37,14 +38,16 @@ class BaseUrl(ABC):
                 elif method == 'DELETE':
                     response_json = self.delete(request_json)
                 else:
+                    warning(f'{self.__class__.__name__}: method {method} not allowed')
                     raise HTTPException(HTTPStatus.METHOD_NOT_ALLOWED)
 
+                info(f'{self.__class__.__name__}: {response_json = }')
                 response = self._make_response(response_json)
             except HTTPException as http_exception:
+                warning(f'{self.__class__.__name__}: {http_exception = }')
                 response = self._make_error_response(http_exception)
-            except Exception as exception:
-                if self.app.debug:
-                    raise exception
+            except:  # FIXME: check raises
+                exception(f'{self.__class__.__name__}')
                 response = self._make_error_response()
             return response
 
@@ -55,11 +58,12 @@ class BaseUrl(ABC):
                 view_func=index,
                 methods=['GET', 'POST', 'PUT', 'DELETE']
             )
-        except AssertionError:
-            # TODO: logging - repeat call __init__
-            return
+        except AssertionError as e:
+            exception(f'{self.__class__.__name__}: repeat call __init__')
+            raise e
 
         self.__create_documentation()
+        info(f'{self.__class__.__name__} ({self.url}) inited')
 
     def __create_documentation(self) -> None:
         class_doc = self.__class__.__doc__
@@ -75,16 +79,12 @@ class BaseUrl(ABC):
             def documentation() -> Response:
                 return self.app.make_response(class_doc)
 
-            try:
-                self.app.add_url_rule(
-                    rule=self.url + '/documentation',
-                    endpoint=self.__class__.__name__ + '/Documentation',
-                    view_func=documentation,
-                    methods=['GET']
-                )
-            except AssertionError:
-                # TODO: logging - repeat call __init__
-                pass
+            self.app.add_url_rule(
+                rule=self.url + '/documentation',
+                endpoint=self.__class__.__name__ + '/Documentation',
+                view_func=documentation,
+                methods=['GET']
+            )
 
     def _parse_request(self, request: Request) -> dict[str, Any]:
         """

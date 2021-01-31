@@ -38,3 +38,6 @@ class HTTPException(Exception):
     def __str__(self) -> str:
         return f'{self._http_status.phrase} ({self._http_status.value}): ' \
                f'{self._message if self._message else self._http_status.description}'
+
+    def __repr__(self):
+        return str(self)

@@ -1,3 +1,4 @@
+from logging import exception
 from typing import Final
 
 from yadisk import YaDisk
@@ -21,3 +22,5 @@ class YandexDisk(FileBase):
             self.ya_disk.upload(file, path)
         except PathExistsError:
             raise FileExistsError
+        except:  # FIXME: check raises
+            exception(f'{file = },\n{path = }')
