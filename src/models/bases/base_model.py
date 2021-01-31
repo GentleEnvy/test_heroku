@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Final
 
 from src.utils import MetaPrivateInit, database as util_database
 from src.utils.interfaces import Database
@@ -17,7 +17,7 @@ class BaseModel(ABC, metaclass=_MetaBaseModel):
     """
     TODO
     """
-    database: Database = util_database
+    database: Final[Database] = util_database
 
     @property
     @abstractmethod

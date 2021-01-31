@@ -25,12 +25,6 @@ class SmtpEmail(Email):
         self._smtp.login(login, password)
 
     def send(self, message, to, subject=None) -> None:
-        """
-        :param message: the text of the e-mail
-        :param to: to whom the e-mail is sent
-        :param subject: the subject of the e-mail
-        :raises TODO
-        """
         email_message = EmailMessage()
 
         email_message.set_content(message)

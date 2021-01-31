@@ -3,7 +3,7 @@ import random
 import string
 from typing import TextIO
 
-__all__ = ['get_path_to_src', 'generate_random_token', 'file_line_count']
+__all__ = ['get_path_to_src', 'generate_random_token', 'file_line_count', 'tab']
 
 
 def get_path_to_src():
@@ -35,3 +35,12 @@ def file_line_count(file: TextIO) -> int:
     for last_line, _ in enumerate(file):
         line_count = last_line
     return line_count
+
+
+def tab(text: str) -> str:
+    """
+    :return: source text with all tabulated lines
+    """
+    if text.endswith('\n'):
+        return '\t' + text.replace('\n', '\n\t')[:-1]
+    return '\t' + text.replace('\n', '\n\t')

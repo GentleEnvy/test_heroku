@@ -5,7 +5,7 @@ from time import sleep
 from logging import info
 import atexit
 
-from src.utils.util_functions import file_line_count
+from src.utils.functions import file_line_count
 import src.utils as utils
 
 
@@ -38,7 +38,7 @@ class LogsDrainer:
     def listen(self) -> None:
         def _listen():
             # FIXME: info -> debug
-            info('LogsDrainer started listening')
+            info('LogsDrainer started listening the logs')
             while True:
                 sleep(self._delay)
                 with open(self._path_to_logs, 'r') as logs_file_r:

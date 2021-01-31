@@ -4,7 +4,6 @@ from abc import ABC
 from typing import Any, Final
 
 from src.models import User
-from src.urls.bases import SessionUrl
 from src.urls.bases.session_token_url import SessionTokenUrl
 
 

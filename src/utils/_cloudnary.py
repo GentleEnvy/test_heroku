@@ -11,7 +11,7 @@ from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
 
 from src.utils.interfaces import ImageBase
-from src.utils.util_functions import get_path_to_src
+from src.utils.functions import get_path_to_src
 
 # noinspection SpellCheckingInspection
 __all__ = ['Cloudnary']

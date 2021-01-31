@@ -2,13 +2,10 @@ from __future__ import annotations
 
 from abc import ABC
 from http import HTTPStatus
-from typing import Any
-
-from flask import Request
 
 from src.urls.bases.session_url import SessionUrl
 from src.urls.exceptions import HTTPException
-from src.utils import generate_random_token
+from src.utils.functions import generate_random_token
 
 __all__ = ['SessionTokenUrl']
 

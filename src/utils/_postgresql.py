@@ -1,3 +1,4 @@
+from logging import exception, error
 from typing import Final
 
 from psycopg2 import connect
@@ -14,7 +15,10 @@ class PostgreSql(Database):
         self._cursor: Final[cursor] = self._connection.cursor()
 
     def execute(self, query, values=None) -> tuple[tuple, ...]:
-        self._cursor.execute(query=query, vars=values)
+        try:
+            self._cursor.execute(query=query, vars=values)
+        except Exception:  # TODO: check raises
+            exception('Database exception')
         self._connection.commit()
         if self._cursor.pgresult_ptr is None:
             return ()

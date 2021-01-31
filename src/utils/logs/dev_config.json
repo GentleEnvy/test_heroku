@@ -8,9 +8,9 @@
       "format": "web info: %(message)s"
     },
     "root_formatter": {
-      "class": "logging.Formatter",
+      "class": "src.utils.logs.formatters.RootFormatter",
       "datefmt": "[%d.%m-%H:%M:%S]",
-      "format": "%(levelname)-5s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%(lineno)d)>:\n\t%(message)s"
+      "format": "%(levelname)-5s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%(lineno)d)>: %(message)s"
     }
   },
   "handlers": {
@@ -22,9 +22,8 @@
     },
     "root_console_handler": {
       "level": "DEBUG",
-      "class": "logging.StreamHandler",
-      "formatter": "root_formatter",
-      "stream": "ext://sys.stdout"
+      "class": "src.utils.logs.std_handler.StdHandler",
+      "formatter": "root_formatter"
     }
   },
   "loggers": {
