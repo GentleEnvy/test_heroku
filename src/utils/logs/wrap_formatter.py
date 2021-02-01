@@ -40,10 +40,9 @@ class WrapFormatter(Formatter):
 
     def format(self, record: LogRecord) -> str:
         formatted = super().format(record)
-        if '\n' in record.msg or len(formatted) > self._max_length:
-            old_msg = record.msg
-            record.msg = tab(_wrap(record.msg, self._max_length))
-            print(f'||| {old_msg} -> {record.msg}')
+        if '\n' in record.message or len(formatted) > self._max_length:
+            old_message = record.message
+            record.message = tab(_wrap(record.message, self._max_length))
             formatted = super().format(record)
-            record.msg = old_msg
+            record.message = old_message
         return formatted

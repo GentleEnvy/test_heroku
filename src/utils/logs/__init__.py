@@ -1,6 +1,6 @@
 import json
 import logging
-from logging import Logger
+from logging import Logger, LogRecord
 from logging.config import dictConfig
 
 from src import ON_HOSTING
@@ -8,6 +8,22 @@ from src.utils.functions import get_path_to_src
 from src.utils.logs.logs_drainer import LogsDrainer
 
 __all__ = ['init_loggers']
+
+
+class _CacheMessageLogRecord(LogRecord):
+    def __init__(self, name, level, pathname, lineno,
+                 msg, args, exc_info, func=None, sinfo=None):
+        super().__init__(name, level, pathname, lineno, msg, args, exc_info, func, sinfo)
+        self.getMessage()
+
+    def getMessage(self) -> str:
+        if self.message:
+            return self.message
+        self.message = super().getMessage()
+        return self.message
+
+
+logging.setLogRecordFactory(_CacheMessageLogRecord)
 
 
 def _init_werkzeug(werkzeug: Logger):
