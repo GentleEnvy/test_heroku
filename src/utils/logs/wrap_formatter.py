@@ -19,7 +19,7 @@ def _wrap(text: str, max_length: int) -> str:
 
 
 class WrapFormatter(Formatter):
-    _DEFAULT_MAX_LENGTH: Final[int] = 100
+    _DEFAULT_MAX_LENGTH: Final[int] = 120
 
     # noinspection SpellCheckingInspection
     def __init__(
