@@ -43,6 +43,7 @@ class WrapFormatter(Formatter):
         if '\n' in record.msg or len(formatted) > self._max_length:
             old_msg = record.msg
             record.msg = tab(_wrap(record.msg, self._max_length))
+            print(f'||| {old_msg} -> {record.msg}')
             formatted = super().format(record)
             record.msg = old_msg
         return formatted
