@@ -14,7 +14,7 @@ class _CacheMessageLogRecord(LogRecord):
     def __init__(self, name, level, pathname, lineno,
                  msg, args, exc_info, func=None, sinfo=None):
         super().__init__(name, level, pathname, lineno, msg, args, exc_info, func, sinfo)
-        self.getMessage()
+        self.message = super().getMessage()
 
     def getMessage(self) -> str:
         if self.message:
