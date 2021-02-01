@@ -4,6 +4,8 @@ from textwrap import wrap
 
 from src.utils.functions import tab
 
+__all__ = ['WrapFormatter']
+
 
 def _wrap(text: str, max_length: int) -> str:
     wrapped_text_list = []
@@ -16,7 +18,7 @@ def _wrap(text: str, max_length: int) -> str:
     return '\n'.join(wrapped_text_list)
 
 
-class RootFormatter(Formatter):
+class WrapFormatter(Formatter):
     _DEFAULT_MAX_LENGTH: Final[int] = 100
 
     # noinspection SpellCheckingInspection

@@ -3,12 +3,12 @@
   "disable_existing_loggers": true,
   "formatters": {
     "gunicorn_access_formatter": {
-      "class": "logging.Formatter",
+      "class": "src.utils.logs.wrap_formatter.WrapFormatter",
       "datefmt": "[%d.%m-%H:%M:%S]",
       "format": "web info: %(message)s"
     },
     "root_formatter": {
-      "class": "src.utils.logs.formatters.RootFormatter",
+      "class": "src.utils.logs.wrap_formatter.WrapFormatter",
       "datefmt": "[%d.%m-%H:%M:%S]",
       "format": "%(levelname)-5s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%(lineno)d)>: %(message)s"
     }
