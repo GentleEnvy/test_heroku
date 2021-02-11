@@ -27,12 +27,10 @@ class Subject(Indexed, BaseModelEnum):
 
     @classmethod
     def _init_static(cls):
-        pass
-        # cls.RUSSIAN_LANGUAGE = cls.get(name=1)
-        # cls.MATHEMATICS = cls.get(name=2)
+        cls.RUSSIAN_LANGUAGE = cls.get(id=1)
+        cls.MATHEMATICS = cls.get(id=2)
 
     name: str = TextField()
-    number_of_tasks: int = IntegerField()
 
     @classmethod
     def get_by_id(cls, id) -> Subject:

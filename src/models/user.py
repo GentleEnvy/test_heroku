@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, Any, final
+from typing import final
 
 from peewee import TextField
 
@@ -35,6 +35,3 @@ class User(Indexed):
     @classmethod
     def create(cls, email: str, password: str, avatar_url: str = None) -> User:
         return super().create(email=email, password=password, avatar_url=avatar_url)
-
-
-user = User.create(email='envy@mail.ru')

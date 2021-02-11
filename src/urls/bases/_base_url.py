@@ -19,48 +19,16 @@ class BaseUrl(ABC):
         """
         self.app: Final[Flask] = app
 
-        def index() -> Response:
-            response: Request
-            # noinspection PyBroadException
-            try:
-                request = flask_request
-                info(f'{self.__class__.__name__}: request = {request.__dict__}')
-                request_json = self._parse_request(request)
-                info(f'{self.__class__.__name__}: {request_json = }')
-
-                method = request.method.upper()
-                if method == 'GET':
-                    response_json = self.get(request_json)
-                elif method == 'POST':
-                    response_json = self.post(request_json)
-                elif method == 'PUT':
-                    response_json = self.put(request_json)
-                elif method == 'DELETE':
-                    response_json = self.delete(request_json)
-                else:
-                    warning(f'{self.__class__.__name__}: method {method} not allowed')
-                    raise HTTPException(HTTPStatus.METHOD_NOT_ALLOWED)
-
-                info(f'{self.__class__.__name__}: {response_json = }')
-                response = self._make_response(response_json)
-            except HTTPException as http_exception:
-                warning(f'{self.__class__.__name__}: {http_exception = }')
-                response = self._make_error_response(http_exception)
-            except:  # FIXME: check raises
-                exception(f'{self.__class__.__name__}')
-                response = self._make_error_response()
-            return response
-
         try:
             app.add_url_rule(
                 rule=self.url,
                 endpoint=self.__class__.__name__,
-                view_func=index,
+                view_func=self._index,
                 methods=['GET', 'POST', 'PUT', 'DELETE']
             )
-        except AssertionError as e:
+        except AssertionError:
             exception(f'{self.__class__.__name__}: repeat call __init__')
-            raise e
+            raise
 
         self.__create_documentation()
         info(f'{self.__class__.__name__} ({self.url}) inited')
@@ -85,6 +53,41 @@ class BaseUrl(ABC):
                 view_func=documentation,
                 methods=['GET']
             )
+
+    def _index(self) -> Response:
+        response: Request
+        # noinspection PyBroadException
+        try:
+            request = self._get_request()
+            info(f'{self.__class__.__name__}: request = {request.__dict__}')
+            request_json = self._parse_request(request)
+            info(f'{self.__class__.__name__}: {request_json = }')
+
+            method = request.method.upper()
+            if method == 'GET':
+                response_json = self.get(request_json)
+            elif method == 'POST':
+                response_json = self.post(request_json)
+            elif method == 'PUT':
+                response_json = self.put(request_json)
+            elif method == 'DELETE':
+                response_json = self.delete(request_json)
+            else:
+                warning(f'{self.__class__.__name__}: method {method} not allowed')
+                raise HTTPException(HTTPStatus.METHOD_NOT_ALLOWED)
+
+            info(f'{self.__class__.__name__}: {response_json = }')
+            response = self._make_response(response_json)
+        except HTTPException as http_exception:
+            warning(f'{self.__class__.__name__}: {http_exception = }')
+            response = self._make_error_response(http_exception)
+        except Exception:
+            exception(f'{self.__class__.__name__}')
+            response = self._make_error_response()
+        return response
+
+    def _get_request(self) -> Request:
+        return flask_request
 
     def _parse_request(self, request: Request) -> dict[str, Any]:
         """

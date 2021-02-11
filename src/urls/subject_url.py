@@ -10,16 +10,15 @@ class SubjectUrl(IpSessionUrl):
     GET:
         Request:
             {
-                `name`: <int>(
-                    1 - mathematics
-                    2 - russian language
-                ) - name of the subject from the kim of EGE
+                `id`: <int>(
+                    1 - russian language
+                    2 - mathematics
+                ) - id of the subject from the kim of EGE
             }
         Response:
             {
-                `name`: <int> - name of the subject from the kim of EGE,
-                `name`: <str> - subject name in Russian,
-                `number_of_tasks`: <int> - number of tasks in 1 part  FIXME
+                `id`: <int> - id of the subject from the kim of EGE,
+                `name`: <str> - subject name in Russian
             }
     """
     url: Final[str] = '/subject'

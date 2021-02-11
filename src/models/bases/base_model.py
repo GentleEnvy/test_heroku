@@ -34,12 +34,3 @@ class BaseModel(Model, ABC, metaclass=_MetaBaseModel):
 
     def __repr__(self):
         return str(self)
-
-
-id = 5
-BaseModel.execute(
-    f'''
-    SELECT * from "user" WHERE id = %s AND email = %s
-    ''',
-    [id, 'sas']
-)

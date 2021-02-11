@@ -3,11 +3,20 @@ from __future__ import annotations
 from abc import ABC
 from http import HTTPStatus
 from logging import warning
-from typing import Any, Final
+from typing import Any, Optional, Final, final
+from datetime import datetime
 
-from src import ON_HOSTING
+from flask import Flask, Response, Request
+
 from src.urls.bases.session_url import SessionUrl
 from src.urls.exceptions import HTTPException
+
+__all__ = ['IpSessionUrl']
+
+
+def _get_ip(request: Request) -> Optional[str]:
+    env = request.environ
+    return env.get('HTTP_X_FORWARDED_FOR') or env.get('REMOTE_ADDR')
 
 
 class IpSessionUrl(SessionUrl, ABC):
@@ -17,35 +26,55 @@ class IpSessionUrl(SessionUrl, ABC):
     class Session(SessionUrl.Session):
         def __init__(self, ip: str):
             self.ip: Final[str] = ip
+            self.__requests: set[datetime] = set()
 
-    _sessions: Final[dict[str, IpSessionUrl.Session]] = {}
+        @property
+        def ban_count(self) -> int:
+            return 10
+
+        @property
+        def ban_delay(self) -> float:
+            return 60
+
+        def mark(self, request: Request):
+            now = datetime.now()
+
+    class __GlobalSession(Session):
+        pass
+
+    _sessions: dict[str, IpSessionUrl.Session] = {}
+    __sessions: Final[dict[str, __GlobalSession]] = {}
 
     @classmethod
-    def __add_session(cls, ip: str) -> None:
-        cls._sessions[ip] = cls.Session(ip)
+    def __add_session(cls, ip: str) -> Session:
+        session = cls.Session(ip)
+        cls._sessions[ip] = session
+        return session
 
-    def __init__(self, app):
-        super().__init__(app)
+    @classmethod
+    def __check_session(cls, session: Session) -> bool:
+        pass
+
+    def _get_request(self) -> Request:
+        request = super()._get_request()
+        if ip := _get_ip(request) is None:
+            warning(f'No IP in request (\n\t{request.environ = }\n)')
+            raise HTTPException(HTTPStatus.UNAUTHORIZED, 'No IP')
+
+        if global_session := IpSessionUrl.__sessions.get(ip) is None:
+            global_session = IpSessionUrl.__GlobalSession(ip)
+            IpSessionUrl.__sessions[ip] = global_session
 
 
+
+        if local_session := self._sessions.get(ip) is None:
+            local_session = self.__add_session(ip)
+
+        return request
+
+    @final
     def _get_session_key(self, request, request_json) -> str:
-        """
-        :return: IP from request.environ["HTTP_X_FORWARDED_FOR"]
-        :raises HTTPException: if no key "HTTP_X_FORWARDED_FOR" in `request.environ`
-        """
-        try:
-            ip = request.environ['HTTP_X_FORWARDED_FOR']
-        except KeyError:
-            if not ON_HOSTING:
-                ip = '0.0.0.0'
-            else:
-                warning('No key "HTTP_X_FORWARDED_FOR" in `request.environ`')
-                raise HTTPException(HTTPStatus.UNAUTHORIZED, 'No IP')
-
-        if ip not in IpSessionUrl._sessions:
-            IpSessionUrl.__add_session(ip)
-
-        return ip
+        return _get_ip(request)
 
     def _get(self, request_json, session: IpSessionUrl.Session) -> dict[str, Any]:
         return super()._get(request_json, session)

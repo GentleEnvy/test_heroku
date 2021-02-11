@@ -10,6 +10,17 @@ from src.urls.bases._base_url import BaseUrl
 from src.urls.exceptions import HTTPException
 
 
+def _extract_session(request_json: dict[str, Any]) -> SessionUrl.Session:
+    """
+    Delete entry `__session__`
+
+    :return: current session on key `__session__` in request_json
+    """
+    session = request_json['__session__']
+    del request_json['__session__']
+    return session
+
+
 class SessionUrl(BaseUrl, ABC):
     """
     The IRL that supports sessions defined on each request
@@ -37,20 +48,9 @@ class SessionUrl(BaseUrl, ABC):
         request_json['__session__'] = session
         return request_json
 
-    @staticmethod
-    def __extract_session(request_json: dict[str, Any]) -> SessionUrl.Session:
-        """
-        Delete entry `__session__`
-
-        :return: current session on key `__session__` in request_json
-        """
-        session = request_json['__session__']
-        del request_json['__session__']
-        return session
-
     @final
     def get(self, request_json) -> dict[str, Any]:
-        return self._get(request_json, self.__extract_session(request_json))
+        return self._get(request_json, _extract_session(request_json))
 
     def _get(
             self, request_json: dict[str, Any], session: SessionUrl.Session
@@ -64,7 +64,7 @@ class SessionUrl(BaseUrl, ABC):
 
     @final
     def post(self, request_json) -> dict[str, Any]:
-        return self._post(request_json, self.__extract_session(request_json))
+        return self._post(request_json, _extract_session(request_json))
 
     def _post(
             self, request_json: dict[str, Any], session: SessionUrl.Session
@@ -78,7 +78,7 @@ class SessionUrl(BaseUrl, ABC):
 
     @final
     def put(self, request_json) -> dict[str, Any]:
-        return self._put(request_json, self.__extract_session(request_json))
+        return self._put(request_json, _extract_session(request_json))
 
     def _put(
             self, request_json: dict[str, Any], session: SessionUrl.Session
@@ -92,7 +92,7 @@ class SessionUrl(BaseUrl, ABC):
 
     @final
     def delete(self, request_json) -> dict[str, Any]:
-        return self._delete(request_json, self.__extract_session(request_json))
+        return self._delete(request_json, _extract_session(request_json))
 
     def _delete(
             self, request_json: dict[str, Any], session: SessionUrl.Session
