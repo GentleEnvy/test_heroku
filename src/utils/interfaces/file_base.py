@@ -10,6 +10,6 @@ class FileBase(ABC):
         """
         :param file: uploaded file is opened in 'rb' mode
         :param path: destination path
-        :raise FileExistsError: if file already exists
+        :raise FileExistsError: if file on the base already exists
         """
         raise NotImplementedError

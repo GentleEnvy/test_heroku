@@ -34,7 +34,7 @@ class Authorization(IpSessionUrl):
         email = str(self.get_value(request_json, 'email'))
         password = str(self.get_value(request_json, 'password'))
 
-        user = User.get(email)
+        user = User.get_by_email(email)
         if user is None:
             return {'error': 1}
         if user.password != password:

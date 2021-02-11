@@ -11,7 +11,7 @@ __all__ = ['SmtpEmail']
 
 class SmtpEmail(Email):
     """
-    Util class for sending emails, TODO: more email functional
+    Util class for sending emails
     """
 
     def __init__(self, login: str, password: str):
@@ -38,3 +38,4 @@ class SmtpEmail(Email):
             self._smtp.send_message(email_message)
         except:  # FIXME: check raises
             exception(f'{message = },\n{to = },\n{subject = }')
+            raise

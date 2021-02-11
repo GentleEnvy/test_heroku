@@ -6,7 +6,7 @@ from typing import Any, final
 
 from flask import Request
 
-from src.urls.bases.base_url import BaseUrl
+from src.urls.bases._base_url import BaseUrl
 from src.urls.exceptions import HTTPException
 
 

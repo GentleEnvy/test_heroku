@@ -29,7 +29,7 @@ def _check_password_valid(password: str) -> bool:
 
 
 def _check_unique_email(email: str) -> bool:
-    return User.get(email) is None
+    return User.get_by_email(email) is None
 
 
 def _send_code(email: str, code: int) -> None:

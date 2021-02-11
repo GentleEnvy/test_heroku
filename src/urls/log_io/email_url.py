@@ -82,8 +82,7 @@ class EmailUrl(SessionTokenUrl):
         except ValueError:
             raise HTTPException(HTTPStatus.BAD_REQUEST, '`code` must be <int>')
         if code == session.code:
-            # TODO: handle same email in database
-            user = User.register(session.email, session.password)
+            user = User.create(session.email, session.password)
             EmailUrl._delete_session(session.email)
             user_token = UserSessionUrl.add_user(user)
             return {

@@ -2,7 +2,7 @@ from typing import Any, Final
 
 from flask import Response
 
-from src.urls.bases import BaseUrl
+from src.urls.bases import IpSessionUrl
 
 __all__ = ['Index']
 
@@ -11,7 +11,7 @@ def _link_url(url: str) -> str:
     return f'&nbsp;&nbsp;<a href="{url}/documentation">{url}</a>'
 
 
-class Index(BaseUrl):
+class Index(IpSessionUrl):
     url: Final[str] = '/'
 
     def _make_response(self, response_json) -> Response:
@@ -28,5 +28,5 @@ class Index(BaseUrl):
             '''
         )
 
-    def get(self, request_json) -> dict[str, Any]:
+    def _get(self, request_json, session) -> dict[str, Any]:
         return {}

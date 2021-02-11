@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from abc import ABC
 from http import HTTPStatus
+from logging import warning
 from typing import Any, Final
 
+from src import ON_HOSTING
 from src.urls.bases.session_url import SessionUrl
 from src.urls.exceptions import HTTPException
 
@@ -22,18 +24,23 @@ class IpSessionUrl(SessionUrl, ABC):
     def __add_session(cls, ip: str) -> None:
         cls._sessions[ip] = cls.Session(ip)
 
+    def __init__(self, app):
+        super().__init__(app)
+
+
     def _get_session_key(self, request, request_json) -> str:
         """
-        :return: IP from HTTP_X_FORWARDED_FOR
-        :raises HTTPException: if no HTTP_X_FORWARDED_FOR in request
+        :return: IP from request.environ["HTTP_X_FORWARDED_FOR"]
+        :raises HTTPException: if no key "HTTP_X_FORWARDED_FOR" in `request.environ`
         """
         try:
-            if self.app.debug:
-                ip = ''
-            else:
-                ip = request.environ['HTTP_X_FORWARDED_FOR']  # TODO: create session
+            ip = request.environ['HTTP_X_FORWARDED_FOR']
         except KeyError:
-            raise HTTPException(HTTPStatus.UNAUTHORIZED, 'No IP')  # TODO: logging
+            if not ON_HOSTING:
+                ip = '0.0.0.0'
+            else:
+                warning('No key "HTTP_X_FORWARDED_FOR" in `request.environ`')
+                raise HTTPException(HTTPStatus.UNAUTHORIZED, 'No IP')
 
         if ip not in IpSessionUrl._sessions:
             IpSessionUrl.__add_session(ip)

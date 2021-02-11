@@ -8,8 +8,13 @@ _DatabaseTypes = Optional[Union[int, str, float, bool, bytes]]
 
 class Database(ABC):
     """
-    Util class for sending SQL queries to the database, TODO: more database functional
+    Util class for sending SQL queries to the database
     """
+    @property
+    @abstractmethod
+    def connect(self):
+        raise NotImplementedError
+
     @abstractmethod
     def execute(
             self, query: str,

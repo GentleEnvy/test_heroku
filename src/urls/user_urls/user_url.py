@@ -21,7 +21,7 @@ class UserUrl(UserSessionUrl):
             }
         Response:
             {
-                `id`: <int>,
+                `name`: <int>,
                 `email`: <str>,
                 `password`: <str>,
                 `avatar_url`: <str>
@@ -44,6 +44,6 @@ class UserUrl(UserSessionUrl):
         user = session.user
         if avatar_url := user.avatar_url:
             image_base.delete(avatar_url)
-        User.delete(user)
-        UserUrl._delete_session(user)
+        user.delete_instance(recursive=True)
+        UserSessionUrl._delete_session(user)
         return {}

@@ -1,42 +1,45 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
-from typing import Any, Final
+from abc import ABC
+from typing import Any
 
-from src.utils import MetaPrivateInit, database as util_database
-from src.utils.interfaces import Database
+from peewee import Model
+from playhouse.shortcuts import model_to_dict
+
+from src.utils import database as util_database
 
 __all__ = ['BaseModel']
 
 
-class _MetaBaseModel(MetaPrivateInit, type(ABC)):
+class _MetaBaseModel(type(Model), type(ABC)):
     pass
 
 
-class BaseModel(ABC, metaclass=_MetaBaseModel):
+class BaseModel(Model, ABC, metaclass=_MetaBaseModel):
     """
-    TODO
+    Base class for database models. Any model does not have a public __init__
     """
-    database: Final[Database] = util_database
+    class Meta:
+        database = util_database.connect
 
-    @property
-    @abstractmethod
-    def primary_key(self) -> Any:
-        raise NotImplementedError
+    @staticmethod
+    def execute(query, values=None) -> tuple[tuple, ...]:
+        return util_database.execute(query, values)
 
     def serialize(self) -> dict[str, Any]:
-        return self.__dict__
-
-    def __hash__(self):
-        return self.primary_key
-
-    def __eq__(self, other: object) -> bool:
-        if isinstance(other, self.__class__):
-            return self.primary_key == other.primary_key
-        return False
+        return model_to_dict(self)
 
     def __str__(self) -> str:
-        return str(self.__dict__)
+        return str(self.serialize())
 
     def __repr__(self):
         return str(self)
+
+
+id = 5
+BaseModel.execute(
+    f'''
+    SELECT * from "user" WHERE id = %s AND email = %s
+    ''',
+    [id, 'sas']
+)

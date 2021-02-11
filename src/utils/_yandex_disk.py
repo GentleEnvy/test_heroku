@@ -24,3 +24,4 @@ class YandexDisk(FileBase):
             raise FileExistsError
         except:  # FIXME: check raises
             exception(f'{file = },\n{path = }')
+            raise

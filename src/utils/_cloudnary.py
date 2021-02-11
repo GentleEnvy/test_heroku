@@ -40,9 +40,9 @@ def _parse_url(image_url: str) -> tuple[str, str]:
             image_id = full_image_id
 
         return folder, image_id
-    except Exception as e:  # FIXME: check raises
-        exception(f'image_url = {image_url}')
-        raise e
+    except:  # FIXME: check raises
+        exception(f'{image_url = }')
+        raise
 
 
 # noinspection SpellCheckingInspection
@@ -71,19 +71,21 @@ class Cloudnary(ImageBase):
         )
         cloudinary.api.subfolders('/')  # check authorization
 
-    def save(self, image_data, folder=None) -> str:
+    def save(self, image_data, folder=None, name=None) -> str:
         filename = f'{get_path_to_src()}/utils/{int(time.time() * 10 ** 7)}.jpg'
         try:
             with open(filename, 'wb') as image:
                 image.write(image_data)
             image_id = upload(
                 filename,
-                folder=folder
+                folder=folder,
+                public_id=name
             )['public_id']
         except cloudinary.exceptions.Error:
             raise ValueError
         except:  # FIXME: check raises
-            raise exception(f'{folder = }')
+            exception(f'{folder = }')
+            raise
         finally:
             os.remove(filename)
         return cloudinary_url(image_id)[0]

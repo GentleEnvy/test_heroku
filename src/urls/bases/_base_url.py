@@ -1,8 +1,8 @@
 import json
 from abc import ABC, abstractmethod
 from http import HTTPStatus
-from logging import error, exception, info, warning
-from typing import Any, Union, Final
+from logging import exception, info, warning
+from typing import Any, Final, Union
 
 from flask import Flask, Request, Response, request as flask_request
 

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Optional, Any, final
 
+from peewee import TextField
+
 from src.models.bases import Indexed
 
 
@@ -9,136 +11,30 @@ from src.models.bases import Indexed
 class User(Indexed):
     """
     CREATE TABLE "user" (
-        id Serial
+        name Serial NOT NULL
             PRIMARY KEY,
-        email Varchar(100)
-            UNIQUE NOT NULL,
-        password Varchar(100) NOT NULL,
-        avatar_url Varchar(2000)
+        email Text NOT NULL
+            UNIQUE,
+        password Text NOT NULL,\n
+        avatar_url Text
             CHECK (avatar_url ~ 'https?://.+')
     );
     """
-    @classmethod
-    def get(cls, email: str) -> Optional[User]:
-        try:
-            id_, password, avatar_url = cls.database.execute(
-                f'''
-                SELECT id, password, avatar_url
-                    FROM "user"
-                    WHERE email = %s;
-                ''',
-                [email]
-            )[0]
-        except IndexError:
-            return None
-        return cls.__create(id_, email, password, avatar_url)
+    email = TextField()
+    password = TextField()
+    avatar_url = TextField()
 
     @classmethod
-    def register(cls, email: str, password: str) -> User:
-        res = cls.database.execute(
-            f'''
-            INSERT INTO "user" (
-                email, password
-            )
-            VALUES (
-                %s, %s
-            )
-            RETURNING id;
-            ''',
-            [email, password]
-        )
-
-        id_ = res[0][0]
-        return cls.__create(id_, email, password)
+    def get_by_id(cls, id) -> User:
+        return super().get_by_id(id)
 
     @classmethod
-    def delete(cls, user: User):
-        cls.database.execute(
-            f'''
-            DELETE FROM "user"
-                WHERE id = %s;
-            ''',
-            [user.id]
-        )
+    def get_by_email(cls, email: str) -> User:
+        return super().get(email=email)
 
     @classmethod
-    def __create(
-            cls,
-            id_: int, email: str, password: str,
-            avatar_url: str = None
-    ) -> User:
-        return cls._create(id_, email, password, avatar_url)
+    def create(cls, email: str, password: str, avatar_url: str = None) -> User:
+        return super().create(email=email, password=password, avatar_url=avatar_url)
 
-    def __init__(self, id_: int, email: str, password: str, avatar_url: str):
-        super().__init__(id_)
-        self._email: str = email
-        self._password: str = password
-        self._avatar_url: str = avatar_url
 
-    @property
-    def email(self) -> str:
-        return self._email
-
-    @email.setter
-    def email(self, email: str) -> None:
-        self.database.execute(
-            f'''
-            UPDATE "user"
-            SET email = %s
-                WHERE id = %s;
-            ''',
-            [email, self.id]
-        )
-        self._email = email
-
-    @property
-    def password(self) -> str:
-        return self._password
-
-    @password.setter
-    def password(self, password: str) -> None:
-        self.database.execute(
-            f'''
-            UPDATE "user"
-            SET password = %s
-                WHERE id = %s;
-            ''',
-            [password, self.id]
-        )
-        self._password = password
-
-    @property
-    def avatar_url(self) -> str:
-        return self._avatar_url
-
-    @avatar_url.setter
-    def avatar_url(self, avatar_url: str) -> None:
-        self.database.execute(
-            f'''
-            UPDATE "user"
-            SET avatar_url = %s
-                WHERE id = %s;
-            ''',
-            [avatar_url, self.id]
-        )
-        self._avatar_url = avatar_url
-
-    @avatar_url.deleter
-    def avatar_url(self) -> None:
-        self.database.execute(
-            f'''
-            UPDATE "user"
-            SET avatar_url = NULL
-                WHERE id = %s;
-            ''',
-            [self.id]
-        )
-        self._avatar_url = None
-
-    def serialize(self) -> dict[str, Any]:
-        return {
-            'id': self.id,
-            'email': self.email,
-            'password': self.password,
-            'avatar_url': self.avatar_url
-        }
+user = User.create(email='envy@mail.ru')

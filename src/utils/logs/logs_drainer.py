@@ -37,8 +37,7 @@ class LogsDrainer:
 
     def listen(self) -> None:
         def _listen():
-            # FIXME: info -> debug
-            info('LogsDrainer started listening the logs')
+            info(f'{self.__class__.__name__} started listening the logs')
             while True:
                 sleep(self._delay)
                 with open(self._path_to_logs, 'r') as logs_file_r:
@@ -58,9 +57,7 @@ class LogsDrainer:
 
     def _upload_logs(self):
         with open(self._path_to_logs, 'rb') as logs_file_rb:
-            info('Uploading logs...')
             utils.file_base.upload(
                 logs_file_rb,
                 self._path_to_upload
             )
-            info('Successful uploaded the logs')

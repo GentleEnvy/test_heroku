@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 from abc import ABC
-from typing import Final
+
+from peewee import IntegerField
 
 from src.models.bases.base_model import BaseModel
 
@@ -7,9 +10,8 @@ __all__ = ['Indexed']
 
 
 class Indexed(BaseModel, ABC):
-    def __init__(self, id_: int):
-        self.id: Final[int] = id_
+    id: int = IntegerField(primary_key=True)
 
-    @property
-    def primary_key(self) -> int:
-        return self.id
+    @classmethod
+    def get_by_id(cls, id: int) -> Indexed:
+        return super().get(id=id)
