@@ -4,10 +4,6 @@ from src.app import app
 from src.urls import init_urls
 from src.utils import init_loggers
 
-from datetime import datetime
-
-print(datetime.now())
-
 init_loggers()
 init_urls(app)
 

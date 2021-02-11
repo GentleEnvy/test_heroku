@@ -4,7 +4,7 @@ from abc import ABC
 from http import HTTPStatus
 from logging import warning
 from typing import Any, Optional, Final, final
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from flask import Flask, Response, Request
 
@@ -26,18 +26,23 @@ class IpSessionUrl(SessionUrl, ABC):
     class Session(SessionUrl.Session):
         def __init__(self, ip: str):
             self.ip: Final[str] = ip
-            self.__requests: set[datetime] = set()
+            self.__time_requests: set[datetime] = set()
 
         @property
         def ban_count(self) -> int:
             return 10
 
         @property
-        def ban_delay(self) -> float:
+        def ban_seconds(self) -> float:
             return 60
 
         def mark(self, request: Request):
             now = datetime.now()
+            delta = timedelta(0, self.ban_seconds)
+            for time_request in self.__time_requests:
+                if (now - time_request) > delta:
+                    self.__time_requests.remove(time_request)
+
 
     class __GlobalSession(Session):
         pass

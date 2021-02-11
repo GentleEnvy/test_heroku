@@ -14,6 +14,10 @@ def _link_url(url: str) -> str:
 class Index(IpSessionUrl):
     url: Final[str] = '/'
 
+    def _parse_request(self, request) -> dict[str, Any]:
+        print(f'{request.date = }')
+        return super()._parse_request(request)
+
     def _make_response(self, response_json) -> Response:
         return self.app.make_response(
             f'''
