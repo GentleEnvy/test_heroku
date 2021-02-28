@@ -1,17 +1,20 @@
 from __future__ import annotations
 
 from http import HTTPStatus
+from logging import warning
 from typing import Any, Final, final
 
 from src.models import User
-from src.urls.bases import SessionTokenUrl, UserSessionUrl
+from src.urls.bases import IpSessionUrl, UserSessionUrl
 from src.urls.exceptions import HTTPException
 
 __all__ = ['EmailUrl']
 
+from src.utils.functions import generate_random_token
+
 
 @final
-class EmailUrl(SessionTokenUrl):
+class EmailUrl(IpSessionUrl):
     r"""
     POST:
         Request:
@@ -28,7 +31,7 @@ class EmailUrl(SessionTokenUrl):
                 `error`: 1 - if codes don't match
             }
     """
-    class Session(SessionTokenUrl.Session):
+    class __EmailSession:
         def __init__(self, token: str, email: str, password: str, code: int):
             self.token: Final[str] = token
             self.email: Final[str] = email
@@ -36,55 +39,60 @@ class EmailUrl(SessionTokenUrl):
             self.code: Final[int] = code
 
     LENGTH_TOKEN: Final[int] = 30
+    NAME_TOKEN: Final[str] = 'email_token'
 
-    _sessions: Final[dict[str, EmailUrl.Session]] = {}
-    __cache_email_session: Final[dict[str, EmailUrl.Session]] = {}
-    __cache_code_session: Final[dict[int, EmailUrl.Session]] = {}
+    __email_sessions: Final[dict[str, __EmailSession]] = {}
+    __cache_email_sessions: Final[dict[str, __EmailSession]] = {}
+    __cache_code_sessions: Final[dict[int, __EmailSession]] = {}
 
     @classmethod
     def add_email(cls, email: str, password: str, code: int) -> str:
-        try:
-            token = cls.__cache_email_session[email].token
-        except KeyError:
-            token = cls.generate_token()
-            while token in cls._sessions:
-                token = cls.generate_token()
+        if (session := cls.__cache_code_sessions.get(code)) is not None:
+            if email == session.email:
+                return session.token
+            cls.__delete_session(session.email)
 
-        session = cls.Session(token, email, password, code)
+        token = cls.__generate_token()
+        while token in cls.__email_sessions:
+            token = cls.__generate_token()
 
-        try:
-            session_with_same_code = cls.__cache_code_session[code]
-            cls._delete_session(session_with_same_code.email)
-        except KeyError:
-            pass
-
-        cls._sessions[token] = session
-        cls.__cache_email_session[email] = session
-        cls.__cache_code_session[code] = session
-
+        session = cls.__EmailSession(token, email, password, code)
+        cls.__email_sessions[token] = session
+        cls.__cache_email_sessions[email] = session
+        cls.__cache_code_sessions[code] = session
         return token
 
     @classmethod
-    def _delete_session(cls, email: str) -> None:
+    def __delete_session(cls, email: str) -> None:
         try:
-            session = cls.__cache_email_session[email]
-            del cls._sessions[session.token]
-            del cls.__cache_email_session[email]
-            del cls.__cache_code_session[session.code]
+            session = cls.__cache_email_sessions[email]
+            del cls.__email_sessions[session.token]
+            del cls.__cache_email_sessions[email]
+            del cls.__cache_code_sessions[session.code]
         except KeyError:
             pass
 
+    @classmethod
+    def __generate_token(cls):
+        return generate_random_token(length=cls.LENGTH_TOKEN)
+
+    @classmethod
+    def __get_session(cls, token: str) -> __EmailSession:
+        try:
+            return cls.__email_sessions[token]
+        except KeyError:
+            warning(f'Not email token ({token})')
+            raise HTTPException(HTTPStatus.UNAUTHORIZED, f'Not valid {cls.NAME_TOKEN}')
+
     url: Final[str] = '/email'
 
-    def _post(self, request_json, session: EmailUrl.Session) -> dict[str, Any]:
-        try:
-            code = int(self.get_value(request_json, 'code'))
-        except ValueError:
-            raise HTTPException(HTTPStatus.BAD_REQUEST, '`code` must be <int>')
-        if code == session.code:
+    def _post(self, request_json) -> dict[str, Any]:
+        token = self.get_value(request_json, self.NAME_TOKEN)
+        code = self.get_value(request_json, 'code', requirement_type=int)
+        if code == (session := self.__get_session(token)):
             user = User.create(session.email, session.password)
-            EmailUrl._delete_session(session.email)
-            user_token = UserSessionUrl.add_user(user)
+            self.__delete_session(session.email)
+            user_token = UserSessionUrl.add_user_session(user)
             return {
                 'user_token': user_token
             }

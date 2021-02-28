@@ -9,13 +9,16 @@ from src.models.bases import Indexed
 
 @final
 class User(Indexed):
-    """
+    r"""
     CREATE TABLE "user" (
         name Serial NOT NULL
             PRIMARY KEY,
         email Text NOT NULL
-            UNIQUE,
-        password Text NOT NULL,\n
+            UNIQUE
+            CHECK (email ~ '^[a-zA-Z0-9]+([-._][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-.][
+                            a-zA-Z0-9]+)*\.[a-zA-Z]{2,7}$',
+        password Text NOT NULL
+            CHECK (password ~ '^[a-zA-z0-9_]{6,}$'),
         avatar_url Text
             CHECK (avatar_url ~ 'https?://.+')
     );

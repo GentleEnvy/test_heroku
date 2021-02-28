@@ -74,7 +74,7 @@ class Registration(IpSessionUrl):
         self.__last_code += 1
         return self.__last_code
 
-    def _post(self, request_json, session) -> dict[str, Any]:
+    def post(self, request_json) -> dict[str, Any]:
         email = str(self.get_value(request_json, 'email'))
         password = str(self.get_value(request_json, 'password'))
 

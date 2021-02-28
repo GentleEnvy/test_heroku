@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from abc import ABC
 from http import HTTPStatus
-from logging import warning
+from logging import debug, warning
 from typing import Any, Optional, Final, final
 from datetime import datetime, timedelta
 
 from flask import Flask, Response, Request
 
-from src.urls.bases.session_url import SessionUrl
+from src.urls.bases._base_url import BaseUrl
 from src.urls.exceptions import HTTPException
 
 __all__ = ['IpSessionUrl']
@@ -19,46 +19,52 @@ def _get_ip(request: Request) -> Optional[str]:
     return env.get('HTTP_X_FORWARDED_FOR') or env.get('REMOTE_ADDR')
 
 
-class IpSessionUrl(SessionUrl, ABC):
+class IpSessionUrl(BaseUrl, ABC):
     """
     The URL that supports sessions by IP. To get an IP, a proxy is required
     """
-    class Session(SessionUrl.Session):
+    class __LocalSession:
+        ban_count: int = 30
+        ban_period: float = 10
+        ban_time: float = 60
+
         def __init__(self, ip: str):
             self.ip: Final[str] = ip
             self.__time_requests: set[datetime] = set()
+            self.__time_last_ban: Optional[datetime] = None
 
-        @property
-        def ban_count(self) -> int:
-            return 10
+        def mark(self):
+            self.__time_requests.add(datetime.now())
 
-        @property
-        def ban_seconds(self) -> float:
-            return 60
-
-        def mark(self, request: Request):
+        def is_ban(self) -> bool:
+            """
+            :return: True - if session is banned, False - if else
+            """
             now = datetime.now()
-            delta = timedelta(0, self.ban_seconds)
+            if self.__time_last_ban is not None:
+                if (now - self.__time_last_ban) < timedelta(seconds=self.ban_time):
+                    return True
+                self.__time_last_ban = None
+
+            delta = timedelta(seconds=self.ban_period)
             for time_request in self.__time_requests:
                 if (now - time_request) > delta:
                     self.__time_requests.remove(time_request)
+            if len(self.__time_requests) >= self.ban_count:
+                self.__time_last_ban = now
+                return True
+            return False
 
+    class __GlobalSession(__LocalSession):
+        ban_count: int = 150
+        ban_period: float = 30
+        ban_time: float = 3600  # 60 * 60 - 1 hour
 
-    class __GlobalSession(Session):
-        pass
+    __global_ip_sessions: Final[dict[str, __GlobalSession]] = {}
 
-    _sessions: dict[str, IpSessionUrl.Session] = {}
-    __sessions: Final[dict[str, __GlobalSession]] = {}
-
-    @classmethod
-    def __add_session(cls, ip: str) -> Session:
-        session = cls.Session(ip)
-        cls._sessions[ip] = session
-        return session
-
-    @classmethod
-    def __check_session(cls, session: Session) -> bool:
-        pass
+    def __init__(self, app: Flask):
+        super().__init__(app)
+        self.__local_ip_session: Final[dict[str, IpSessionUrl.__LocalSession]] = {}
 
     def _get_request(self) -> Request:
         request = super()._get_request()
@@ -66,29 +72,21 @@ class IpSessionUrl(SessionUrl, ABC):
             warning(f'No IP in request (\n\t{request.environ = }\n)')
             raise HTTPException(HTTPStatus.UNAUTHORIZED, 'No IP')
 
-        if global_session := IpSessionUrl.__sessions.get(ip) is None:
+        if global_session := IpSessionUrl.__global_ip_sessions.get(ip) is None:
             global_session = IpSessionUrl.__GlobalSession(ip)
-            IpSessionUrl.__sessions[ip] = global_session
+            IpSessionUrl.__global_ip_sessions[ip] = global_session
 
+        if local_session := self.__local_ip_session.get(ip) is None:
+            local_session = self.__LocalSession(ip)
+            self.__local_ip_session[ip] = local_session
 
-
-        if local_session := self._sessions.get(ip) is None:
-            local_session = self.__add_session(ip)
-
+        self.__check_session(global_session)
+        self.__check_session(local_session)
         return request
 
-    @final
-    def _get_session_key(self, request, request_json) -> str:
-        return _get_ip(request)
-
-    def _get(self, request_json, session: IpSessionUrl.Session) -> dict[str, Any]:
-        return super()._get(request_json, session)
-
-    def _post(self, request_json, session: IpSessionUrl.Session) -> dict[str, Any]:
-        return super()._post(request_json, session)
-
-    def _put(self, request_json, session: IpSessionUrl.Session) -> dict[str, Any]:
-        return super()._put(request_json, session)
-
-    def _delete(self, request_json, session: IpSessionUrl.Session) -> dict[str, Any]:
-        return super()._delete(request_json, session)
+    @staticmethod
+    def __check_session(session: IpSessionUrl.__LocalSession) -> None:
+        session.mark()
+        if session.is_ban():
+            warning(f'IP {session.ip} was banned')
+            raise HTTPException(HTTPStatus.FORBIDDEN, 'Exceeded the number of requests')

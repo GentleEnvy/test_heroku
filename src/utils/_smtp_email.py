@@ -4,6 +4,7 @@ from smtplib import SMTP
 from email.message import EmailMessage
 import ssl
 
+from src.utils.decorators import check_raises
 from src.utils.interfaces import Email
 
 __all__ = ['SmtpEmail']
@@ -25,17 +26,14 @@ class SmtpEmail(Email):
         self._smtp.starttls(context=ssl.create_default_context())
         self._smtp.login(login, password)
 
+    @check_raises
     def send(self, message, to, subject=None) -> None:
-        try:
-            email_message = EmailMessage()
+        email_message = EmailMessage()
 
-            email_message.set_content(message)
-            email_message['From'] = self._login
-            email_message['To'] = to
-            if subject:
-                email_message['Subject'] = subject
+        email_message.set_content(message)
+        email_message['From'] = self._login
+        email_message['To'] = to
+        if subject:
+            email_message['Subject'] = subject
 
-            self._smtp.send_message(email_message)
-        except:  # FIXME: check raises
-            exception(f'{message = },\n{to = },\n{subject = }')
-            raise
+        self._smtp.send_message(email_message)

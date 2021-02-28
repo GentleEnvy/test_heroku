@@ -11,6 +11,7 @@ from cloudinary.api import delete_resources
 from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
 
+from src.utils.decorators import check_raises
 from src.utils.interfaces import ImageBase
 from src.utils.functions import get_path_to_src
 
@@ -18,31 +19,28 @@ from src.utils.functions import get_path_to_src
 __all__ = ['Cloudnary']
 
 
+@check_raises
 def _parse_url(image_url: str) -> tuple[str, str]:
     index = re.search('image/upload/(v\\d+/)?', image_url)
     if index is None:
         raise ValueError
 
+    image_path = image_url[index.end():]
+    if (index := re.search('/.+$', image_path)) is None:
+        folder = None
+        full_image_id = image_path
+    else:
+        index = index.start()
+        folder = image_path[:index]
+        full_image_id = image_path[index + 1:]
+
     try:
-        image_path = image_url[index.end():]
-        if (index := re.search('/.+$', image_path)) is None:
-            folder = None
-            full_image_id = image_path
-        else:
-            index = index.start()
-            folder = image_path[:index]
-            full_image_id = image_path[index + 1:]
+        index = full_image_id.index('.')
+        image_id = full_image_id[:index]
+    except ValueError:
+        image_id = full_image_id
 
-        try:
-            index = full_image_id.index('.')
-            image_id = full_image_id[:index]
-        except ValueError:
-            image_id = full_image_id
-
-        return folder, image_id
-    except:  # FIXME: check raises
-        exception(f'{image_url = }')
-        raise
+    return folder, image_id
 
 
 # noinspection SpellCheckingInspection
@@ -71,6 +69,7 @@ class Cloudnary(ImageBase):
         )
         cloudinary.api.subfolders('/')  # check authorization
 
+    @check_raises
     def save(self, image_data, folder=None, name=None) -> str:
         filename = f'{get_path_to_src()}/utils/{int(time.time() * 10 ** 7)}.jpg'
         try:
@@ -83,13 +82,11 @@ class Cloudnary(ImageBase):
             )['public_id']
         except cloudinary.exceptions.Error:
             raise ValueError
-        except:  # FIXME: check raises
-            exception(f'{folder = }')
-            raise
         finally:
             os.remove(filename)
         return cloudinary_url(image_id)[0]
 
+    @check_raises
     def delete(self, url) -> None:
         try:
             image: Cloudnary.Image = self.Image(url)

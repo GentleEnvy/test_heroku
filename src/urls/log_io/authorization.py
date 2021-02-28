@@ -30,7 +30,7 @@ class Authorization(IpSessionUrl):
     """
     url: Final[str] = '/authorization'
 
-    def _get(self, request_json, session) -> dict[str, Any]:
+    def get(self, request_json) -> dict[str, Any]:
         email = str(self.get_value(request_json, 'email'))
         password = str(self.get_value(request_json, 'password'))
 
@@ -40,7 +40,7 @@ class Authorization(IpSessionUrl):
         if user.password != password:
             return {'error': 2}
 
-        user_token = UserSessionUrl.add_user(user)
+        user_token = UserSessionUrl.add_user_session(user)
         return {
             'user_token': user_token
         }

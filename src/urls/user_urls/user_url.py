@@ -1,8 +1,5 @@
-from __future__ import annotations
-
 from typing import Any, Final, final
 
-from src.models import User
 from src.urls.bases import UserSessionUrl
 from src.utils import image_base
 
@@ -45,5 +42,5 @@ class UserUrl(UserSessionUrl):
         if avatar_url := user.avatar_url:
             image_base.delete(avatar_url)
         user.delete_instance(recursive=True)
-        UserSessionUrl._delete_session(user)
+        UserSessionUrl.delete_user_session(user)
         return {}

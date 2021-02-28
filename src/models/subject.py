@@ -17,9 +17,7 @@ class Subject(Indexed, BaseModelEnum):
             PRIMARY KEY,
         name Text NOT NULL
             UNIQUE
-            CHECK (name != ''),
-        number_of_tasks Int NOT NULL
-            CHECK (number_of_tasks != 0)
+            CHECK (name != '')
     );
     """
     MATHEMATICS: Subject

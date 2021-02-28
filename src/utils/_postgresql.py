@@ -5,6 +5,7 @@ from peewee import PostgresqlDatabase
 from playhouse.db_url import connect
 from psycopg2.extensions import cursor
 
+from src.utils.decorators import check_raises
 from src.utils.interfaces import Database
 
 __all__ = ['PostgreSql']
@@ -19,12 +20,9 @@ class PostgreSql(Database):
     def connect(self):
         return self._connection
 
+    @check_raises
     def execute(self, query, values=None) -> tuple[tuple, ...]:
-        try:
-            self._cursor.execute(query=query, vars=values)
-        except Exception:  # FIXME: check raises
-            exception(f'{query = },\n{values = }')
-            raise
+        self._cursor.execute(query=query, vars=values)
         self._connection.commit()
         if self._cursor.pgresult_ptr is None:
             return ()

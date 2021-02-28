@@ -10,14 +10,12 @@ from src import (
 )
 from src.utils.interfaces import Database, Email, ImageBase, FileBase
 from src.utils.logs import init_loggers
-from src.utils.meta_private_init import MetaPrivateInit
 from src.utils._smtp_email import SmtpEmail
 from src.utils._postgresql import PostgreSql
 from src.utils._cloudnary import Cloudnary
 from src.utils._yandex_disk import YandexDisk
 
 __all__ = [
-    'MetaPrivateInit',
     'init_loggers',
     'email', 'database', 'image_base', 'file_base'
 ]

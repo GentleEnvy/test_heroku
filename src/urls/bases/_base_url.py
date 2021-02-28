@@ -2,13 +2,15 @@ import json
 from abc import ABC, abstractmethod
 from http import HTTPStatus
 from logging import exception, info, warning
-from typing import Any, Final, Union
+from typing import Any, Final, Type, TypeVar
 
 from flask import Flask, Request, Response, request as flask_request
 
-from src.urls.exceptions import HTTPException, NoParameterException
+from src.urls.exceptions import HTTPException, InvalidTypeException, NoParameterException
 
 __all__ = ['BaseUrl']
+
+RequirementType = TypeVar('RequirementType')
 
 
 class BaseUrl(ABC):
@@ -89,7 +91,8 @@ class BaseUrl(ABC):
     def _get_request(self) -> Request:
         return flask_request
 
-    def _parse_request(self, request: Request) -> dict[str, Any]:
+    @staticmethod
+    def _parse_request(request: Request) -> dict[str, Any]:
         """
         :param request: current http request
         :return: JSON parsed from request.data or request.form | request.args
@@ -163,13 +166,29 @@ class BaseUrl(ABC):
     @staticmethod
     def get_value(
             request_json: dict[str, Any],
-            name_parameter: str
-    ) -> Union[int, str, bool, dict, list]:
+            name_parameter: str,
+            requirement_type: Type[RequirementType] = str
+    ) -> RequirementType:
+        f"""
+        :return: a required parameter in the `request_json`
+        :raises NoParameterException: if {name_parameter} key not in `request_json`
+        :raises InvalidTypeException: if {name_parameter} not casted to {requirement_type}
         """
-        :return: a required parameter in the request_json
-        :raises NoParameterException: if name_parameter key not in request_json
-        """
+        # noinspection PyBroadException
         try:
-            return request_json[name_parameter]
+            return requirement_type(request_json[name_parameter])
         except KeyError:
             raise NoParameterException(name_parameter)
+        except (ValueError, TypeError):
+            raise InvalidTypeException(requirement_type, name_parameter)
+        except Exception:
+            warning(
+                f'''
+Unusual exception when trying to cast {name_parameter} to {requirement_type.__name__}
+{{
+    {requirement_type = }
+    parameter = {request_json.get(name_parameter)}
+}}
+'''
+            )
+            raise InvalidTypeException(requirement_type, name_parameter)
