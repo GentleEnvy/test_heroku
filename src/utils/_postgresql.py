@@ -1,4 +1,3 @@
-from logging import exception
 from typing import Final
 
 from peewee import PostgresqlDatabase

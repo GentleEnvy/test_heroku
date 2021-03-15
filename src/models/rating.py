@@ -6,6 +6,8 @@ from src.models.bases import BaseModel
 from src.models.user import User
 from src.models.subject import Subject
 
+__all__ = ['Rating']
+
 
 @final
 class Rating(BaseModel):

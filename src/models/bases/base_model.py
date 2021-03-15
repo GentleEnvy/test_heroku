@@ -11,7 +11,7 @@ from src.utils import database as util_database
 __all__ = ['BaseModel']
 
 
-class _MetaBaseModel(type(Model), type(ABC)):
+class _MetaBaseModel(type, type(Model), type(ABC)):
     pass
 
 
@@ -32,5 +32,5 @@ class BaseModel(Model, ABC, metaclass=_MetaBaseModel):
     def __str__(self) -> str:
         return str(self.serialize())
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)

@@ -31,8 +31,8 @@ class Authorization(IpSessionUrl):
     url: Final[str] = '/authorization'
 
     def get(self, request_json) -> dict[str, Any]:
-        email = str(self.get_value(request_json, 'email'))
-        password = str(self.get_value(request_json, 'password'))
+        email = self.get_value(request_json, 'email')
+        password = self.get_value(request_json, 'password')
 
         user = User.get_by_email(email)
         if user is None:

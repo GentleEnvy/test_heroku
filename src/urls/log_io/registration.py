@@ -75,8 +75,8 @@ class Registration(IpSessionUrl):
         return self.__last_code
 
     def post(self, request_json) -> dict[str, Any]:
-        email = str(self.get_value(request_json, 'email'))
-        password = str(self.get_value(request_json, 'password'))
+        email = self.get_value(request_json, 'email')
+        password = self.get_value(request_json, 'password')
 
         if not _check_email_valid(email):
             raise HTTPException(HTTPStatus.BAD_REQUEST, '`email` is not valid')

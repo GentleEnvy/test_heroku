@@ -38,6 +38,8 @@ class EmailUrl(IpSessionUrl):
             self.password: Final[str] = password
             self.code: Final[int] = code
 
+    url: Final[str] = '/email'
+
     LENGTH_TOKEN: Final[int] = 30
     NAME_TOKEN: Final[str] = 'email_token'
 
@@ -74,7 +76,7 @@ class EmailUrl(IpSessionUrl):
 
     @classmethod
     def __generate_token(cls):
-        return generate_random_token(length=cls.LENGTH_TOKEN)
+        return generate_random_token(cls.LENGTH_TOKEN)
 
     @classmethod
     def __get_session(cls, token: str) -> __EmailSession:
@@ -84,11 +86,9 @@ class EmailUrl(IpSessionUrl):
             warning(f'Not email token ({token})')
             raise HTTPException(HTTPStatus.UNAUTHORIZED, f'Not valid {cls.NAME_TOKEN}')
 
-    url: Final[str] = '/email'
-
     def _post(self, request_json) -> dict[str, Any]:
         token = self.get_value(request_json, self.NAME_TOKEN)
-        code = self.get_value(request_json, 'code', requirement_type=int)
+        code = self.get_value(request_json, 'code', int)
         if code == (session := self.__get_session(token)):
             user = User.create(session.email, session.password)
             self.__delete_session(session.email)

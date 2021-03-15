@@ -4,7 +4,8 @@ Util functions, classes and objects
 from typing import Final
 
 from src import (
-    DATABASE_URL, EMAIL_LOGIN, EMAIL_PASSWORD,
+    DATABASE_URL,
+    EMAIL_LOGIN, EMAIL_PASSWORD,
     CLOUDNARY_NAME, CLOUDNARY_KEY, CLOUDNARY_SECRET,
     YANDEX_DISK_TOKEN
 )

@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from abc import ABC
-from http import HTTPStatus
-from logging import debug, warning
-from typing import Any, Optional, Final, final
 from datetime import datetime, timedelta
+from http import HTTPStatus
+from logging import warning
+from typing import Final, Optional
 
-from flask import Flask, Response, Request
+from flask import Flask, Request
 
 from src.urls.bases._base_url import BaseUrl
 from src.urls.exceptions import HTTPException
