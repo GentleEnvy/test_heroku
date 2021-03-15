@@ -7,7 +7,7 @@ from logging import warning
 
 from src.utils.functions import generate_random_token
 from src.models import User
-from src.urls.bases.ip_session_url import IpSessionUrl
+from src.urls.base_urls._ip_session_url import IpSessionUrl
 from src.urls.exceptions import HTTPException
 
 __all__ = ['UserSessionUrl']

@@ -1,4 +1,4 @@
-from src.models.bases.base_model import BaseModel
+from src.models.base_models._base_model import BaseModel
 
 __all__ = ['BaseModelEnum']
 

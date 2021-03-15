@@ -1,11 +1,12 @@
 from http import HTTPStatus
-from typing import Type
+from typing import Type, final
 
-from src.urls.exceptions.http_exception import HTTPException
+from src.urls.exceptions._http_exception import HTTPException
 
 __all__ = ['InvalidTypeException']
 
 
+@final
 class InvalidTypeException(HTTPException):
     def __init__(self, requirement_type: Type, name_parameter: str):
         super().__init__(

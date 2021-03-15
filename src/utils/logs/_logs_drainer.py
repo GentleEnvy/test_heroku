@@ -1,12 +1,12 @@
+import atexit
 from datetime import datetime
-from typing import Final
+from logging import info
 from threading import Thread
 from time import sleep
-from logging import info
-import atexit
+from typing import Final
 
-from src.utils.functions import file_line_count
 import src.utils as utils
+from src.utils.functions import file_line_count
 
 
 class LogsDrainer:

@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from typing import Any, Final
+from typing import Any, Final, final
 
 from flask import Response
 
-from src.urls.bases import IpSessionUrl
+from src.urls.base_urls import IpSessionUrl
 
 __all__ = ['Index']
 
@@ -13,6 +13,7 @@ def _link_url(url: str) -> str:
     return f'&nbsp;&nbsp;<a href="{url}/documentation">{url}</a>'
 
 
+@final
 class Index(IpSessionUrl):
     url: Final[str] = '/'
 

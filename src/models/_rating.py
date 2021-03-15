@@ -2,9 +2,9 @@ from typing import final
 
 from peewee import ForeignKeyField, CompositeKey, IntegerField
 
-from src.models.bases import BaseModel
-from src.models.user import User
-from src.models.subject import Subject
+from src.models._subject import Subject
+from src.models._user import User
+from src.models.base_models import BaseModel
 
 __all__ = ['Rating']
 

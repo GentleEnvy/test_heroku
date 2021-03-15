@@ -5,14 +5,14 @@ from typing import Final
 
 from peewee import IntegerField
 
-from src.models.bases.base_model import BaseModel
+from src.models.base_models._base_model import BaseModel
 
-__all__ = ['Indexed']
+__all__ = ['IndexedModel']
 
 
-class Indexed(BaseModel, ABC):
+class IndexedModel(BaseModel, ABC):
     id: Final[int] = IntegerField(primary_key=True)
 
     @classmethod
-    def get_by_id(cls, id: int) -> Indexed:
+    def get_by_id(cls, id: int) -> IndexedModel:
         return super().get(id=id)

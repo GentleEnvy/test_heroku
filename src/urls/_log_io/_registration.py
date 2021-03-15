@@ -5,9 +5,9 @@ from typing import Any, Final, final
 from flask import Flask
 
 from src.models import User
-from src.urls.bases import IpSessionUrl
+from src.urls._log_io._email_url import EmailUrl
+from src.urls.base_urls import IpSessionUrl
 from src.urls.exceptions import HTTPException
-from src.urls.log_io.email_url import EmailUrl
 from src.utils import email as util_email
 
 __all__ = ['Registration']
@@ -50,7 +50,8 @@ class Registration(IpSessionUrl):
             }
         Response:
             {
-                `email_token`: <str> - used to identify the registrant for check the email code
+                `email_token`: <str> - used to identify the registrant for check the
+                    email code
             }
             or
             {

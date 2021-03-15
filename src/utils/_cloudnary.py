@@ -3,8 +3,8 @@ from __future__ import annotations
 import os
 import re
 import time
-from logging import warning, exception
-from typing import Final
+from logging import warning
+from typing import Final, final
 
 import cloudinary
 from cloudinary.api import delete_resources
@@ -12,8 +12,8 @@ from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
 
 from src.utils.decorators import check_raises
-from src.utils.interfaces import ImageBase
 from src.utils.functions import get_path_to_src
+from src.utils.interfaces import ImageBase
 
 # noinspection SpellCheckingInspection
 __all__ = ['Cloudnary']
@@ -44,6 +44,7 @@ def _parse_url(image_url: str) -> tuple[str, str]:
 
 
 # noinspection SpellCheckingInspection
+@final
 class Cloudnary(ImageBase):
     class Image:
         def __init__(self, image_url: str):

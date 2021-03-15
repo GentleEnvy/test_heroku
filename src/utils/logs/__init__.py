@@ -5,7 +5,7 @@ from logging.config import dictConfig
 
 from src import ON_HOSTING
 from src.utils.functions import get_path_to_src
-from src.utils.logs.logs_drainer import LogsDrainer
+from src.utils.logs._logs_drainer import LogsDrainer
 
 __all__ = ['init_loggers']
 

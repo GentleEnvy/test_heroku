@@ -1,8 +1,11 @@
-from typing import Any
+from typing import Any, final
 
-from src.urls.bases import IpSessionUrl
+from src.urls.base_urls import IpSessionUrl
+
+__all__ = ['Echo']
 
 
+@final
 class Echo(IpSessionUrl):
     url = '/echo'
 

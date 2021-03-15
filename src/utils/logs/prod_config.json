@@ -3,12 +3,12 @@
   "disable_existing_loggers": true,
   "formatters": {
     "gunicorn_access_formatter": {
-      "class": "src.utils.logs.wrap_formatter.WrapFormatter",
+      "class": "src.utils.logs._wrap_formatter.WrapFormatter",
       "datefmt": "[%d.%m-%H:%M:%S]",
       "format": "web info: %(message)s"
     },
     "root_formatter": {
-      "class": "src.utils.logs.wrap_formatter.WrapFormatter",
+      "class": "src.utils.logs._wrap_formatter.WrapFormatter",
       "datefmt": "[%d.%m-%H:%M:%S]",
       "format": "%(levelname)-5s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%(lineno)d)>: %(message)s"
     }
@@ -24,7 +24,7 @@
     },
     "root_console_handler": {
       "level": "DEBUG",
-      "class": "src.utils.logs.std_handler.StdHandler",
+      "class": "src.utils.logs._std_handler.StdHandler",
       "formatter": "root_formatter"
     },
     "root_file_handler": {

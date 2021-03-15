@@ -2,13 +2,13 @@ from abc import ABC
 
 from peewee import ForeignKeyField, SmallIntegerField, TextField
 
-from src.models.bases import Indexed
-from src.models.subject import Subject
+from src.models._subject import Subject
+from src.models.base_models import IndexedModel
 
 __all__ = ['BaseTask']
 
 
-class BaseTask(Indexed, ABC):
+class BaseTask(IndexedModel, ABC):
     subject_id: int = ForeignKeyField(Subject, Subject.id)
     number: int = SmallIntegerField()
     text: str = TextField()

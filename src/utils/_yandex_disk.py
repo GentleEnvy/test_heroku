@@ -1,5 +1,4 @@
-from logging import exception
-from typing import Final
+from typing import Final, final
 
 from yadisk import YaDisk
 from yadisk.exceptions import PathExistsError
@@ -10,6 +9,7 @@ from src.utils.interfaces import FileBase
 __all__ = ['YandexDisk']
 
 
+@final
 class YandexDisk(FileBase):
     def __init__(self, token: str):
         self.ya_disk: Final[YaDisk] = YaDisk(

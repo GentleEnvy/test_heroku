@@ -8,7 +8,7 @@ from typing import Final, Optional
 
 from flask import Flask, Request
 
-from src.urls.bases._base_url import BaseUrl
+from src.urls.base_urls._base_url import BaseUrl
 from src.urls.exceptions import HTTPException
 
 __all__ = ['IpSessionUrl']

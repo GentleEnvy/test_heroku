@@ -1,4 +1,4 @@
-from typing import Final
+from typing import Final, final
 
 from peewee import PostgresqlDatabase
 from playhouse.db_url import connect
@@ -10,6 +10,7 @@ from src.utils.interfaces import Database
 __all__ = ['PostgreSql']
 
 
+@final
 class PostgreSql(Database):
     def __init__(self, database_url: str):
         self._connection: Final[PostgresqlDatabase] = connect(database_url)

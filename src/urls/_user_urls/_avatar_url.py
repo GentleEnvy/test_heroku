@@ -3,7 +3,7 @@ import base64
 import binascii
 from http import HTTPStatus
 
-from src.urls.bases import UserSessionUrl
+from src.urls.base_urls import UserSessionUrl
 from src.urls.exceptions import HTTPException
 from src.utils import image_base
 

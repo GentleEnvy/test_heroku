@@ -10,7 +10,7 @@ from src.urls.exceptions import HTTPException, InvalidTypeException, NoParameter
 
 __all__ = ['BaseUrl']
 
-RequirementType = TypeVar('RequirementType')
+_RequirementType = TypeVar('_RequirementType')
 
 
 class BaseUrl(ABC):
@@ -167,8 +167,8 @@ class BaseUrl(ABC):
     def get_value(
             request_json: dict[str, Any],
             name_parameter: str,
-            requirement_type: Type[RequirementType] = str
-    ) -> RequirementType:
+            requirement_type: Type[_RequirementType] = str
+    ) -> _RequirementType:
         f"""
         :return: a required parameter in the `request_json`
         :raises NoParameterException: if {name_parameter} key not in `request_json`

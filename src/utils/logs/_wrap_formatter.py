@@ -1,6 +1,6 @@
 from logging import Formatter, LogRecord
-from typing import Final
 from textwrap import wrap
+from typing import Final
 
 from src.utils.functions import tab
 

@@ -1,5 +1,5 @@
-from logging import StreamHandler
 import logging
+from logging import StreamHandler
 from sys import stdout, stderr
 
 

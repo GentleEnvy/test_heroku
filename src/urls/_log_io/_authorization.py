@@ -1,7 +1,7 @@
 from typing import Any, Final, final
 
 from src.models import User
-from src.urls.bases import IpSessionUrl, UserSessionUrl
+from src.urls.base_urls import IpSessionUrl, UserSessionUrl
 
 __all__ = ['Authorization']
 
@@ -17,7 +17,8 @@ class Authorization(IpSessionUrl):
             }
         Response:
             {
-                `user_token`: <str> - session token for user identification, used for any requests from this user
+                `user_token`: <str> - session token for user identification, used for any
+                    requests from this user
             }
             or
             {

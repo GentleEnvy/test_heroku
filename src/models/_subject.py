@@ -2,15 +2,15 @@ from __future__ import annotations
 
 from typing import final
 
-from peewee import TextField, IntegerField
+from peewee import TextField
 
-from src.models.bases import Indexed, BaseModelEnum
+from src.models.base_models import IndexedModel, BaseModelEnum
 
 __all__ = ['Subject']
 
 
 @final
-class Subject(Indexed, BaseModelEnum):
+class Subject(IndexedModel, BaseModelEnum):
     """
     CREATE TABLE subject (
         name Smallint

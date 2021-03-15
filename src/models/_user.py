@@ -4,11 +4,13 @@ from typing import final
 
 from peewee import TextField
 
-from src.models.bases import Indexed
+from src.models.base_models import IndexedModel
+
+__all__ = ['User']
 
 
 @final
-class User(Indexed):
+class User(IndexedModel):
     r"""
     CREATE TABLE "user" (
         name Serial NOT NULL

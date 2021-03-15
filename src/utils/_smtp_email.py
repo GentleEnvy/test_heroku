@@ -1,8 +1,7 @@
-from logging import exception
-from typing import Final
-from smtplib import SMTP
-from email.message import EmailMessage
 import ssl
+from email.message import EmailMessage
+from smtplib import SMTP
+from typing import Final, final
 
 from src.utils.decorators import check_raises
 from src.utils.interfaces import Email
@@ -10,6 +9,7 @@ from src.utils.interfaces import Email
 __all__ = ['SmtpEmail']
 
 
+@final
 class SmtpEmail(Email):
     """
     Util class for sending emails

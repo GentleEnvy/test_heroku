@@ -5,12 +5,11 @@ from logging import warning
 from typing import Any, Final, final
 
 from src.models import User
-from src.urls.bases import IpSessionUrl, UserSessionUrl
+from src.urls.base_urls import IpSessionUrl, UserSessionUrl
 from src.urls.exceptions import HTTPException
+from src.utils.functions import generate_random_token
 
 __all__ = ['EmailUrl']
-
-from src.utils.functions import generate_random_token
 
 
 @final

@@ -1,7 +1,9 @@
 from typing import Any, Final, final
 
 from src.models import Subject
-from src.urls.bases import IpSessionUrl
+from src.urls.base_urls import IpSessionUrl
+
+__all__ = ['SubjectUrl']
 
 
 @final

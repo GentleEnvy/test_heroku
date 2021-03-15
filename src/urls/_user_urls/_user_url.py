@@ -1,6 +1,6 @@
 from typing import Any, Final, final
 
-from src.urls.bases import UserSessionUrl
+from src.urls.base_urls import UserSessionUrl
 from src.utils import image_base
 
 __all__ = ['UserUrl']
