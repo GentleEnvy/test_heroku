@@ -25,9 +25,10 @@ class User(IndexedModel):
             CHECK (avatar_url ~ 'https?://.+')
     );
     """
-    email = TextField()
-    password = TextField()
-    avatar_url = TextField()
+
+    email: str = TextField()
+    password: str = TextField()
+    avatar_url: str = TextField()
 
     @classmethod
     def get_by_id(cls, id) -> User:

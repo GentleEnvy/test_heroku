@@ -24,9 +24,10 @@ class Rating(BaseModel):
     PRIMARY KEY (user_id, subject_id)
     );
     """
+
     class Meta:
         primary_key = CompositeKey('user_id', 'subject_id')
 
-    user_id = ForeignKeyField(User)
-    subject_id = ForeignKeyField(Subject)
-    elo = IntegerField()
+    user_id: int = ForeignKeyField(User)
+    subject_id: int = ForeignKeyField(Subject)
+    elo: int = IntegerField()

@@ -19,7 +19,7 @@ class YandexDisk(FileBase):
             raise ValueError('Yandex disk token is invalid')
 
     @check_raises
-    def upload(self, file, path) -> None:
+    def upload(self, file, path):
         try:
             self.ya_disk.upload(file, path)
         except PathExistsError:

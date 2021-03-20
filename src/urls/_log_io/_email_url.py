@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from http import HTTPStatus
 from logging import warning
-from typing import Any, Final, final
+from typing import Final, final
 
 from src.models import User
 from src.urls.base_urls import IpSessionUrl, UserSessionUrl
@@ -30,6 +30,7 @@ class EmailUrl(IpSessionUrl):
                 `error`: 1 - if codes don't match
             }
     """
+
     class __EmailSession:
         def __init__(self, token: str, email: str, password: str, code: int):
             self.token: Final[str] = token
@@ -74,7 +75,7 @@ class EmailUrl(IpSessionUrl):
             pass
 
     @classmethod
-    def __generate_token(cls):
+    def __generate_token(cls) -> str:
         return generate_random_token(cls.LENGTH_TOKEN)
 
     @classmethod
@@ -85,7 +86,7 @@ class EmailUrl(IpSessionUrl):
             warning(f'Not email token ({token})')
             raise HTTPException(HTTPStatus.UNAUTHORIZED, f'Not valid {cls.NAME_TOKEN}')
 
-    def _post(self, request_json) -> dict[str, Any]:
+    def post(self, request_json):
         token = self.get_value(request_json, self.NAME_TOKEN)
         code = self.get_value(request_json, 'code', int)
         if code == (session := self.__get_session(token)):

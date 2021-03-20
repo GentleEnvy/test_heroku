@@ -1,8 +1,6 @@
 import re
 from http import HTTPStatus
-from typing import Any, Final, final
-
-from flask import Flask
+from typing import Final, final
 
 from src.models import User
 from src.urls._log_io._email_url import EmailUrl
@@ -62,11 +60,12 @@ class Registration(IpSessionUrl):
                 )
             }
     """
+
     url: Final[str] = '/registration'
 
-    def __init__(self, app: Flask):
+    def __init__(self, app):
         super().__init__(app)
-        self.__last_code = 999  # start code == 1000
+        self.__last_code: int = 999  # start code == 1000
 
     @property
     def _code(self) -> int:
@@ -75,7 +74,7 @@ class Registration(IpSessionUrl):
         self.__last_code += 1
         return self.__last_code
 
-    def post(self, request_json) -> dict[str, Any]:
+    def post(self, request_json):
         email = self.get_value(request_json, 'email')
         password = self.get_value(request_json, 'password')
 

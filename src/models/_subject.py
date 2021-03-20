@@ -20,6 +20,7 @@ class Subject(IndexedModel, BaseModelEnum):
             CHECK (name != '')
     );
     """
+
     MATHEMATICS: Subject
     RUSSIAN_LANGUAGE: Subject
 
@@ -37,6 +38,3 @@ class Subject(IndexedModel, BaseModelEnum):
     @classmethod
     def get_by_name(cls, name: str) -> Subject:
         return super().get(name=name)
-
-    def delete_instance(self, recursive=False, delete_nullable=False):
-        raise NotImplementedError

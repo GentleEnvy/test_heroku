@@ -23,6 +23,7 @@ class IpSessionUrl(BaseUrl, ABC):
     """
     The URL that supports sessions by IP. To get an IP, a proxy is required
     """
+
     class __LocalSession:
         ban_count: int = 30
         ban_period: float = 10
@@ -33,7 +34,7 @@ class IpSessionUrl(BaseUrl, ABC):
             self.__time_requests: set[datetime] = set()
             self.__time_last_ban: Optional[datetime] = None
 
-        def mark(self):
+        def mark(self) -> None:
             self.__time_requests.add(datetime.now())
 
         def is_ban(self) -> bool:
@@ -62,7 +63,7 @@ class IpSessionUrl(BaseUrl, ABC):
 
     __global_ip_sessions: Final[dict[str, __GlobalSession]] = {}
 
-    def __init__(self, app: Flask):
+    def __init__(self, app):
         super().__init__(app)
         self.__local_ip_session: Final[dict[str, IpSessionUrl.__LocalSession]] = {}
 

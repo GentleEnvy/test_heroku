@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
-from typing import Optional, Union
+
+from src.utils.types import TypePrimitives
 
 __all__ = ['Database']
-
-_DatabaseTypes = Optional[Union[int, str, float, bool, bytes]]
 
 
 class Database(ABC):
     """
     Util class for sending SQL queries to the database
     """
+
     @property
     @abstractmethod
     def connect(self):
@@ -17,8 +17,9 @@ class Database(ABC):
 
     @abstractmethod
     def execute(
-            self, query: str,
-            values: list[_DatabaseTypes] = None
+            self,
+            query: str,
+            values: list[TypePrimitives] = None
     ) -> tuple[tuple, ...]:
         """
         :param query: SQL code

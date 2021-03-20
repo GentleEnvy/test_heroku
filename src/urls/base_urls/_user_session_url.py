@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from abc import ABC
 from http import HTTPStatus
-from typing import Any, Final
 from logging import warning
+from typing import Any, Final, final
 
-from src.utils.functions import generate_random_token
 from src.models import User
 from src.urls.base_urls._ip_session_url import IpSessionUrl
 from src.urls.exceptions import HTTPException
+from src.utils.functions import generate_random_token
+from src.utils.types import TypeJson
 
 __all__ = ['UserSessionUrl']
 
@@ -49,7 +50,7 @@ class UserSessionUrl(IpSessionUrl, ABC):
             pass
 
     @classmethod
-    def __extract_token(cls, request_json: dict[str, Any]) -> str:
+    def __extract_token(cls, request_json: TypeJson) -> str:
         token = cls.get_value(request_json, cls.NAME_TOKEN)
         del request_json[cls.NAME_TOKEN]
         return token
@@ -63,19 +64,25 @@ class UserSessionUrl(IpSessionUrl, ABC):
             raise HTTPException(HTTPStatus.UNAUTHORIZED, f'Not valid {cls.NAME_TOKEN}')
 
     @classmethod
-    def __generate_token(cls):
+    def __generate_token(cls) -> str:
         return generate_random_token(length=cls.LENGTH_TOKEN)
 
-    def get(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    @final
+    def get(self, request_json):
         return self._get(
             request_json,
             self.__get_session(self.__extract_token(request_json))
         )
 
-    def _get(self, request_json, session: UserSessionUrl.__UserSession) -> dict[str, Any]:
+    def _get(
+            self,
+            request_json: TypeJson,
+            session: UserSessionUrl.__UserSession
+    ) -> TypeJson:
         return super().get(request_json)
 
-    def post(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    @final
+    def post(self, request_json):
         return self._post(
             request_json,
             self.__get_session(self.__extract_token(request_json))
@@ -83,21 +90,27 @@ class UserSessionUrl(IpSessionUrl, ABC):
 
     def _post(
             self,
-            request_json,
+            request_json: TypeJson,
             session: UserSessionUrl.__UserSession
-    ) -> dict[str, Any]:
+    ) -> TypeJson:
         return super().post(request_json)
 
-    def put(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    @final
+    def put(self, request_json):
         return self._put(
             request_json,
             self.__get_session(self.__extract_token(request_json))
         )
 
-    def _put(self, request_json, session: UserSessionUrl.__UserSession) -> dict[str, Any]:
+    def _put(
+            self,
+            request_json: TypeJson,
+            session: UserSessionUrl.__UserSession
+    ) -> TypeJson:
         return super().put(request_json)
 
-    def delete(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    @final
+    def delete(self, request_json):
         return self._delete(
             request_json,
             self.__get_session(self.__extract_token(request_json))
@@ -105,7 +118,7 @@ class UserSessionUrl(IpSessionUrl, ABC):
 
     def _delete(
             self,
-            request_json,
+            request_json: TypeJson,
             session: UserSessionUrl.__UserSession
-    ) -> dict[str, Any]:
+    ) -> TypeJson:
         return super().delete(request_json)

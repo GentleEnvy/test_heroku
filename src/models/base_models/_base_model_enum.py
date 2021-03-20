@@ -13,4 +13,5 @@ class _ModelEnumMeta(type(BaseModel), type):
 
 
 class BaseModelEnum(BaseModel, metaclass=_ModelEnumMeta):
-    pass
+    def delete_instance(self, recursive=False, delete_nullable=False):
+        raise AttributeError("Enum elements cannot be deleted")

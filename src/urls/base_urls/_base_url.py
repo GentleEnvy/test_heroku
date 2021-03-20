@@ -2,11 +2,12 @@ import json
 from abc import ABC, abstractmethod
 from http import HTTPStatus
 from logging import exception, info, warning
-from typing import Any, Final, Type, TypeVar
+from typing import Final, Type, TypeVar
 
 from flask import Flask, Request, Response, request as flask_request
 
 from src.urls.exceptions import HTTPException, InvalidTypeException, NoParameterException
+from src.utils.types import TypeJson
 
 __all__ = ['BaseUrl']
 
@@ -92,7 +93,7 @@ class BaseUrl(ABC):
         return flask_request
 
     @staticmethod
-    def _parse_request(request: Request) -> dict[str, Any]:
+    def _parse_request(request: Request) -> TypeJson:
         """
         :param request: current http request
         :return: JSON parsed from request.data or request.form | request.args
@@ -107,7 +108,7 @@ class BaseUrl(ABC):
         except json.JSONDecodeError:
             raise HTTPException(HTTPStatus.BAD_REQUEST, 'Bad JSON')
 
-    def _make_response(self, response_json: dict[str, Any]) -> Response:
+    def _make_response(self, response_json: TypeJson) -> Response:
         """
         :param response_json: server response in JSON format
         :return: server's final response
@@ -135,28 +136,28 @@ class BaseUrl(ABC):
         """
         raise NotImplementedError
 
-    def get(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def get(self, request_json: TypeJson) -> TypeJson:
         """
         :param request_json: current http request in JSON format
         :return: GET method response
         """
         raise HTTPException(HTTPStatus.METHOD_NOT_ALLOWED)
 
-    def post(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def post(self, request_json: TypeJson) -> TypeJson:
         """
         :param request_json: current http request in JSON format
         :return: POST method response
         """
         raise HTTPException(HTTPStatus.METHOD_NOT_ALLOWED)
 
-    def put(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def put(self, request_json: TypeJson) -> TypeJson:
         """
         :param request_json: current http request in JSON format
         :return: PUT method response
         """
         raise HTTPException(HTTPStatus.METHOD_NOT_ALLOWED)
 
-    def delete(self, request_json: dict[str, Any]) -> dict[str, Any]:
+    def delete(self, request_json: TypeJson) -> TypeJson:
         """
         :param request_json: current http request in JSON format
         :return: DELETE method response
@@ -165,7 +166,7 @@ class BaseUrl(ABC):
 
     @staticmethod
     def get_value(
-            request_json: dict[str, Any],
+            request_json: TypeJson,
             name_parameter: str,
             requirement_type: Type[_RequirementType] = str
     ) -> _RequirementType:

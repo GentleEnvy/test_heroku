@@ -21,24 +21,16 @@ def _wrap(text: str, max_length: int) -> str:
 class WrapFormatter(Formatter):
     _DEFAULT_MAX_LENGTH: Final[int] = 120
 
-    # noinspection SpellCheckingInspection
-    def __init__(
-            self,
-            fmt: str = None,
-            datefmt: str = None,
-            style: str = '%',
-            validate: bool = True,
-            max_length: int = _DEFAULT_MAX_LENGTH
-    ):
-        super().__init__(fmt, datefmt, style, validate)
-        self._max_length = max_length
+    def __init__(self, *args, max_length: int = _DEFAULT_MAX_LENGTH, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._max_length: Final[int] = max_length
 
-    def formatException(self, ei) -> str:
+    def formatException(self, ei):
         if (formatted_exception := super().formatException(ei)).endswith('\n'):
             return tab('<<<\n' + tab(formatted_exception) + '>>>')
         return '<<<\n' + tab(formatted_exception) + '\n>>>'
 
-    def format(self, record: LogRecord) -> str:
+    def format(self, record: LogRecord):
         formatted = super().format(record)
         if '\n' in record.message or len(formatted) > self._max_length:
             old_message = record.message

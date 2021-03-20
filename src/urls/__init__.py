@@ -1,7 +1,7 @@
 from flask import Flask
 
-from src.urls._index import Index
 from src.urls._echo import Echo
+from src.urls._index import Index
 # noinspection PyProtectedMember
 from src.urls._log_io import Authorization, EmailUrl, Registration
 # noinspection PyProtectedMember

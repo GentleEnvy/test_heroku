@@ -1,7 +1,7 @@
-from typing import Any, Final, final
 import base64
 import binascii
 from http import HTTPStatus
+from typing import Final, final
 
 from src.urls.base_urls import UserSessionUrl
 from src.urls.exceptions import HTTPException
@@ -32,9 +32,10 @@ class AvatarUrl(UserSessionUrl):
         Response:
             {}
     """
+
     url: Final[str] = '/user/avatar'
 
-    def _put(self, request_json, session) -> dict[str, Any]:
+    def _put(self, request_json, session):
         try:
             avatar_data: bytes = base64.b64decode(
                 self.get_value(request_json, 'avatar_data')
@@ -64,7 +65,7 @@ class AvatarUrl(UserSessionUrl):
             'avatar_url': avatar_url
         }
 
-    def _delete(self, request_json, session) -> dict[str, Any]:
+    def _delete(self, request_json, session):
         user = session.user
         if avatar_url := user.avatar_url:
             image_base.delete(avatar_url)

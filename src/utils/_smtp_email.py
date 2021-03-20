@@ -27,7 +27,7 @@ class SmtpEmail(Email):
         self._smtp.login(login, password)
 
     @check_raises
-    def send(self, message, to, subject=None) -> None:
+    def send(self, message, to, subject=None):
         email_message = EmailMessage()
 
         email_message.set_content(message)

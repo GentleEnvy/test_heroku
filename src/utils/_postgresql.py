@@ -21,7 +21,7 @@ class PostgreSql(Database):
         return self._connection
 
     @check_raises
-    def execute(self, query, values=None) -> tuple[tuple, ...]:
+    def execute(self, query, values=None):
         self._cursor.execute(query=query, vars=values)
         self._connection.commit()
         if self._cursor.pgresult_ptr is None:

@@ -71,7 +71,7 @@ class Cloudnary(ImageBase):
         cloudinary.api.subfolders('/')  # check authorization
 
     @check_raises
-    def save(self, image_data, folder=None, name=None) -> str:
+    def save(self, image_data, folder=None, name=None):
         filename = f'{get_path_to_src()}/utils/{int(time.time() * 10 ** 7)}.jpg'
         try:
             with open(filename, 'wb') as image:
@@ -88,9 +88,9 @@ class Cloudnary(ImageBase):
         return cloudinary_url(image_id)[0]
 
     @check_raises
-    def delete(self, url) -> None:
+    def delete(self, url):
         try:
-            image: Cloudnary.Image = self.Image(url)
+            image = self.Image(url)
             delete_resources(image.id)
         except ValueError:
             warning(f'Couldn\'t parse url: {url}')

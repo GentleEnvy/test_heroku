@@ -8,6 +8,8 @@ from typing import Final
 import src.utils as utils
 from src.utils.functions import file_line_count
 
+__all__ = ['LogsDrainer']
+
 
 class LogsDrainer:
     _DEFAULT_DELAY: Final[int] = 60  # seconds
@@ -55,7 +57,7 @@ class LogsDrainer:
         return f'{self._directory_to_upload}/' \
                f'{datetime.now().strftime("%d-%m-%Y_%H-%M-%S")}.log'
 
-    def _upload_logs(self):
+    def _upload_logs(self) -> None:
         with open(self._path_to_logs, 'rb') as logs_file_rb:
             utils.file_base.upload(
                 logs_file_rb,

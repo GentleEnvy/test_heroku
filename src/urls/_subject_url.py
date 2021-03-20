@@ -23,9 +23,10 @@ class SubjectUrl(IpSessionUrl):
                 `name`: <str> - subject name in Russian
             }
     """
+
     url: Final[str] = '/subject'
 
-    def get(self, request_json) -> dict[str, Any]:
+    def get(self, request_json):
         id_ = self.get_value(request_json, 'name')
         subject = Subject.get_by_id(id_)
 
