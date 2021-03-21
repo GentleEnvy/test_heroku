@@ -11,7 +11,7 @@ from src.utils.types import TypeJson
 __all__ = ['BaseModel']
 
 
-class _MetaBaseModel(type, type(Model), type(ABC)):
+class _MetaBaseModel(type(Model), type(ABC)):
     pass
 
 

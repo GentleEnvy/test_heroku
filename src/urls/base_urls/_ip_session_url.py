@@ -6,7 +6,7 @@ from http import HTTPStatus
 from logging import warning
 from typing import Final, Optional
 
-from flask import Flask, Request
+from flask import Request
 
 from src.urls.base_urls._base_url import BaseUrl
 from src.urls.exceptions import HTTPException
@@ -48,9 +48,10 @@ class IpSessionUrl(BaseUrl, ABC):
                 self.__time_last_ban = None
 
             delta = timedelta(seconds=self.ban_period)
-            for time_request in self.__time_requests:
-                if (now - time_request) > delta:
-                    self.__time_requests.remove(time_request)
+            self.__time_requests = set(
+                time_request for time_request in self.__time_requests if
+                (now - time_request) < delta
+            )
             if len(self.__time_requests) >= self.ban_count:
                 self.__time_last_ban = now
                 return True
@@ -69,7 +70,7 @@ class IpSessionUrl(BaseUrl, ABC):
 
     def _get_request(self) -> Request:
         request = super()._get_request()
-        if ip := _get_ip(request) is None:
+        if (ip := _get_ip(request)) is None:
             warning(f'No IP in request (\n\t{request.environ = }\n)')
             raise HTTPException(HTTPStatus.UNAUTHORIZED, 'No IP')
 
