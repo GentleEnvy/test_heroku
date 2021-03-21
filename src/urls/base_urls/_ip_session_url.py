@@ -73,11 +73,11 @@ class IpSessionUrl(BaseUrl, ABC):
             warning(f'No IP in request (\n\t{request.environ = }\n)')
             raise HTTPException(HTTPStatus.UNAUTHORIZED, 'No IP')
 
-        if global_session := IpSessionUrl.__global_ip_sessions.get(ip) is None:
+        if (global_session := IpSessionUrl.__global_ip_sessions.get(ip)) is None:
             global_session = IpSessionUrl.__GlobalSession(ip)
             IpSessionUrl.__global_ip_sessions[ip] = global_session
 
-        if local_session := self.__local_ip_session.get(ip) is None:
+        if (local_session := self.__local_ip_session.get(ip)) is None:
             local_session = self.__LocalSession(ip)
             self.__local_ip_session[ip] = local_session
 

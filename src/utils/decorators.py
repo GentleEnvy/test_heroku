@@ -3,10 +3,10 @@ from typing import Callable, TypeVar
 
 __all__ = ['check_raises']
 
-_ReturnType = TypeVar('_ReturnType')
+_TypeReturn = TypeVar('_TypeReturn')
 
 
-def check_raises(function: Callable[..., _ReturnType]) -> Callable[..., _ReturnType]:
+def check_raises(function: Callable[..., _TypeReturn]) -> Callable[..., _TypeReturn]:
     def check(*args, **kwargs):
         # noinspection PyBroadException
         try:
