@@ -16,10 +16,6 @@ _RequirementType = TypeVar('_RequirementType')
 
 class BaseUrl(ABC):
     def __init__(self, app: Flask):
-        """
-        Automatically adds a url to the app and documentation at the address
-            <self.url>/documentation taken from __doc__ current class
-        """
         self.app: Final[Flask] = app
 
         try:
@@ -33,29 +29,7 @@ class BaseUrl(ABC):
             exception(f'{self.__class__.__name__}: repeat call __init__')
             raise
 
-        self.__create_documentation()
         info(f'{self.__class__.__name__} ({self.url}) inited')
-
-    def __create_documentation(self) -> None:
-        class_doc = self.__class__.__doc__
-        if class_doc:
-            # TODO: html doc
-            class_doc = class_doc.replace('<', '&lt;')
-            class_doc = class_doc.replace('>', '&gt;')
-            class_doc = class_doc.replace('//', '<')
-            class_doc = class_doc.replace(r'\\', '>')
-            class_doc = class_doc.replace('\n    ', '<br>')
-            class_doc = class_doc.replace(' ', '&nbsp;')
-
-            def documentation() -> Response:
-                return self.app.make_response(class_doc)
-
-            self.app.add_url_rule(
-                rule=self.url + '/documentation',
-                endpoint=self.__class__.__name__ + '/Documentation',
-                view_func=documentation,
-                methods=['GET']
-            )
 
     def _index(self) -> Response:
         response: Request

@@ -1,4 +1,4 @@
-from typing import Any, Final, final
+from typing import Final, final
 
 from src.models import Subject
 from src.urls.base_urls import IpSessionUrl
@@ -8,26 +8,9 @@ __all__ = ['SubjectUrl']
 
 @final
 class SubjectUrl(IpSessionUrl):
-    """
-    GET:
-        Request:
-            {
-                `id`: <int>(
-                    1 - russian language
-                    2 - mathematics
-                ) - id of the subject from the kim of EGE
-            }
-        Response:
-            {
-                `id`: <int> - id of the subject from the kim of EGE,
-                `name`: <str> - subject name in Russian
-            }
-    """
-
     url: Final[str] = '/subject'
 
     def get(self, request_json):
-        id_ = self.get_value(request_json, 'name')
+        id_ = self.get_value(request_json, 'id')
         subject = Subject.get_by_id(id_)
-
         return subject.serialize()

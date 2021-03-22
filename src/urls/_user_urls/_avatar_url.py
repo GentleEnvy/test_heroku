@@ -12,27 +12,6 @@ __all__ = ['AvatarUrl']
 
 @final
 class AvatarUrl(UserSessionUrl):
-    r"""
-    PUT:
-        Request:
-            {
-                `user_token`: <str> - the token received during authorization,
-                `avatar_data`: <str> - bytes of the avatar encoded in
-            }
-        Response:
-            {
-                `avatar_url`: <str>
-            }
-    //hr\\
-    DELETE:
-        Request:
-            {
-                `user_token`: <str> - the token received during authorization
-            }
-        Response:
-            {}
-    """
-
     url: Final[str] = '/user/avatar'
 
     def _put(self, request_json, session):
@@ -52,10 +31,10 @@ class AvatarUrl(UserSessionUrl):
                 HTTPStatus.BAD_REQUEST,
                 'invalid `avatar_data`'
             )
-        ################################## FIXME
+        ################################## FIXME: for tests
         with open('image.jpg', 'wb') as f:
             f.write(avatar_data)
-        ################################## FIXME
+        ################################## FIXME: for tests
         user = session.user
         if old_avatar_url := user.avatar_url:
             image_base.delete(old_avatar_url)

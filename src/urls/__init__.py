@@ -1,9 +1,8 @@
 from flask import Flask
 
 from src.urls._echo import Echo
-from src.urls._index import Index
 # noinspection PyProtectedMember
-from src.urls._log_io import Authorization, EmailUrl, Registration
+from src.urls._auth import LogInUrl, CheckEmailUrl, RegisterUrl
 # noinspection PyProtectedMember
 from src.urls._user_urls import UserUrl, AvatarUrl
 
@@ -11,10 +10,9 @@ __all__ = ['init_urls']
 
 
 def init_urls(app: Flask):
-    Registration(app)
-    Authorization(app)
+    RegisterUrl(app)
+    LogInUrl(app)
     UserUrl(app)
     AvatarUrl(app)
-    EmailUrl(app)
-    Index(app)
+    CheckEmailUrl(app)
     Echo(app)

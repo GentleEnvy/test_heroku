@@ -10,5 +10,5 @@ __all__ = ['MultiTask']
 
 @final
 class MultiTask(BaseTask):
-    rest_answers: tuple[str] = ArrayField(TextField)
+    incorrect_answers: tuple[str] = ArrayField(TextField)
     right_answers: tuple[str] = ArrayField(TextField)

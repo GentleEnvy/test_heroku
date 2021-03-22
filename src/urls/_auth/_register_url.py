@@ -3,12 +3,12 @@ from http import HTTPStatus
 from typing import Final, final
 
 from src.models import User
-from src.urls._log_io._email_url import EmailUrl
+from src.urls._auth._check_email_url import CheckEmailUrl
 from src.urls.base_urls import IpSessionUrl
 from src.urls.exceptions import HTTPException
 from src.utils import email as util_email
 
-__all__ = ['Registration']
+__all__ = ['RegisterUrl']
 
 _MAIL_REGEX: Final[re.Pattern] = re.compile(
     '^[a-zA-Z0-9]+([-._][a-zA-Z0-9]+)*@'
@@ -38,30 +38,8 @@ def _send_code(email: str, code: int) -> None:
 
 
 @final
-class Registration(IpSessionUrl):
-    r"""
-    POST:
-        Request:
-            {
-                `email`: <str>,
-                `password`: <str>
-            }
-        Response:
-            {
-                `email_token`: <str> - used to identify the registrant for check the
-                    email code
-            }
-            or
-            {
-                `error`: <int>(
-                    1 - if a user with this email already exists
-                    or
-                    2 - if could not send email
-                )
-            }
-    """
-
-    url: Final[str] = '/registration'
+class RegisterUrl(IpSessionUrl):
+    url: Final[str] = '/auth/register'
 
     def __init__(self, app):
         super().__init__(app)
@@ -92,7 +70,7 @@ class Registration(IpSessionUrl):
         except Exception:  # TODO: to clarify
             return {'error': 2}
 
-        email_token = EmailUrl.add_email(email, password, code)
+        email_token = CheckEmailUrl.add_email(email, password, code)
         return {
             'email_token': email_token
         }

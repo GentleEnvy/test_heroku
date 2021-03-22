@@ -9,28 +9,11 @@ from src.urls.base_urls import IpSessionUrl, UserSessionUrl
 from src.urls.exceptions import HTTPException
 from src.utils.functions import generate_random_token
 
-__all__ = ['EmailUrl']
+__all__ = ['CheckEmailUrl']
 
 
 @final
-class EmailUrl(IpSessionUrl):
-    r"""
-    POST:
-        Request:
-            {
-                `email_token`: <str>,
-                `code`: <int>
-            }
-        Response:
-            {
-                `user_token`: <str> - the token received during registration
-            }
-            or
-            {
-                `error`: 1 - if codes don't match
-            }
-    """
-
+class CheckEmailUrl(IpSessionUrl):
     class __EmailSession:
         def __init__(self, token: str, email: str, password: str, code: int):
             self.token: Final[str] = token
@@ -38,7 +21,7 @@ class EmailUrl(IpSessionUrl):
             self.password: Final[str] = password
             self.code: Final[int] = code
 
-    url: Final[str] = '/email'
+    url: Final[str] = '/auth/check_email'
 
     LENGTH_TOKEN: Final[int] = 30
     NAME_TOKEN: Final[str] = 'email_token'

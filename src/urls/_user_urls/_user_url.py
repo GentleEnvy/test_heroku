@@ -8,31 +8,6 @@ __all__ = ['UserUrl']
 
 @final
 class UserUrl(UserSessionUrl):
-    r"""
-    Before using it, you need to log in to /authorization and gets token.
-    //hr\\
-    GET:
-        Request:
-            {
-                `user_token`: <str> - the token received during authorization
-            }
-        Response:
-            {
-                `name`: <int>,
-                `email`: <str>,
-                `password`: <str>,
-                `avatar_url`: <str>
-            }
-    //hr\\
-    DELETE:
-        Request:
-            {
-                `user_token`: <str> - the token received during authorization
-            }
-        Response:
-            {}
-    """
-
     url: Final[str] = '/user'
 
     def _get(self, request_json, session):

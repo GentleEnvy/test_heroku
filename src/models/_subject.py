@@ -13,7 +13,7 @@ __all__ = ['Subject']
 class Subject(BaseIndexedModel, BaseModelEnum):
     """
     CREATE TABLE subject (
-        name Smallint
+        id Smallint
             PRIMARY KEY,
         name Text NOT NULL
             UNIQUE

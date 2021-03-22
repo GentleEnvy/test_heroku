@@ -13,7 +13,7 @@ __all__ = ['User']
 class User(BaseIndexedModel):
     r"""
     CREATE TABLE "user" (
-        name Serial NOT NULL
+        id Serial NOT NULL
             PRIMARY KEY,
         email Text NOT NULL
             UNIQUE
