@@ -4,13 +4,13 @@ from typing import final
 
 from peewee import TextField
 
-from src.models.base_models import IndexedModel, BaseModelEnum
+from src.models.base_models import BaseIndexedModel, BaseModelEnum
 
 __all__ = ['Subject']
 
 
 @final
-class Subject(IndexedModel, BaseModelEnum):
+class Subject(BaseIndexedModel, BaseModelEnum):
     """
     CREATE TABLE subject (
         name Smallint

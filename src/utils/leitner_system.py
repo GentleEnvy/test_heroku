@@ -1,11 +1,10 @@
-from src.models.bases import Indexed
+from src.utils import database
 
 
 class LeitnerSystem:
-
     @staticmethod
-    def leitner_algorithm(db: Indexed, user_id: str, required_amount_of_questions: int) -> tuple:
-        table_questions = db.database.execute(
+    def leitner_algorithm(user_id: str, required_amount_of_questions: int) -> tuple:
+        table_questions = database.execute(
             f'''
                 select "single_task_id", "date", "last_delay"
                 from "single_task_stat"
@@ -23,10 +22,5 @@ class LeitnerSystem:
                 order by "last_delay";
             '''
         )
-        questions_id = table_questions[
-            0:
-            required_amount_of_questions + 1
-            if required_amount_of_questions + 1 < len(table_questions)
-            else len(table_questions)
-        ]
+        questions_id = table_questions[0:required_amount_of_questions]
         return questions_id

@@ -26,9 +26,12 @@ class WrapFormatter(Formatter):
         self._max_length: Final[int] = max_length
 
     def formatException(self, ei):
-        if (formatted_exception := super().formatException(ei)).endswith('\n'):
-            return tab('<<<\n' + tab(formatted_exception) + '>>>')
-        return '<<<\n' + tab(formatted_exception) + '\n>>>'
+        formatted_exception = super().formatException(ei)
+        return tab(
+            f'<<<\n{tab(formatted_exception)}' +
+            ('' if formatted_exception.endswith('\n') else '\n') +
+            '>>>'
+        )
 
     def format(self, record: LogRecord):
         formatted = super().format(record)
