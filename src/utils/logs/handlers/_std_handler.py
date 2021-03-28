@@ -3,6 +3,8 @@ from logging import StreamHandler
 from sys import stdout, stderr
 from typing import Final
 
+__all__ = ['StdHandler']
+
 
 class StdHandler(StreamHandler):
     def __init__(self, err_level: int = logging.WARNING):

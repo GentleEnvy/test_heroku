@@ -2,6 +2,7 @@ import json
 import logging
 from logging import LogRecord
 from logging.config import dictConfig
+from typing import Optional
 
 from src import ON_HOSTING
 from src.utils.functions import get_path_to_src
@@ -14,13 +15,25 @@ class _CacheMessageLogRecord(LogRecord):
     # noinspection SpellCheckingInspection
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.__message: str = super().getMessage()
+        self.__message: Optional[str] = None
 
     def getMessage(self) -> str:
         if self.__message:
             return self.__message
-        self.__message = super().getMessage()
+        self.__cache_message(super().getMessage())
         return self.__message
+
+    @property
+    def message(self) -> str:
+        return self.getMessage()
+
+    @message.setter
+    def message(self, message: str):
+        self.__cache_message(message)
+
+    def __cache_message(self, message: str) -> None:
+        self.__message = message
+        self.__dict__['message'] = message
 
 
 logging.setLogRecordFactory(_CacheMessageLogRecord)

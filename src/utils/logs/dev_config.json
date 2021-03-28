@@ -3,12 +3,12 @@
   "disable_existing_loggers": true,
   "formatters": {
     "werkzeug_formatter": {
-      "class": "src.utils.logs._wrap_formatter.WrapFormatter",
+      "class": "src.utils.logs.formatters.WrapFormatter",
       "datefmt": "[%d.%m-%H:%M:%S]",
       "format": "web info: %(message)s"
     },
     "root_formatter": {
-      "class": "src.utils.logs._wrap_formatter.WrapFormatter",
+      "class": "src.utils.logs.formatters.WrapFormatter",
       "datefmt": "[%d.%m-%H:%M:%S]",
       "format": "%(levelname)-5s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%(lineno)d)>: %(message)s"
     }
@@ -22,7 +22,7 @@
     },
     "root_console_handler": {
       "level": "DEBUG",
-      "class": "src.utils.logs._std_handler.StdHandler",
+      "class": "src.utils.logs.handlers.StdHandler",
       "formatter": "root_formatter"
     }
   },
