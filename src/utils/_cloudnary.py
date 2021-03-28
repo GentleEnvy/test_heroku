@@ -12,7 +12,6 @@ from cloudinary.uploader import upload
 from cloudinary.utils import cloudinary_url
 
 from src.utils.decorators import check_raises
-from src.utils.functions import get_path_to_src
 from src.utils.interfaces import ImageBase
 
 # noinspection SpellCheckingInspection
@@ -72,7 +71,7 @@ class Cloudnary(ImageBase):
 
     @check_raises
     def save(self, image_data, folder=None, name=None):
-        filename = f'{get_path_to_src()}/utils/{int(time.time() * 10 ** 7)}.jpg'
+        filename = f'utils/{int(time.time() * 10 ** 7)}.jpg'
         try:
             with open(filename, 'wb') as image:
                 image.write(image_data)

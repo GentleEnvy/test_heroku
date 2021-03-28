@@ -3,7 +3,6 @@ import logging
 from logging.config import dictConfig
 
 from src import ON_HOSTING
-from src.utils.functions import get_path_to_src
 from src.utils.logs._cache_message_log_record import CacheMessageLogRecord
 from src.utils.logs._logs_drainer import LogsDrainer
 
@@ -13,11 +12,10 @@ logging.setLogRecordFactory(CacheMessageLogRecord)
 
 
 def init_loggers() -> None:
-    path_to_config = f'{get_path_to_src()}' \
-                     f'/utils/logs/{"prod" if ON_HOSTING else "dev"}_config.json'
+    path_to_config = f'src/utils/logs/{"prod" if ON_HOSTING else "dev"}_config.json'
     with open(path_to_config, 'r') as logs_config_json:
         logs_config = json.load(logs_config_json)
     dictConfig(logs_config)
 
     if ON_HOSTING:
-        LogsDrainer(f'{get_path_to_src()}/utils/logs/logs.log').listen()
+        LogsDrainer(f'src/utils/logs/logs.log').listen()

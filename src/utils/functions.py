@@ -1,19 +1,8 @@
-import os
 import random
 import string
 from typing import TextIO
 
-__all__ = ['get_path_to_src', 'generate_random_token', 'file_line_count', 'tab']
-
-
-def get_path_to_src():
-    """
-    :return: absolute path to the main directory (/src)
-    """
-    path = os.getcwd()
-    if path.endswith('/src') or path.endswith('\\src'):
-        return path
-    return path + '/src'
+__all__ = ['generate_random_token', 'file_line_count', 'tab']
 
 
 _LETTERS = string.ascii_lowercase + string.ascii_uppercase + string.digits
