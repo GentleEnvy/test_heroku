@@ -1,7 +1,8 @@
 src/utils/logs/*.log
 .mypy_cache
+.pytest_cache
 
 .idea/
-test_files/
+files_t/
 __pycache__/
 vanv/
