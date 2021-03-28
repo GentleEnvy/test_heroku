@@ -9,5 +9,9 @@ init_urls(app)
 
 info('Server started !')
 
+from src.utils import database
+
+database.execute('jjlsdjlsdkfjljdslfsjflkdfjslkfjslkfjldkjsflj lsdjf ljdlsdjlfdjslsdjfldjflsdjflsjflsdjfdlsfjsdlkfj dsfj slkjdlkjlskfjdslkfjsdlkfdjsflksjflkdsj lkdsjfd lskjsdl kjlksj sdlkjdslkdjslkdsjlksdfjldskfjsdlkfjsdlkfsdjlfk sdjlksdjf lkdsjlkds fjdlsk')
+
 if __name__ == '__main__':
     app.run(threaded=True)

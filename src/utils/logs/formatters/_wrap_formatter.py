@@ -1,8 +1,9 @@
-from logging import Formatter, LogRecord
+from logging import Formatter
 from textwrap import wrap
 from typing import Final
 
 from src.utils.functions import tab
+from src.utils.logs._cache_message_log_record import CacheMessageLogRecord
 
 __all__ = ['WrapFormatter']
 
@@ -19,17 +20,18 @@ def _wrap(text: str, max_length: int) -> str:
 
 
 class WrapFormatter(Formatter):
-    _DEFAULT_MAX_LENGTH: Final[int] = 120
+    _DEFAULT_MAX_LENGTH: Final[int] = 110
 
     def __init__(self, *args, max_length: int = _DEFAULT_MAX_LENGTH, **kwargs):
         super().__init__(*args, **kwargs)
         self._max_length: Final[int] = max_length
 
-    def format(self, record: LogRecord):
+    def format(self, record: CacheMessageLogRecord):
         formatted = super().format(record)
         if '\n' in record.message or len(formatted) > self._max_length:
             old_message = record.message
-            record.message = tab(_wrap(record.message, self._max_length))
+            print(f'{old_message = }')
+            record.setMessage(tab(_wrap(record.message, self._max_length)))
             formatted = super().format(record)
             record.message = old_message
         return formatted

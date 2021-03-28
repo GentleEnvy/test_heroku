@@ -14,14 +14,13 @@ def check_raises(function: Callable[..., _TypeReturn]) -> Callable[..., _TypeRet
         except Exception as e:
             # noinspection PyUnresolvedReferences
             exception(
-                f'''
-    (
-        {function.__module__ = },
-        {function.__name__ = }
-    ): {{
-        {args = },
-        {kwargs = }
-    }}'''
+                f'''(
+    {function.__module__ = },
+    {function.__name__ = }
+): {{
+    {args = },
+    {kwargs = }
+}}'''
             )
             raise e
 
