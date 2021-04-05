@@ -40,6 +40,7 @@ class AvatarUrl(UserSessionUrl):
             image_base.delete(old_avatar_url)
 
         user.avatar_url = avatar_url
+        user.save()
         return {
             'avatar_url': avatar_url
         }
