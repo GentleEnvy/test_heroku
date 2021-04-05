@@ -72,7 +72,7 @@ class CheckEmailUrl(IpSessionUrl):
     def post(self, request_json):
         token = self.get_value(request_json, self.NAME_TOKEN)
         code = self.get_value(request_json, 'code', int)
-        if code == (session := self.__get_session(token)):
+        if code == (session := self.__get_session(token)).code:
             user = User.create(session.email, session.password)
             self.__delete_session(session.email)
             user_token = UserSessionUrl.add_user_session(user)
