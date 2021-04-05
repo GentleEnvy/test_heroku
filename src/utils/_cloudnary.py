@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 import re
-import time
+from tempfile import TemporaryFile
 from logging import warning
 from typing import Final, final
 
@@ -70,20 +70,18 @@ class Cloudnary(ImageBase):
         cloudinary.api.subfolders('/')  # check authorization
 
     @check_raises
-    def save(self, image_data, folder=None, name=None):
-        filename = f'utils/{int(time.time() * 10 ** 7)}.jpg'
+    def save(self, image_data, folder=None, id=None):
         try:
-            with open(filename, 'wb') as image:
+            with TemporaryFile() as image:
                 image.write(image_data)
-            image_id = upload(
-                filename,
-                folder=folder,
-                public_id=name
-            )['public_id']
+                image.seek(0)
+                image_id = upload(
+                    file=image,
+                    folder=folder,
+                    public_id=id
+                )['public_id']
         except cloudinary.exceptions.Error:
             raise ValueError
-        finally:
-            os.remove(filename)
         return cloudinary_url(image_id)[0]
 
     @check_raises

@@ -20,10 +20,11 @@ def file_line_count(file: TextIO) -> int:
     :param file: file is opened in 'r' mode
     :return: number of lines in file
     """
-    line_count = 0
+    file.seek(0)
+    line_count = -1
     for last_line, _ in enumerate(file):
         line_count = last_line
-    return line_count
+    return line_count + 1
 
 
 def tab(text: str) -> str:

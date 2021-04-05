@@ -2,6 +2,8 @@ import re
 from http import HTTPStatus
 from typing import Final, final
 
+from peewee import DoesNotExist
+
 from src.models import User
 from src.urls._auth._check_email_url import CheckEmailUrl
 from src.urls.base_urls import IpSessionUrl
@@ -14,7 +16,7 @@ _MAIL_REGEX: Final[re.Pattern] = re.compile(
     '^[a-zA-Z0-9]+([-._][a-zA-Z0-9]+)*@'
     '[a-zA-Z0-9]+([-.][a-zA-Z0-9]+)*\\.[a-zA-Z]{2,7}$'
 )
-_PASSWORD_REGEX: Final[re.Pattern] = re.compile('^[a-zA-z0-9_]{6,}$')
+_PASSWORD_REGEX: Final[re.Pattern] = re.compile('^[a-zA-Z0-9_]{6,}$')
 _DEFAULT_MESSAGE: Final[str] = 'code: %s'  # TODO: read message from file
 
 
@@ -27,7 +29,10 @@ def _check_password_valid(password: str) -> bool:
 
 
 def _check_unique_email(email: str) -> bool:
-    return User.get_by_email(email) is None
+    try:
+        return User.get_by_email(email) is None
+    except DoesNotExist:
+        return True
 
 
 def _send_code(email: str, code: int) -> None:

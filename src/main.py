@@ -4,10 +4,6 @@ from src.app import app
 from src.urls import init_urls
 from src.utils.logs import init_loggers
 
-import os
-
-print(os.getcwd())
-
 init_loggers()
 init_urls(app)
 

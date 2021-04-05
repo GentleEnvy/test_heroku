@@ -5,11 +5,11 @@ __all__ = ['ImageBase']
 
 class ImageBase(ABC):
     @abstractmethod
-    def save(self, image_data: bytes, folder: str = None, name: int = None) -> str:
+    def save(self, image_data: bytes, folder: str = None, id: int = None) -> str:
         """
         :param image_data: bytes picture to save
         :param folder: folder for placing images
-        :param name: image name
+        :param id: image id
         :return: image url
         :raises ValueError: if invalid `image_data`
         """
