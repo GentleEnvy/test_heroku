@@ -18,7 +18,7 @@ __all__ = [
     'CLOUDNARY_NAME', 'CLOUDNARY_KEY', 'CLOUDNARY_SECRET', 'YANDEX_DISK_TOKEN'
 ]
 
-print(os.environ)
+print(os.system('heroku config'))
 
 ON_HOSTING: Final[bool] = bool(int(os.environ['ON_HOSTING']))
 DATABASE_URL: Final[str] = os.environ['DATABASE_URL']
