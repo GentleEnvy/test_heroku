@@ -1,5 +1,8 @@
 # noinspection SpellCheckingInspection
 """
+Heroku requirements:
+    heroku labs:enable runtime-dyno-metadata
+
 Environment requirements:
     ON_HOSTING: Literal[0, 1] - 1, if the program runs on the hosting, else 0
     DATABASE_URL: <str>
@@ -18,7 +21,8 @@ __all__ = [
     'CLOUDNARY_NAME', 'CLOUDNARY_KEY', 'CLOUDNARY_SECRET', 'YANDEX_DISK_TOKEN'
 ]
 
-print(os.system('heroku config'))
+from pprint import pprint
+pprint(os.environ)
 
 ON_HOSTING: Final[bool] = bool(int(os.environ['ON_HOSTING']))
 DATABASE_URL: Final[str] = os.environ['DATABASE_URL']
