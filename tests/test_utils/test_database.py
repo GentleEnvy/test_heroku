@@ -2,4 +2,4 @@ from src.utils import database
 
 
 def test_select():
-    assert database.execute(f'SELECT id FROM "user"') == ((1,),)
+    assert (1,) in database.execute(f'SELECT id FROM "user"')

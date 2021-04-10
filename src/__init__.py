@@ -21,9 +21,6 @@ __all__ = [
     'CLOUDNARY_NAME', 'CLOUDNARY_KEY', 'CLOUDNARY_SECRET', 'YANDEX_DISK_TOKEN'
 ]
 
-from pprint import pprint
-pprint(os.environ)
-
 ON_HOSTING: Final[bool] = bool(int(os.environ['ON_HOSTING']))
 DATABASE_URL: Final[str] = os.environ['DATABASE_URL']
 EMAIL_LOGIN: Final[str] = os.environ['EMAIL_LOGIN']

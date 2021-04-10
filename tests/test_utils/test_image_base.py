@@ -4,7 +4,6 @@ from tests.conftest import parameterize
 
 @parameterize('folder', (None, '/test_folder'))
 def test_image_base(test_image, folder):
-    test_image.seek(0)
     url = image_base.save(
         image_data=test_image.read(),
         folder=folder,
