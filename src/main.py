@@ -4,16 +4,16 @@ import bs4
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-PATH_GOOGLE_CHROME = '/app/.apt/usr/bin/google-chrome'
-PATH_CHROMEDRIVER = '/app/.chromedriver/bin/chromedriver'
+# PATH_GOOGLE_CHROME = '/app/.apt/usr/bin/google-chrome'
+# PATH_CHROMEDRIVER = '/app/.chromedriver/bin/chromedriver'
 
-# PATH_GOOGLE_CHROME = 'C:\Program Files (x86)\Google\Chrome\Application'
-# PATH_CHROMEDRIVER = 'D:\\chromedriver'
+PATH_GOOGLE_CHROME = 'C:\Program Files (x86)\Google\Chrome\Application'
+PATH_CHROMEDRIVER = 'D:\\chromedriver'
 
 
 def search(keywords):
     chrome_options = Options()
-    chrome_options.binary_location = PATH_GOOGLE_CHROME
+    chrome_options.headless = False
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('start-maximized')
@@ -24,7 +24,8 @@ def search(keywords):
         options=chrome_options
     )
 
-    driver.get('https://bankrot.fedresurs.ru/TradeList.aspx?attempt=1')
+    driver.get('https://bankrot.fedresurs.ru/TradeList.aspx')
+    print(driver.page_source)
 
     region_option = driver.find_element_by_xpath(
         '//select[@id="ctl00_cphBody_ucRegion_ddlBoundList"]'
@@ -61,7 +62,7 @@ def search(keywords):
 
 
 def main():
-    for i in range(5):
+    for i in range(1):
         keywords = chr(ord('а') + i // 33) + chr(ord('а') + i % 33)
         search(keywords)
         print('--------------------')
