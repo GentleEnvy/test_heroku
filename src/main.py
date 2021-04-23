@@ -61,7 +61,7 @@ def search(keywords):
 
 
 def main():
-    for i in range(10):
+    for i in range(5):
         keywords = chr(ord('а') + i // 33) + chr(ord('а') + i % 33)
         search(keywords)
         print('--------------------')
