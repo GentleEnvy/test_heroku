@@ -15,9 +15,9 @@ PATH_CHROMEDRIVER = '/app/.chromedriver/bin/chromedriver'
 def search(keywords):
     chrome_options = Options()
     chrome_options.headless = True
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument("--disable-extensions")
+    # chrome_options.add_argument('--no-sandbox')
+    # chrome_options.add_argument('--disable-gpu')
+    # chrome_options.add_argument("--disable-extensions")
 
     ua = UserAgent()
     userAgent = ua.random
@@ -32,6 +32,7 @@ def search(keywords):
     # driver.get('https://bankrot.fedresurs.ru/TradeList.aspx')
     driver.get('https://www.google.ru')
     print(driver.page_source)
+    return
 
     region_option = driver.find_element_by_xpath(
         '//select[@id="ctl00_cphBody_ucRegion_ddlBoundList"]'
