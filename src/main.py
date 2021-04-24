@@ -19,6 +19,7 @@ def search(keywords):
     # chrome_options.add_argument('--no-sandbox')
     # chrome_options.add_argument('--disable-gpu')
     # chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument('--disable-dev-shm-usage')
 
     userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36'
     print(f'{userAgent = }')
@@ -34,8 +35,7 @@ def search(keywords):
     print(driver.page_source)
 
     print(requests.get(
-        'https://bankrot.fedresurs.ru/TradeList.aspx',
-        headers={'User-Agent': userAgent}
+        'https://bankrot.fedresurs.ru/TradeList.aspx'
     ).content)
 
     return
