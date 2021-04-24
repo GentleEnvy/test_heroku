@@ -3,7 +3,6 @@ from time import sleep
 import bs4
 from selenium import webdriver
 from selenium.webdriver import ChromeOptions
-from fake_useragent import UserAgent
 
 import requests
 
@@ -21,8 +20,7 @@ def search(keywords):
     # chrome_options.add_argument('--disable-gpu')
     # chrome_options.add_argument("--disable-extensions")
 
-    ua = UserAgent()
-    userAgent = ua.random
+    userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36'
     print(f'{userAgent = }')
     chrome_options.add_argument(f'--user-agent={userAgent}')
 
@@ -37,7 +35,7 @@ def search(keywords):
 
     print(requests.get(
         'https://bankrot.fedresurs.ru/TradeList.aspx',
-        headers={'User-Agent': str(userAgent)}
+        headers={'User-Agent': userAgent}
     ).content)
 
     return
