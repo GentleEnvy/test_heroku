@@ -29,8 +29,8 @@ def search(keywords):
         options=chrome_options
     )
 
-    driver.get('https://bankrot.fedresurs.ru/TradeList.aspx')
-
+    # driver.get('https://bankrot.fedresurs.ru/TradeList.aspx')
+    driver.get('https://www.google.ru')
     print(driver.page_source)
 
     region_option = driver.find_element_by_xpath(
