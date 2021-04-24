@@ -3,29 +3,33 @@ from time import sleep
 import bs4
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from fake_useragent import UserAgent
 
-# PATH_GOOGLE_CHROME = '/app/.apt/usr/bin/google-chrome'
-# PATH_CHROMEDRIVER = '/app/.chromedriver/bin/chromedriver'
+PATH_GOOGLE_CHROME = '/app/.apt/usr/bin/google-chrome'
+PATH_CHROMEDRIVER = '/app/.chromedriver/bin/chromedriver'
 
-PATH_GOOGLE_CHROME = 'C:\Program Files (x86)\Google\Chrome\Application'
-PATH_CHROMEDRIVER = 'D:\\chromedriver'
+# PATH_GOOGLE_CHROME = 'C:\Program Files (x86)\Google\Chrome\Application'
+# PATH_CHROMEDRIVER = 'D:\\chromedriver'
 
 
 def search(keywords):
     chrome_options = Options()
-    chrome_options.headless = False
+    chrome_options.headless = True
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('start-maximized')
-    chrome_options.add_argument('disable-infobars')
     chrome_options.add_argument("--disable-extensions")
+
+    ua = UserAgent()
+    userAgent = ua.random
+    print(f'{userAgent = }')
+    chrome_options.add_argument(f'user-agent={userAgent}')
+
     driver = webdriver.Chrome(
         executable_path=PATH_CHROMEDRIVER,
         options=chrome_options
     )
 
     driver.get('https://bankrot.fedresurs.ru/TradeList.aspx')
-    print(driver.page_source)
 
     region_option = driver.find_element_by_xpath(
         '//select[@id="ctl00_cphBody_ucRegion_ddlBoundList"]'
