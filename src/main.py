@@ -31,6 +31,8 @@ def search(keywords):
 
     driver.get('https://bankrot.fedresurs.ru/TradeList.aspx')
 
+    print(driver.page_source)
+
     region_option = driver.find_element_by_xpath(
         '//select[@id="ctl00_cphBody_ucRegion_ddlBoundList"]'
         '/option[text()="Московская область"]'
