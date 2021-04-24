@@ -5,6 +5,8 @@ from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from fake_useragent import UserAgent
 
+import requests
+
 PATH_GOOGLE_CHROME = '/app/.apt/usr/bin/google-chrome'
 PATH_CHROMEDRIVER = '/app/.chromedriver/bin/chromedriver'
 
@@ -32,6 +34,12 @@ def search(keywords):
     driver.get('https://bankrot.fedresurs.ru/TradeList.aspx')
     # driver.get('https://www.google.ru')
     print(driver.page_source)
+
+    print(requests.get(
+        'https://bankrot.fedresurs.ru/TradeList.aspx',
+        headers={'User-Agent': str(userAgent)}
+    ).content)
+
     return
 
     region_option = driver.find_element_by_xpath(
