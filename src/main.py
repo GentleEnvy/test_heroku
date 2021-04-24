@@ -69,7 +69,7 @@ def main():
     for i in range(1):
         keywords = chr(ord('а') + i // 33) + chr(ord('а') + i % 33)
         search(keywords)
-        print('----------------------')
+        print('-----------------------')
 
 
 if __name__ == '__main__':
